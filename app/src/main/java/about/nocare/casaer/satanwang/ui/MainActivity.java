@@ -53,7 +53,11 @@ import about.nocare.casaer.satanwang.utils.StatusBarCompat;
 import about.nocare.casaer.satanwang.utils.TextShape;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ & @Description:   首页
+ & @Author:  Satan
+ & @Time:  2018/8/24 10:08
+ */
 public class MainActivity extends BaseActivity implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
 
 
