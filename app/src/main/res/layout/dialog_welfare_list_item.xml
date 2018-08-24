@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="18dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/linearlayout_top_background"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="¥1000"
+                android:textColor="@color/white"
+                android:textSize="30sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginEnd="15sp"
+                android:layout_marginStart="15sp"
+                android:background="@mipmap/segmenting_line" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.177"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/scope"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="车检"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="3dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/use"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="满¥200可使用满"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        
+        <TextView
+            android:id="@+id/dateRange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="有效期2017-02-23至2017-08-23"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="10dp"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/app_main_color_deep"/>
+</LinearLayout>

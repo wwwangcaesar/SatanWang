@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/viewV"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp" />
+
+    <FrameLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@color/titleBackground">
+
+        <RelativeLayout
+            android:id="@+id/baseLeftToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:minHeight="?attr/actionBarSize"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp">
+
+            <TextView
+                android:id="@+id/baseLeftTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:maxLength="5"
+                android:textColor="@color/colorPrimaryText"
+                tools:text="返回" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/baseRightToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <ImageView
+                android:id="@+id/baseRightImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/baseRightTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:maxLength="5"
+                android:textColor="@color/colorPrimaryText"
+                tools:text="确定" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/baseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLength="12"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="标题" />
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/toolbarBottomLine"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#B2B2B2" />
+
+</LinearLayout>
+
+

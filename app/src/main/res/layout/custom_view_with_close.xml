@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/timg_a" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="功能展示完毕"
+        android:textColor="#fff" />
+
+
+    <ImageButton
+        android:src="@drawable/finish"
+        android:id="@+id/guide_close"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="我知道了"
+        android:textColor="#fff" />
+
+
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--button椭圆背景-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <stroke
+        android:width="1dp"
+        android:color="@color/colorApp" />
+
+    <solid android:color="@color/transparent" />
+
+    <corners android:radius="50dp" />
+
+</shape>

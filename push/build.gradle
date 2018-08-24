@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+    publishNonDefault true
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 25
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [push_key: "24816090", push_secret: "2397eab0899cd01ef2ca26779ecd4151"]
+        }
+        debug {
+//            // Bright本机测试：bbdc8f007b6ba0a2c181bcdec024bb43
+//            // Satan本机测试：3f536cc65af07f5bfc1b460d70bae14c
+            manifestPlaceholders = [push_key: "24809329", push_secret: "de802998a66c50e11410f0f295a414d2"]
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+}

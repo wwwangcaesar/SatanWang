@@ -1,0 +1,1 @@
+include ':app', ':push', ':calendarview', ':greenDao', ':gallerypick', ':core', ':indexstickyview', ':map', ':iosPicker', ':library'

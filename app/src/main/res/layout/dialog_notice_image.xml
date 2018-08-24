@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_notice_image"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@color/transparent">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/linearlayout_top_background"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="恭喜您获得2张优惠券"
+                android:textSize="16sp"
+                android:textColor="@color/textColorWhite"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white">
+
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:divider="@null"
+                android:dividerHeight="8dp"
+                android:listSelector="@color/transparent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp">
+            </ListView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/background"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_3"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:orientation="vertical"
+            android:background="@drawable/linearlayout_bottom_background"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/go_my_welfare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看优惠券"
+                android:textSize="17sp"
+                android:textColor="@color/app_main_color"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/star_pop"/>
+
+    <ImageView
+        android:id="@+id/iv_cancel"
+        android:layout_marginTop="46dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_pop_close"
+        android:layout_below="@+id/layout"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

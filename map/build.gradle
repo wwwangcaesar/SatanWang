@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+    publishNonDefault true
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 25
+    }
+    buildTypes {
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [amap_key: "61ac2773eb275cd9d56f0da630d008e7"]
+        }
+        debug {
+//            // Bright本机测试：bbdc8f007b6ba0a2c181bcdec024bb43
+//            // Satan本机测试：932ca57f23a35f9704ca5a61f9bd863b
+            manifestPlaceholders = [amap_key: "932ca57f23a35f9704ca5a61f9bd863b"]
+        }
+    }
+    sourceSets {
+        main {
+//            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //    debugCompile project(path: ':core', configuration: 'debug')
+    //    releaseCompile project(path: ':core', configuration: 'release')
+    implementation project(':core')
+    compile 'com.amap.api:3dmap:latest.integration'
+    compile 'com.amap.api:location:latest.integration'
+    implementation files('libs/AMap_Search_V6.1.0_20180330.jar')
+}

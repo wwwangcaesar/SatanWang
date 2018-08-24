@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="indicator">#DE5130</color>
+    <color name="indicator_uncheck">#FF222222</color>
+    <color name="white">#ffffff</color>
+    <color name="colorApp">#ffff7700</color>
+    <color name="colorAppDark">#aeff6c2f</color>
+
+    <!--button椭圆背景-->
+    <color name="black_overlay">#66000000</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="gray">#C4C4C4</color>
+    <!--扫一扫-->
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <!--<color name="possible_result_points">#c0ffbd21</color> &lt;!&ndash; Android standard ICS color &ndash;&gt;-->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color> <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+
+    <!-- 其他颜色 -->
+    <color name="appYellow">#F0AC37</color>
+    <color name="appLightYellow">#FFEAC7</color>
+    <color name="editGray">#1F8E8E93</color>
+    <color name="strokeOrigin">#FFD8C8</color>
+    <color name="appGrayBg">#26000000</color>
+    <color name="lineGray">#E6E6E6</color>
+    <color name="bottomLineGray">#D6D6D6</color>
+    <color name="appRed">#FF3B30</color>
+    <color name="popuGray">#F3F4F8</color>
+    <color name="lightOrange">#FFDDCF</color>
+    <color name="textColorWhite">#FFFDFD</color>
+
+    <!-- QRCode scanner color begin -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="viewfinder_frame">#90FFFFFF</color>
+    <color name="result_point_color">#C0FFFF00</color>
+    <color name="laser_color">#0F0</color>
+    <color name="corner_color">#00FF00</color>
+    <color name="sort_catagory">#FFE0E0E0</color>
+
+</resources>

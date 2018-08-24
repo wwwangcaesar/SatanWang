@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <View
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_weight="3"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginRight="24dp"
+        android:text="悬浮框小A，可以跟他聊天，并拖动放置"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_weight="1"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:text="————>"/>
+    <View
+        android:layout_weight="0.1"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:background="@color/white"/>
+
+</LinearLayout>

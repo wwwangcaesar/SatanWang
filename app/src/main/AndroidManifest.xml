@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="about.nocare.casaer.satanwang">
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!-- <uses-permission android:name="android.permission.CAMERA" /> -->
+    <!-- 读取文件权限 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 写入数据权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- <activity -->
+    <!-- android:name="com.lovcreate.hydra.zxing.activity.CaptureActivity" -->
+    <!-- android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>&lt;!&ndash; 二维码 &ndash;&gt; -->
+
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- 自动聚焦权限 -->
+    <application
+        android:name=".app.MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AllAppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:theme="@style/AllAppTheme" />
+        <!-- android:theme="@style/Theme.AppCompat.NoActionBar"/> &lt;!&ndash;去标题栏&ndash;&gt; -->
+        <activity
+            android:name=".ui.guide.xianyuApp.Guide2Activity"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".ui.home.SearchActivity"
+            android:theme="@style/AllAppTheme" />
+        <activity
+            android:name=".ui.GuideActivity"
+            android:theme="@style/FullscreenTheme" />
+        <activity
+            android:name=".ui.home.HomeCityActivity"
+            android:theme="@style/AllAppTheme" />
+        <activity
+            android:name=".ui.NavigationActivity"
+            android:theme="@style/AllAppTheme" />
+        <activity
+            android:name=".ui.home.HomeMapActivity"
+            android:theme="@style/AllAppTheme" />
+        <activity
+            android:name=".ui.home.appMore.AppMoreActivity"
+            android:theme="@style/AllAppTheme" />
+    </application>
+
+</manifest>

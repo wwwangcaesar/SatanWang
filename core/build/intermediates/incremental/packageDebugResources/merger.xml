@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main$Generated" generated="true"><source path="F:\myself\SatanWang\core\src\main\res"/><source path="F:\myself\SatanWang\core\build\generated\res\rs\debug"/><source path="F:\myself\SatanWang\core\build\generated\res\resValues\debug"/></dataSet><dataSet config="main" generated-set="main$Generated"><source path="F:\myself\SatanWang\core\src\main\res"><file name="dialogui_rotate_mum" path="F:\myself\SatanWang\core\src\main\res\drawable\dialogui_rotate_mum.xml" qualifiers="" type="drawable"/><file name="dialogui_shape_gray_round_l_corner" path="F:\myself\SatanWang\core\src\main\res\drawable\dialogui_shape_gray_round_l_corner.xml" qualifiers="" type="drawable"/><file name="dialogui_shape_progress" path="F:\myself\SatanWang\core\src\main\res\drawable\dialogui_shape_progress.xml" qualifiers="" type="drawable"/><file name="dialogui_shape_wihte_round_corner" path="F:\myself\SatanWang\core\src\main\res\drawable\dialogui_shape_wihte_round_corner.xml" qualifiers="" type="drawable"/><file name="dialogui_spinner_mum" path="F:\myself\SatanWang\core\src\main\res\drawable\dialogui_spinner_mum.png" qualifiers="" type="drawable"/><file name="error_picture" path="F:\myself\SatanWang\core\src\main\res\drawable\error_picture.png" qualifiers="" type="drawable"/><file name="ic_delete" path="F:\myself\SatanWang\core\src\main\res\drawable\ic_delete.png" qualifiers="" type="drawable"/><file name="shape_divider_identifying" path="F:\myself\SatanWang\core\src\main\res\drawable\shape_divider_identifying.xml" qualifiers="" type="drawable"/><file name="shape_icv_et_bg_focus" path="F:\myself\SatanWang\core\src\main\res\drawable\shape_icv_et_bg_focus.xml" qualifiers="" type="drawable"/><file name="shape_icv_et_bg_normal" path="F:\myself\SatanWang\core\src\main\res\drawable\shape_icv_et_bg_normal.xml" qualifiers="" type="drawable"/><file name="unified_edittext_search_background" path="F:\myself\SatanWang\core\src\main\res\drawable\unified_edittext_search_background.xml" qualifiers="" type="drawable"/><file name="wheel_bg" path="F:\myself\SatanWang\core\src\main\res\drawable\wheel_bg.xml" qualifiers="" type="drawable"/><file name="wheel_val" path="F:\myself\SatanWang\core\src\main\res\drawable\wheel_val.xml" qualifiers="" type="drawable"/><file name="activity_calendar" path="F:\myself\SatanWang\core\src\main\res\layout\activity_calendar.xml" qualifiers="" type="layout"/><file name="base_tool_bar" path="F:\myself\SatanWang\core\src\main\res\layout\base_tool_bar.xml" qualifiers="" type="layout"/><file name="base_tool_bar_popupwindow" path="F:\myself\SatanWang\core\src\main\res\layout\base_tool_bar_popupwindow.xml" qualifiers="" type="layout"/><file name="base_tool_bar_popupwindow_item" path="F:\myself\SatanWang\core\src\main\res\layout\base_tool_bar_popupwindow_item.xml" qualifiers="" type="layout"/><file name="base_tool_bar_popup_search" path="F:\myself\SatanWang\core\src\main\res\layout\base_tool_bar_popup_search.xml" qualifiers="" type="layout"/><file name="base_tool_bar_popup_search_item" path="F:\myself\SatanWang\core\src\main\res\layout\base_tool_bar_popup_search_item.xml" qualifiers="" type="layout"/><file name="dialogui_loading_horizontal" path="F:\myself\SatanWang\core\src\main\res\layout\dialogui_loading_horizontal.xml" qualifiers="" type="layout"/><file name="dialogui_toast" path="F:\myself\SatanWang\core\src\main\res\layout\dialogui_toast.xml" qualifiers="" type="layout"/><file name="dialogui_toast_success" path="F:\myself\SatanWang\core\src\main\res\layout\dialogui_toast_success.xml" qualifiers="" type="layout"/><file name="layout_identifying_code" path="F:\myself\SatanWang\core\src\main\res\layout\layout_identifying_code.xml" qualifiers="" type="layout"/><file name="fill" path="F:\myself\SatanWang\core\src\main\res\mipmap-hdpi\fill.png" qualifiers="hdpi-v4" type="mipmap"/><file name="fill" path="F:\myself\SatanWang\core\src\main\res\mipmap-mdpi\fill.png" qualifiers="mdpi-v4" type="mipmap"/><file name="fill" path="F:\myself\SatanWang\core\src\main\res\mipmap-xhdpi\fill.png" qualifiers="xhdpi-v4" type="mipmap"/><file name="fill" path="F:\myself\SatanWang\core\src\main\res\mipmap-xxhdpi\fill.png" qualifiers="xxhdpi-v4" type="mipmap"/><file name="fill" path="F:\myself\SatanWang\core\src\main\res\mipmap-xxxhdpi\fill.png" qualifiers="xxxhdpi-v4" type="mipmap"/><file path="F:\myself\SatanWang\core\src\main\res\values\attrs.xml" qualifiers=""><declare-styleable name="SwitchView">
+        <attr format="boolean" name="hasShadow"/>
+        <attr format="color" name="primaryColor"/>
+        <attr format="color" name="primaryColorDark"/>
+        <attr format="boolean" name="isOpened"/>
+    </declare-styleable><declare-styleable name="RoundImageView">
+        <attr format="enum" name="type">
+            <enum name="circle" value="1"/>
+            <enum name="round" value="2"/>
+        </attr>
+        <attr format="dimension" name="radius"/>
+    </declare-styleable><declare-styleable name="VerificationCodeView">
+        
+        <attr format="integer" name="icv_et_number"/>
+        
+        <attr format="dimension|reference" name="icv_et_width"/>
+        
+        <attr format="reference" name="icv_et_divider_drawable"/>
+        
+        <attr format="color|reference" name="icv_et_text_color"/>
+        
+        <attr format="dimension|reference" name="icv_et_text_size"/>
+        
+        <attr format="reference" name="icv_et_bg_focus"/>
+        
+        <attr format="reference" name="icv_et_bg_normal"/>
+    </declare-styleable><declare-styleable name="shapeimageview">
+        <attr format="dimension" name="border_size"/>
+        <attr format="color" name="in_border_color"/>
+        <attr format="color" name="out_border_color"/>
+        <attr format="string" name="shape_type"/>
+    </declare-styleable></file><file path="F:\myself\SatanWang\core\src\main\res\values\colors.xml" qualifiers=""><color name="colorPrimary">#38366b</color><color name="colorPrimaryDark">#37366a</color><color name="colorAccent">#FF4081</color><color name="province_line_border">#C7C7C7</color><color name="transparentBackground">#80000000</color><color name="white">#ffffff</color><color name="black">#000000</color><color name="gray">#CCCCCC</color><color name="theme">#4caf50</color><color name="login">#3cba11</color><color name="orange1">#ffcc9a</color><color name="orange2">#ffffcc</color><color name="transparent">#00000000</color><color name="appBar">#4F4267</color><color name="app_main_color">#EF6D36</color><color name="app_main_color_light">#FFDDCF</color><color name="app_main_color_deep">#D43F00</color><color name="app_main_color_bg">#F8A666</color><color name="colorPrimaryText">#333333</color><color name="colorSecondaryText">#666666</color><color name="colorGrayText">#999999</color><color name="colorGrayText02">#9E9E9E</color><color name="colorGreenText">#2AB2C0</color><color name="colorRedText">#FF3B30</color><color name="colorDividerPrimary">#BDBDBD</color><color name="background">#F3F3F3</color><color name="statusBarBackground">#F8F8F8</color><color name="titleBackground">#D1F8F8F8</color><color name="secondaryBackground">#F7F7F7</color><color name="lightOrangeBackground">#FFF3EE</color></file><file path="F:\myself\SatanWang\core\src\main\res\values\dimens.xml" qualifiers=""><dimen name="left_margin">16dp</dimen><dimen name="right_margin">16dp</dimen><dimen name="top_margin">16dp</dimen><dimen name="bottom_margin">16dp</dimen><dimen name="m_left_margin">8dp</dimen><dimen name="m_right_margin">8dp</dimen><dimen name="m_top_margin">8dp</dimen><dimen name="m_bottom_margin">8dp</dimen><dimen name="float_margin">4dp</dimen><dimen name="activity_horizontal_margin">16dp</dimen><dimen name="activity_vertical_margin">16dp</dimen></file><file path="F:\myself\SatanWang\core\src\main\res\values\ids.xml" qualifiers=""><item name="image_orientation" type="id"/><item name="state_origin" type="id"/><item name="state_default" type="id"/><item name="state_current" type="id"/><item name="state_thumb" type="id"/><item name="state_temp" type="id"/><item name="state_touch_down" type="id"/><item name="state_touch_drag" type="id"/><item name="state_touch_scale_rotate" type="id"/><item name="view_image_watcher" type="id"/></file><file path="F:\myself\SatanWang\core\src\main\res\values\strings.xml" qualifiers=""><string name="app_name">core</string></file><file path="F:\myself\SatanWang\core\src\main\res\values\styles.xml" qualifiers=""><style name="StartTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="actionMenuTextAppearance">@style/MenuTextStyle</item>
+
+        
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="android:windowNoTitle">true</item>
+    </style><style name="MainTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="actionMenuTextAppearance">@style/MenuTextStyle</item>
+
+        
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@color/background</item>
+
+        <item name="android:windowNoTitle">true</item>
+    </style><style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="actionMenuTextAppearance">@style/MenuTextStyle</item>
+
+        
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style><style name="MenuTextStyle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style><style name="AppTheme.AppBarOverly" parent="ThemeOverlay.AppCompat.ActionBar">
+
+    </style><style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:actionBarSize">46dp</item>
+    </style><style name="AppTheme.ToolBar" parent="ThemeOverlay.AppCompat.Light">
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style><style name="AppTheme.TextFont_Toolbar_White">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style><style name="AppTheme.TextFont_Title_Black">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">16sp</item>
+    </style><style name="AppTheme.TextFont_Title_Gray">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">16sp</item>
+    </style><style name="AppTheme.TextFont_Title_White">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style><style name="AppTheme.TextFont_BaseText_Black">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">14sp</item>
+    </style><style name="AppTheme.TextFont_BaseText_White">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style><style name="AppTheme.TextFont_BaseText_Gray">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">14sp</item>
+    </style><style name="AppTheme.TextFont_BaseText_Green">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+    </style><style name="AppTheme.TextFont_Notes_Black">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">12sp</item>
+    </style><style name="AppTheme.TextFont_Notes_Gray">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">12sp</item>
+    </style><style name="AppTheme.TextFont_Notes_White">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+    </style><style name="AppTheme.TextFont_Mini_Gray">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">10sp</item>
+    </style><style name="AppTheme.TextFont_Mini_Black">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">10sp</item>
+    </style><style name="dialog" parent="@android:style/Animation.Dialog">
+        <item name="android:windowFrame">@color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+    </style><style name="comment_dialog" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        
+        <item name="android:backgroundDimEnabled">true</item>
+    </style><style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        
+        <item name="android:windowBackground">@color/white</item>
+        
+        <item name="android:windowNoTitle">true</item>
+        
+        <item name="android:windowIsFloating">true</item>
+        
+        <item name="android:backgroundDimEnabled">false</item>
+    </style><style name="progress_style" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+    </style><style name="MyDialog">
+        
+        <item name="android:windowNoTitle">true</item>
+        
+        <item name="android:windowFrame">@null</item>
+        
+        <item name="android:windowIsFloating">true</item>
+        
+        <item name="android:windowIsTranslucent">true</item>
+    </style><style name="myDialogStyle" parent="android:style/Theme.Dialog">
+        
+        <item name="android:windowBackground">@android:color/transparent</item>
+        
+        <item name="android:windowNoTitle">true</item>
+        
+        <item name="android:backgroundDimEnabled">true</item>
+    </style></file></source><source path="F:\myself\SatanWang\core\build\generated\res\rs\debug"/><source path="F:\myself\SatanWang\core\build\generated\res\resValues\debug"/></dataSet><dataSet config="debug$Generated" generated="true"><source path="F:\myself\SatanWang\core\src\debug\res"/></dataSet><dataSet config="debug" generated-set="debug$Generated"><source path="F:\myself\SatanWang\core\src\debug\res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="shapeimageview"><attr format="dimension" name="border_size"/><attr format="color" name="in_border_color"/><attr format="color" name="out_border_color"/><attr format="string" name="shape_type"/></declare-styleable><declare-styleable name="VerificationCodeView"><attr format="integer" name="icv_et_number"/><attr format="dimension|reference" name="icv_et_width"/><attr format="reference" name="icv_et_divider_drawable"/><attr format="color|reference" name="icv_et_text_color"/><attr format="dimension|reference" name="icv_et_text_size"/><attr format="reference" name="icv_et_bg_focus"/><attr format="reference" name="icv_et_bg_normal"/></declare-styleable><declare-styleable name="SwitchView"><attr format="boolean" name="hasShadow"/><attr format="color" name="primaryColor"/><attr format="color" name="primaryColorDark"/><attr format="boolean" name="isOpened"/></declare-styleable><declare-styleable name="RoundImageView"><attr format="enum" name="type">
+            <enum name="circle" value="1"/>
+            <enum name="round" value="2"/>
+        </attr><attr format="dimension" name="radius"/></declare-styleable></configuration></mergedItems></merger>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#38366b</color>
+    <color name="colorPrimaryDark">#37366a</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="province_line_border">#C7C7C7</color>
+
+    <!--透明背景颜色-->
+    <color name="transparentBackground">#80000000</color>
+    <!--常用颜色-->
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="gray">#CCCCCC</color>
+
+    <color name="theme">#4caf50</color>
+    <color name="login">#3cba11</color>
+    <color name="orange1">#ffcc9a</color>
+    <color name="orange2">#ffffcc</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="appBar">#4F4267</color>
+
+    <!-- APP主要颜色 -->
+    <color name="app_main_color">#EF6D36</color>
+    <color name="app_main_color_light">#FFDDCF</color>
+    <color name="app_main_color_deep">#D43F00</color>
+    <color name="app_main_color_bg">#F8A666</color>
+    <!--字体颜色-->
+    <color name="colorPrimaryText">#333333</color>
+    <color name="colorSecondaryText">#666666</color>
+    <color name="colorGrayText">#999999</color>
+    <color name="colorGrayText02">#9E9E9E</color>
+    <color name="colorGreenText">#2AB2C0</color>
+    <color name="colorRedText">#FF3B30</color>
+    <!--分割线颜色-->
+    <color name="colorDividerPrimary">#BDBDBD</color>
+    <!--背景颜色-->
+    <color name="background">#F3F3F3</color>
+    <color name="statusBarBackground">#F8F8F8</color>
+    <color name="titleBackground">#D1F8F8F8</color>
+    <color name="secondaryBackground">#F7F7F7</color>
+    <color name="lightOrangeBackground">#FFF3EE</color>
+
+</resources>
