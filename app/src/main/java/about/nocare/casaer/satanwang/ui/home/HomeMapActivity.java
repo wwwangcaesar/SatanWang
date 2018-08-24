@@ -270,7 +270,7 @@ public class HomeMapActivity extends BaseActivity {
                     isFirstLoc = false;
                     // 获取车检站列表
                     setMoreMarker();
-                    addLocationMarker(amapLocation);
+//                    addLocationMarker(amapLocation);
                 }
             }
         }

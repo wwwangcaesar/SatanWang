@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -34,17 +32,14 @@ import com.lovcreate.core.base.OnClickListener;
 import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.util.ToastUtil;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.HomeGetWelfareListAdapter;
 import about.nocare.casaer.satanwang.bean.HomeCouponBean;
-import about.nocare.casaer.satanwang.ui.guide.xiamiMusic.FullScreenVideoView;
 import about.nocare.casaer.satanwang.ui.home.HomeCityActivity;
+import about.nocare.casaer.satanwang.ui.home.HomeMapActivity;
 import about.nocare.casaer.satanwang.ui.home.appMore.AppMoreActivity;
 import about.nocare.casaer.satanwang.utils.DensityUtil;
 import about.nocare.casaer.satanwang.utils.FloatWindowUtils;
@@ -54,9 +49,9 @@ import about.nocare.casaer.satanwang.utils.TextShape;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 /**
- & @Description:   首页
- & @Author:  Satan
- & @Time:  2018/8/24 10:08
+ * & @Description:   首页
+ * & @Author:  Satan
+ * & @Time:  2018/8/24 10:08
  */
 public class MainActivity extends BaseActivity implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener {
 
@@ -69,6 +64,8 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     TextShape textShape;
     @BindView(R.id.vvSplash)
     VideoView vvSplash;
+    @BindView(R.id.tvMap)
+    TextView tvMap;
     private int mVideoPosition;
     private boolean mHasPaused;
 
@@ -117,7 +114,6 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         initView();//悬浮框
         setDate();//填充数据
         initIsFirst();
-        textShape = (TextShape) findViewById(R.id.textShape);
         textShape.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
@@ -134,10 +130,16 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 startActivity(new Intent(MainActivity.this, HomeCityActivity.class));
             }
         });
+        tvMap.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                startActivity(new Intent(MainActivity.this, HomeMapActivity.class));
+            }
+        });
     }
 
     /**
-     * 悬浮框
+     * 悬浮框小A
      */
     private void initView() {
         wm = (WindowManager) getApplicationContext()
@@ -158,7 +160,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         mCanMoveWidth = getResources().getDisplayMetrics().widthPixels / 2 - DensityUtil.dip2px(MainActivity.this, 26);
         mCanMoveHeight = (getResources().getDisplayMetrics().heightPixels - StatusBarCompat.getStatusBarHeight(this)) / 2 - DensityUtil.dip2px(MainActivity.this, 26);
         wmParams.x = mCanMoveWidth;
-        wmParams.y = mCanMoveHeight - 150;
+        wmParams.y = mCanMoveHeight - 250;//更改小A高度位置
         final ImageView ivDuo = (ImageView) mView.findViewById(R.id.ivDuo);
         mView.setOnClickListener(new OnClickListener() {
             @Override
@@ -452,6 +454,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         }
         return;
     }
+
     @Override
     public void onPause() {
         super.onPause();
