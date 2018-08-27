@@ -119,7 +119,6 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             public void onNoDoubleClick(View v) {
 //                onGuild();
 //                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-
                 startActivity(new Intent(MainActivity.this, AppMoreActivity.class));
 //                startActivity(new Intent(MainActivity.this, HomeMapActivity.class));
             }
@@ -409,6 +408,11 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 vvSplash.seekTo(mVideoPosition);
                 vvSplash.resume();
             }
+        }
+        if (TextUtils.isEmpty(AppSession.getChooseCityName())){
+            tvCity.setText("城市");
+        }else {
+            tvCity.setText(AppSession.getChooseCityName());
         }
         return;
     }

@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -21,10 +23,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 import com.github.anzewei.parallaxbacklayout.ParallaxBack;
-import com.github.promeg.pinyinhelper.Pinyin;
-import com.github.promeg.pinyinhelper.PinyinDict;
+import com.lovcreate.amap.util.MapUtil;
 import com.lovcreate.core.base.BaseActivity;
+import com.lovcreate.core.base.OnClickListener;
 import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.widget.ClearEditText;
 
@@ -49,6 +53,7 @@ import about.nocare.casaer.satanwang.utils.city.PinyinComparator;
 import about.nocare.casaer.satanwang.utils.city.SideBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 城市选择页面
@@ -58,7 +63,6 @@ import butterknife.ButterKnife;
  */
 @ParallaxBack(edge = ParallaxBack.Edge.LEFT)
 public class HomeCityActivity extends BaseActivity implements SideBar.OnTouchingLetterChangedListener, ListView.OnScrollListener {
-
     @BindView(R.id.baseTitle)
     TextView baseTitle;
     @BindView(R.id.toolbarLayout)
@@ -123,7 +127,21 @@ public class HomeCityActivity extends BaseActivity implements SideBar.OnTouching
         ButterKnife.bind(this);
         setTitleText("选择城市").setLeftIcon(R.mipmap.ic_nav_arrow_left);
         initView();
-        tvCityName.setText(AppSession.getChooseCityName());
+        setLeftOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                AppSession.setChooseCityName(tvCityName.getText().toString());
+                Intent intent = new Intent();
+                intent.putExtra("name", tvCityName.getText().toString());
+                setResult(1000, intent);
+                finish();
+            }
+        });
+        if (TextUtils.isEmpty(AppSession.getChooseCityName())){
+            tvCityName.setText("未知星域");
+        }else {
+            tvCityName.setText(AppSession.getChooseCityName());
+        }
         setCityData(getCityList());
         initOverlay();// 滑动时候的中间字母弹框,可直接注释掉
     }
@@ -161,12 +179,7 @@ public class HomeCityActivity extends BaseActivity implements SideBar.OnTouching
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String cityName = ((SortModel) adapter.getItem(position)).getName();
-                Intent intent = new Intent();
-                Bundle bundle = new Bundle();
-//                bundle.putParcelable("cityinfo", homeCityBean);
-//                intent.putExtras(bundle);
-                intent.putExtra("name", cityName);
-                setResult(1000, intent);
+                AppSession.setChooseCityName(cityName);
                 finish();
             }
         });
@@ -239,7 +252,7 @@ public class HomeCityActivity extends BaseActivity implements SideBar.OnTouching
                 .getSystemService(Context.WINDOW_SERVICE);
         windowManager.addView(letterOverlay, lp);
         countryLvcountry.setOnScrollListener(this);
-        sidrbar.setOnTouchingLetterChangedListener(this);
+//        sidrbar.setOnTouchingLetterChangedListener(this);
     }
 
     /**
@@ -425,6 +438,59 @@ public class HomeCityActivity extends BaseActivity implements SideBar.OnTouching
             handler.removeCallbacks(overlayThread);
             // 延迟一秒后执行，让overlay为不可见
             handler.postDelayed(overlayThread, 1000);
+        }
+    }
+
+    @OnClick({R.id.tvBeijing, R.id.tvShanghai, R.id.tvGuangzhou, R.id.tvShenzhen, R.id.tvHangzhou,R.id.ivRefresh})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tvBeijing:
+                AppSession.setChooseCityName("北京");
+                finish();
+                break;
+            case R.id.tvShanghai:
+                AppSession.setChooseCityName("上海");
+                finish();
+                break;
+            case R.id.tvGuangzhou:
+                AppSession.setChooseCityName("广州");
+                finish();
+                break;
+            case R.id.tvShenzhen:
+                AppSession.setChooseCityName("深圳");
+                finish();
+                break;
+            case R.id.tvHangzhou:
+                AppSession.setChooseCityName("杭州");
+                finish();
+                break;
+            case R.id.ivRefresh:
+                //绕圈旋转
+//                Animation animation = new RotateAnimation(0, 359);
+                //原地旋转
+                Animation animation = new RotateAnimation(0f,360f,Animation.RELATIVE_TO_SELF, 0.5f,Animation.RELATIVE_TO_SELF,0.5f);;
+                animation.setDuration(500);//越大转的越慢
+                animation.setRepeatCount(100);//循环次数
+                animation.setFillAfter(true);//设置为true，动画转化结束后被应用
+                ivRefresh.startAnimation(animation);//開始动画
+
+                tvCityName.setText("定位中");
+                // 获取当前定位
+                MapUtil.getLocalMessage(this, new AMapLocationListener() {
+                    @Override
+                    public void onLocationChanged(AMapLocation aMapLocation) {
+                        if (aMapLocation.getErrorCode() != 0) {
+                            // 定位失败
+                            tvCityName.setText("定位失败，请重新定位");
+                            ivRefresh.clearAnimation();
+                        }
+//                        HomeMapActivity.aMapLocation = aMapLocation;
+                        AppSession.setChooseCityName(aMapLocation.getCity());
+                        tvCityName.setText(aMapLocation.getCity());
+                        ivRefresh.clearAnimation();
+                    }
+                });
+                break;
         }
     }
 
