@@ -120,7 +120,6 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
 //                onGuild();
 //                startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 startActivity(new Intent(MainActivity.this, AppMoreActivity.class));
-//                startActivity(new Intent(MainActivity.this, HomeMapActivity.class));
             }
         });
         tvCity.setOnClickListener(new OnClickListener() {

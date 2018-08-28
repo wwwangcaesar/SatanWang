@@ -9,19 +9,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.SyncStateContract;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
@@ -29,10 +28,10 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.UiSettings;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.Circle;
 import com.amap.api.maps.model.CircleOptions;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
@@ -45,14 +44,13 @@ import com.amap.api.services.geocoder.GeocodeResult;
 import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
+import com.amap.api.services.nearby.NearbySearch;
 import com.amap.api.services.route.DistanceResult;
 import com.amap.api.services.route.DistanceSearch;
 import com.lovcreate.amap.service.LocationService;
 import com.lovcreate.amap.util.MapUtil;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
-import com.lovcreate.core.base.OnItemClickListener;
-import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -63,13 +61,10 @@ import java.util.TimerTask;
 import about.nocare.casaer.satanwang.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-import static about.nocare.casaer.satanwang.constant.AppConstant.DEFAULT_AD_CODE;
 import static about.nocare.casaer.satanwang.constant.AppConstant.DEFAULT_CITY;
 import static about.nocare.casaer.satanwang.constant.AppConstant.DEFAULT_CITY_CODE;
 import static about.nocare.casaer.satanwang.constant.AppConstant.DEFAULT_LAT_LNG;
-import static com.amap.api.maps.AMap.MAP_TYPE_NAVI;
 
 /**
  * 地图
@@ -77,16 +72,31 @@ import static com.amap.api.maps.AMap.MAP_TYPE_NAVI;
  * @author Satan Wang
  *         created at 2018/7/12 10:14
  */
-public class HomeMapActivity extends BaseActivity {
+public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeocodeSearchListener, AMap.OnCameraChangeListener, LocationSource {
     MapView mapView;
     ImageView backImageView;
-    Button btEndglish;
+    @BindView(R.id.isEnglish)
+    CheckBox isEnglish;
+    @BindView(R.id.isChinese)
+    CheckBox isChinese;
+    @BindView(R.id.tv_msg_time)
+    TextView tvMsgTime;
+    @BindView(R.id.tv_msg)
+    TextView tvMsg;
+    @BindView(R.id.ll_msg)
+    LinearLayout llMsg;
+    @BindView(R.id.iv_point)
+    ImageView ivPoint;
+    @BindView(R.id.iv_location)
+    ImageView ivLocation;
+    @BindView(R.id.tvAdress)
+    TextView tvAdress;
 
     /**
      * 高德地图所需变量定义
      */
     private AMap aMap;                                                  // 定义AMap 地图对象的操作方法与接口。
-    private LocationSource.OnLocationChangedListener mListener;         // 位置改变的监听接口。
+    private OnLocationChangedListener mListener;         // 位置改变的监听接口。
     private UiSettings mUiSettings;                                     // 设置用户界面的一个AMap，地图ui控制器
     private AMapLocation amapLocation;                                  // 定位信息类。定位完成后的位置信息。
 
@@ -105,8 +115,7 @@ public class HomeMapActivity extends BaseActivity {
     private DistanceSearch distanceSearch;
 
     /**
-     *  定位点外圈
-     *
+     * 定位点外圈
      */
     private Circle ac;
     private Circle c;
@@ -116,11 +125,23 @@ public class HomeMapActivity extends BaseActivity {
     private final Interpolator interpolator1 = new LinearInterpolator();
 
     private MyLocationStyle myLocationStyle;
-    private  Marker marker;
+    private Marker marker;
+
+
+    private int islanguage = 1;
+    /**
+     * 周边检索
+     */
+    // MapView中央对于的屏幕坐标
+    private LatLonPoint mCenterLatLonPoint = null;
+    private GeocodeSearch geocoderSearch;
+    private String address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_map);
+        ButterKnife.bind(this);
         initView(savedInstanceState);
         initDistanceSearch();//距离测量
 
@@ -132,10 +153,8 @@ public class HomeMapActivity extends BaseActivity {
     private void initView(Bundle savedInstanceState) {
         mapView = (MapView) findViewById(R.id.mapView);
         backImageView = (ImageView) findViewById(R.id.backImageView);
-        btEndglish = (Button) findViewById(R.id.btEndglish);
         // 在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mapView.onCreate(savedInstanceState);
-
         // 初始化地图控制器对象, 添加相应配置
         if (aMap == null) {
             aMap = mapView.getMap();
@@ -143,13 +162,18 @@ public class HomeMapActivity extends BaseActivity {
         aMap.setLocationSource(locationSource);// 通过aMap对象设置定位数据源的监听
         aMap.setMyLocationEnabled(true);// 可触发定位并显示当前位置(设置为true表示启动显示定位蓝点)
         aMap.setOnMapLoadedListener(onMapLoadedListener);//地图加载监听
-
         aMap.setOnMarkerClickListener(onMarkerClickListener);//点标记点击事件
+        aMap.setOnCameraChangeListener(this);//地图上的中心点移动监听,用于Geocode搜索周围地点
         /*  MAP_TYPE_NAVI  导航地图
             MAP_TYPE_NIGHT夜景地图
             MAP_TYPE_NORMAL白昼地图（即普通地图）
             MAP_TYPE_SATELLITE卫星图*/
-        aMap.setMapType(MAP_TYPE_NAVI);//设置底图类型（包括卫星图、白昼地图（即最常见的黄白色地图）、夜景地图、导航地图、路况图层。）
+
+        /*这个属性党务了click事件切换英文底图导致第一次切换不好使*/
+//        aMap.setMapType(MAP_TYPE_NAVI);//设置底图类型（包括卫星图、白昼地图（即最常见的黄白色地图）、夜景地图、导航地图、路况图层。）
+        /*这个属性党务了click事件切换英文底图导致第一次切换不好使*/
+
+
         // 获取地图ui控制器
         mUiSettings = aMap.getUiSettings();
         mUiSettings.setZoomControlsEnabled(false);// 是否允许显示缩放按钮
@@ -170,19 +194,16 @@ public class HomeMapActivity extends BaseActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.location");
         LocalBroadcastManager.getInstance(this).registerReceiver(mItemViewListClickReceiver, intentFilter);
-        backImageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onNoDoubleClick(View v) {
-                finish();
-            }
-        });
-        btEndglish.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onNoDoubleClick(View v) {
-//                Returninglocation();//返回英文位置信息
-                aMap.setMapLanguage(AMap.ENGLISH);
-            }
-        });
+
+        tvMsgTime.setText("提示");
+        tvMsg.setText("周围地点");
+
+        //Geocode 搜索监听添加
+        geocoderSearch = new GeocodeSearch(this);
+        geocoderSearch.setOnGeocodeSearchListener(this);
+
+        initEvent();
+
     }
 
     /**
@@ -331,31 +352,35 @@ public class HomeMapActivity extends BaseActivity {
 
     }
 
+    private String address1 = "";
+
     /**
      * 返回当前定位点信息
      */
-    private void Returninglocation() {
+    private String Returninglocation() {
+
         ServiceSettings.getInstance().setLanguage(ServiceSettings.ENGLISH);//默认是中文ServiceSettings.CHINESE
         GeocodeSearch geocoderSearch = new GeocodeSearch(HomeMapActivity.this);
         geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
             @Override
             public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+
                 //解析result获取地址描述信息
                 if (i == 1000) {
                     if (regeocodeResult.getRegeocodeAddress().getPois().size() > 0) {
                         String poiId = "";
-                        String address = "";
+
                         if (poiId != null && !"".equals(poiId)) {
                             for (PoiItem poiItem : regeocodeResult.getRegeocodeAddress().getPois()) {
                                 if (poiId.equals(poiItem.getPoiId())) {
-                                    address = poiItem.getTitle();
+                                    address1 = poiItem.getTitle();
                                     poiId = "";
                                 }
                             }
                         }
                         {
-                            address = regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle();
-                            ToastUtil.showToastBottomShort(address);
+                            address1 = regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle();
+//                            ToastUtil.showToastBottomShort(address);
                         }
                     }
                 }
@@ -369,6 +394,7 @@ public class HomeMapActivity extends BaseActivity {
         LatLonPoint latLonPoint = new LatLonPoint(amapLocation.getLatitude(), amapLocation.getLongitude());
         RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.AMAP);
         geocoderSearch.getFromLocationAsyn(query);
+        return address1;
     }
 
     /**
@@ -379,9 +405,9 @@ public class HomeMapActivity extends BaseActivity {
         distanceSearch.setDistanceSearchListener(new DistanceSearch.OnDistanceSearchListener() {
             @Override
             public void onDistanceSearched(DistanceResult distanceResult, int i) {
-                if (i==1000){
-                   float lu= distanceResult.getDistanceResults().get(0).getDuration();
-                    float lu1= distanceResult.getDistanceResults().get(0).getDistance();
+                if (i == 1000) {
+                    float lu = distanceResult.getDistanceResults().get(0).getDuration();
+                    float lu1 = distanceResult.getDistanceResults().get(0).getDistance();
                 }
             }
         });
@@ -397,7 +423,7 @@ public class HomeMapActivity extends BaseActivity {
         latLonPoints.add(start1);
         latLonPoints.add(start2);
         latLonPoints.add(start3);
-        DistanceSearch.DistanceQuery distanceQuery=new DistanceSearch.DistanceQuery();
+        DistanceSearch.DistanceQuery distanceQuery = new DistanceSearch.DistanceQuery();
         distanceQuery.setOrigins(latLonPoints);
         distanceQuery.setDestination(dest);
         //设置测量方式，支持直线和驾车
@@ -407,7 +433,7 @@ public class HomeMapActivity extends BaseActivity {
 
 
     /**
-     *  定位点周围外圈扩展
+     * 定位点周围外圈扩展
      */
     private void addLocationMarker(AMapLocation aMapLocation) {
         LatLng mylocation = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
@@ -417,7 +443,7 @@ public class HomeMapActivity extends BaseActivity {
             Bitmap bMap = BitmapFactory.decodeResource(this.getResources(),
                     R.drawable.gps_point);
             BitmapDescriptor des = BitmapDescriptorFactory.fromBitmap(bMap);
-            marker= aMap.addMarker(new MarkerOptions().position(mylocation).icon(des)
+            marker = aMap.addMarker(new MarkerOptions().position(mylocation).icon(des)
                     .anchor(0.1f, 0.1f));
 //           myLocationStyle.myLocationIcon(des);
 
@@ -454,23 +480,91 @@ public class HomeMapActivity extends BaseActivity {
         mTimer.schedule(mTimerTask, 0, 30);
     }
 
-    private  class circleTask extends TimerTask {
+
+    /**
+     * AMap.OnCameraChangeListener 的回调接口方法
+     *
+     * @param cameraPosition
+     */
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        tvMsgTime.setText("提示");
+        tvMsg.setText("猜一猜");
+    }
+
+    @Override
+    public void onCameraChangeFinish(CameraPosition cameraPosition) {
+        double weidu = cameraPosition.target.latitude;
+        double jingdu = cameraPosition.target.longitude;
+        mCenterLatLonPoint = new LatLonPoint(weidu, jingdu);
+        // 第一个参数表示一个Latlng，第二参数表示范围多少米，第三个参数表示是火系坐标系还是GPS原生坐标系
+        RegeocodeQuery query = new RegeocodeQuery(mCenterLatLonPoint, 200, GeocodeSearch.AMAP);
+        geocoderSearch.getFromLocationAsyn(query);
+    }
+
+    /**
+     * GeocodeSearch.OnGeocodeSearchListener 的回调接口方法
+     *
+     * @param regeocodeResult
+     * @param i
+     */
+    @Override
+    public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+        if (i == 1000) {
+            if (regeocodeResult.getRegeocodeAddress().getPois().size() > 0) {
+                // 获取周边兴趣点
+                if (islanguage == 1) {//中文
+                    tvMsg.setText(regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle());
+                    tvAdress.setText(regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle());
+                } else {//英文
+                    tvMsg.setText(Returninglocation());
+                    tvAdress.setText(Returninglocation());
+                }
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+
+            }
+        }
+    }
+
+    @Override
+    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
+    }
+
+    /**
+     * LocationSource 的回调接口方法
+     *
+     * @param onLocationChangedListener
+     */
+    @Override
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
+        mListener = onLocationChangedListener;
+    }
+
+    @Override
+    public void deactivate() {
+        mListener = null;
+    }
+
+
+    private class circleTask extends TimerTask {
         private double r;
         private Circle circle;
         private long duration = 1000;
 
-        public circleTask(Circle circle, long rate){
+        public circleTask(Circle circle, long rate) {
             this.circle = circle;
             this.r = circle.getRadius();
-            if (rate > 0 ) {
+            if (rate > 0) {
                 this.duration = rate;
             }
         }
+
         @Override
         public void run() {
             try {
                 long elapsed = SystemClock.uptimeMillis() - start;
-                float input = (float)elapsed / duration;
+                float input = (float) elapsed / duration;
 //                外圈循环缩放
 //                float t = interpolator.getInterpolation((float)(input-0.25));//return (float)(Math.sin(2 * mCycles * Math.PI * input))
 //                double r1 = (t + 2) * r;
@@ -478,7 +572,7 @@ public class HomeMapActivity extends BaseActivity {
                 float t = interpolator1.getInterpolation(input);
                 double r1 = (t + 1) * r;
                 circle.setRadius(r1);
-                if (input > 2){
+                if (input > 2) {
                     start = SystemClock.uptimeMillis();
                 }
             } catch (Throwable e) {
@@ -530,4 +624,54 @@ public class HomeMapActivity extends BaseActivity {
         stopService(new Intent(HomeMapActivity.this, LocationService.class));
     }
 
+    //处理点击事件
+    private void initEvent() {
+        //退出ac
+        backImageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                finish();
+            }
+        });
+        //切换英文底图
+        isEnglish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    aMap.setMapLanguage(AMap.ENGLISH);
+                    isChinese.setClickable(false);
+                    islanguage = 2;
+                    tvMsg.setText("加载中");
+                    tvAdress.setText("加载中");
+                } else {
+                    isChinese.setClickable(true);
+                }
+            }
+        });
+        //切换中文底图
+        isChinese.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    aMap.setMapLanguage(AMap.CHINESE);
+                    isEnglish.setClickable(false);
+                    islanguage = 1;
+                    tvMsg.setText("加载中");
+                    tvAdress.setText("加载中");
+                } else {
+                    isEnglish.setClickable(true);
+                }
+
+            }
+        });
+        //回到当前定位
+        ivLocation.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                isFirstLoc = true;
+                aMap.clear();//清除地图上的marker
+                startService(new Intent(HomeMapActivity.this, LocationService.class));
+            }
+        });
+    }
 }
