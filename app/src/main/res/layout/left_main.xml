@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:scrollbars="none"
+    android:orientation="vertical">
+    <!--通过SpannableString来设置字符串的各种属性，改变颜色，大小，或者添加超链接-->
+    <TextView
+        android:id="@+id/tvbeer"
+        android:layout_marginTop="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="left|center"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+</ScrollView>

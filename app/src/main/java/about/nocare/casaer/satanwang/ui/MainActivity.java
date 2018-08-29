@@ -27,10 +27,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.brioal.swipemenu.view.SwipeMenu;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
 import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.util.ToastUtil;
+import com.lovcreate.core.widget.CircularImage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ import about.nocare.casaer.satanwang.utils.StatusBarCompat;
 import about.nocare.casaer.satanwang.utils.TextShape;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 /**
  * & @Description:   首页
  * & @Author:  Satan
@@ -57,7 +60,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
 
 
     @BindView(R.id.tvOtherLan)
-    TextView tvOtherLan;
+    CircularImage tvOtherLan;
     @BindView(R.id.tvCity)
     TextView tvCity;
     @BindView(R.id.textShape)
@@ -66,6 +69,10 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     VideoView vvSplash;
     @BindView(R.id.tvMap)
     TextView tvMap;
+    @BindView(R.id.main_swipemenu)
+    SwipeMenu mainSwipemenu;
+    @BindView(R.id.tvbeer)
+    TextView tvbeer;
     private int mVideoPosition;
     private boolean mHasPaused;
 
@@ -108,12 +115,15 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         mHasPaused = false;
         vvSplash.setOnErrorListener(this);
         vvSplash.setOnPreparedListener(this);
-        String url="android.resource://" + this.getPackageName() + "/" + R.raw.maycry;
+        String url = "android.resource://" + this.getPackageName() + "/" + R.raw.maycry;
         vvSplash.setVideoPath(url);
         //视频背景view
         initView();//悬浮框
         setDate();//填充数据
         initIsFirst();
+        tvbeer.setText(R.string.gushi);
+        mainSwipemenu.setReverseChangedBlur(MainActivity.this, R.drawable.cry7, R.color.transparent);
+        changeStyleCode();//更改侧滑菜单风格，第一个参数，反向动态，第二个参数，视差移动，第三个缩放动画，第4个透明动画
         textShape.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
@@ -132,6 +142,18 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             @Override
             public void onNoDoubleClick(View v) {
                 startActivity(new Intent(MainActivity.this, HomeMapActivity.class));
+            }
+        });
+
+        //侧滑菜单点击
+        tvOtherLan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mainSwipemenu.isMenuShowing()) {
+                    mainSwipemenu.hideMenu();
+                } else {
+                    mainSwipemenu.showMenu();
+                }
             }
         });
     }
@@ -398,6 +420,26 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         }
     }
 
+    /**
+     * 侧滑菜单相关
+     */
+    //更新风格代码
+    public void changeStyleCode() {
+        int mStyleCode = 3 * 1000 + 2 * 100 + 2 * 10 + 2;
+        mainSwipemenu.setStyleCode(mStyleCode);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mainSwipemenu.isMenuShowing()) {
+            mainSwipemenu.hideMenu();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /*侧滑菜单结束*/
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -408,9 +450,9 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 vvSplash.resume();
             }
         }
-        if (TextUtils.isEmpty(AppSession.getChooseCityName())){
+        if (TextUtils.isEmpty(AppSession.getChooseCityName())) {
             tvCity.setText("城市");
-        }else {
+        } else {
             tvCity.setText(AppSession.getChooseCityName());
         }
         return;

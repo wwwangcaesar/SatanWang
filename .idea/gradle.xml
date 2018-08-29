@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/map" />
             <option value="$PROJECT_DIR$/push" />
+            <option value="$PROJECT_DIR$/swipemenu" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

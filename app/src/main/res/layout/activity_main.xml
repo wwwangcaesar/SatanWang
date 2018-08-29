@@ -1,59 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.brioal.swipemenu.view.SwipeMenu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_swipemenu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    android:clipToPadding="true"
-    tools:context="about.nocare.casaer.satanwang.ui.MainActivity">
-    <VideoView
-        android:id="@+id/vvSplash"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        />
-    <TextView
-        android:id="@+id/tvOtherLan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="侧边栏"
-        android:padding="4dp"
-        android:textColor="@color/white"
-        android:layout_gravity="left|top"/>
-    <TextView
-        android:id="@+id/tvCity"
-        android:layout_width="match_parent"
-        android:text="城市"
-        android:padding="4dp"
-        android:gravity="center"
-        android:textColor="@color/appBar"
-        android:textSize="21sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"
-        android:layout_alignParentRight="true"
-        android:layout_height="wrap_content" />
-    <about.nocare.casaer.satanwang.utils.TextShape
-        android:id="@+id/textShape"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:textSize="23sp"
-        android:text="Devil May Cry"
-        />
-    <TextView
-        android:id="@+id/tvMap"
-        android:layout_width="match_parent"
-        android:text="地图"
-        android:layout_below="@+id/textShape"
-        android:padding="4dp"
-        android:gravity="center"
-        android:textColor="@color/appBar"
-        android:textSize="21sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"
-        android:layout_alignParentRight="true"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+    >
+
+    <include layout="@layout/left_main"/>
+
+    <include layout="@layout/main"/>
+
+</com.brioal.swipemenu.view.SwipeMenu>
