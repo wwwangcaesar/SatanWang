@@ -156,6 +156,16 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
         // 在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mapView.onCreate(savedInstanceState);
         // 初始化地图控制器对象, 添加相应配置
+        initMap();
+
+        initEvent();
+
+    }
+
+    /**
+     * 重新加载地图控件
+     */
+    private void initMap() {
         if (aMap == null) {
             aMap = mapView.getMap();
         }
@@ -201,9 +211,6 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
         //Geocode 搜索监听添加
         geocoderSearch = new GeocodeSearch(this);
         geocoderSearch.setOnGeocodeSearchListener(this);
-
-        initEvent();
-
     }
 
     /**
@@ -352,51 +359,6 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
 
     }
 
-    private String address1 = "";
-
-    /**
-     * 返回当前定位点信息
-     */
-    private String Returninglocation() {
-
-        ServiceSettings.getInstance().setLanguage(ServiceSettings.ENGLISH);//默认是中文ServiceSettings.CHINESE
-        GeocodeSearch geocoderSearch = new GeocodeSearch(HomeMapActivity.this);
-        geocoderSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
-            @Override
-            public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
-
-                //解析result获取地址描述信息
-                if (i == 1000) {
-                    if (regeocodeResult.getRegeocodeAddress().getPois().size() > 0) {
-                        String poiId = "";
-
-                        if (poiId != null && !"".equals(poiId)) {
-                            for (PoiItem poiItem : regeocodeResult.getRegeocodeAddress().getPois()) {
-                                if (poiId.equals(poiItem.getPoiId())) {
-                                    address1 = poiItem.getTitle();
-                                    poiId = "";
-                                }
-                            }
-                        }
-                        {
-                            address1 = regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle();
-//                            ToastUtil.showToastBottomShort(address);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-
-            }
-        });
-        LatLonPoint latLonPoint = new LatLonPoint(amapLocation.getLatitude(), amapLocation.getLongitude());
-        RegeocodeQuery query = new RegeocodeQuery(latLonPoint, 200, GeocodeSearch.AMAP);
-        geocoderSearch.getFromLocationAsyn(query);
-        return address1;
-    }
-
     /**
      * 距离测量
      */
@@ -514,14 +476,15 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
             if (regeocodeResult.getRegeocodeAddress().getPois().size() > 0) {
                 // 获取周边兴趣点
                 if (islanguage == 1) {//中文
+                    ServiceSettings.getInstance().setLanguage(ServiceSettings.CHINESE);//默认是中文ServiceSettings.CHINESE
                     tvMsg.setText(regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle());
                     tvAdress.setText(regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle());
-                } else {//英文
-                    tvMsg.setText(Returninglocation());
-                    tvAdress.setText(Returninglocation());
+                } else {
+                    ServiceSettings.getInstance().setLanguage(ServiceSettings.ENGLISH);//默认是中文ServiceSettings.CHINESE
+                    tvMsg.setText(regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle());
+                    tvAdress.setText(regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle());
                 }
                 aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
-
             }
         }
     }
@@ -638,6 +601,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    aMap.reloadMap();
                     aMap.setMapLanguage(AMap.ENGLISH);
                     isChinese.setClickable(false);
                     islanguage = 2;
@@ -653,6 +617,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    aMap.reloadMap();
                     aMap.setMapLanguage(AMap.CHINESE);
                     isEnglish.setClickable(false);
                     islanguage = 1;
