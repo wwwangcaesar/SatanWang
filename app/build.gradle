@@ -50,6 +50,9 @@ dependencies {
     // 查看网络数据，修改数据库信息，SP信息等
     debugImplementation 'com.github.whataa:pandora:v1.1.3'
     releaseImplementation 'com.github.whataa:pandora-no-op:v1.1.0'
+    //X2C 掌阅布局加载框架
+    annotationProcessor project(':apt')
+    implementation project(':lib')
 }
 //都是因为如果程序内出现不同的，support或者其他外部引用库的多个版本，Gradle在进行合并的时候会使用本地持有的，最高版本的来进行编译，
 // 所以25的support就有可能引用26的东西，就会出现 属性 merge 错误 ，或者Class丢失，解决方法就是强制使用相同版本的库：

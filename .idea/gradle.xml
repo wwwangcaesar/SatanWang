@@ -10,12 +10,14 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/apt" />
             <option value="$PROJECT_DIR$/calendarview" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/gallerypick" />
             <option value="$PROJECT_DIR$/greenDao" />
             <option value="$PROJECT_DIR$/indexstickyview" />
             <option value="$PROJECT_DIR$/iosPicker" />
+            <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/map" />
             <option value="$PROJECT_DIR$/push" />

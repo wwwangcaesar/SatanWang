@@ -48,6 +48,7 @@ public class CountDownView extends View {
 
     public CountDownView(Context context) {
         super(context);
+        setPaint();
     }
 
     public CountDownView(Context context, AttributeSet attrs) {

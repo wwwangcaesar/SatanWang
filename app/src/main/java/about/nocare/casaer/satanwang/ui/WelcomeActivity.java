@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.lovcreate.core.base.BaseActivity;
+import com.zhangyue.we.x2c.X2C;
+import com.zhangyue.we.x2c.ano.Xml;
 
 import java.util.Random;
 
@@ -25,6 +27,7 @@ import butterknife.ButterKnife;
  * @author Satan Wang
  *         created at 2018/7/6 15:38
  */
+@Xml(layouts = {R.layout.activity_welcome})
 public class WelcomeActivity extends BaseActivity {
 
     @BindView(R.id.ivPic)
@@ -35,7 +38,7 @@ public class WelcomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
+        X2C.setContentView(this,R.layout.activity_welcome);
         ButterKnife.bind(this);
 
         //随机图片背景设置

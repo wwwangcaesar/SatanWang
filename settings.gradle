@@ -1,1 +1,13 @@
-include ':app', ':push', ':calendarview', ':greenDao', ':gallerypick', ':core', ':indexstickyview', ':map', ':iosPicker', ':library', ':swipemenu'
+include ':app',        //基础
+        ':push',        //推送
+        ':calendarview', //日历控件
+        ':greenDao',    //数据库
+        ':gallerypick', //图片加载框架
+        ':core',        //基础依赖包
+        ':indexstickyview', //仿联系人右边
+        ':map',         //高德地图封装
+        ':iosPicker',   //仿ios条件选择器
+        ':library',      //沉浸式状态栏
+        ':swipemenu',   //侧滑菜单
+        ':apt',         //X2C布局加载
+        ':lib'          //X2C布局加载
