@@ -1,5 +1,7 @@
 package about.nocare.casaer.satanwang.ui;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -7,12 +9,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.brioal.swipemenu.view.SwipeMenu;
@@ -32,8 +43,16 @@ import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
 import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.util.ToastUtil;
+import com.lovcreate.core.widget.BottomDialog;
 import com.lovcreate.core.widget.CircularImage;
+import com.yalantis.ucrop.UCrop;
+import com.yancy.gallerypick.config.GalleryConfig;
+import com.yancy.gallerypick.config.GalleryPick;
+import com.yancy.gallerypick.inter.IHandlerCallBack;
+import com.yancy.gallerypick.utils.FileUtils;
+import com.yancy.gallerypick.utils.UCropUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +65,7 @@ import about.nocare.casaer.satanwang.ui.home.appMore.AppMoreActivity;
 import about.nocare.casaer.satanwang.utils.DensityUtil;
 import about.nocare.casaer.satanwang.utils.FloatWindowUtils;
 import about.nocare.casaer.satanwang.utils.GuideHelper;
+import about.nocare.casaer.satanwang.utils.PicassoImageLoader;
 import about.nocare.casaer.satanwang.utils.StatusBarCompat;
 import about.nocare.casaer.satanwang.utils.TextShape;
 import butterknife.BindView;
@@ -89,7 +109,10 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     private BroadcastReceiver mBroadcastReceiver;
     /* 优惠券*/
     private List<HomeCouponBean> BeanList = new ArrayList<>();
-
+    /* 拍照弹框*/
+    private BottomDialog dialog;
+    private GalleryConfig galleryConfig;
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 8;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,10 +172,14 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         tvOtherLan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mainSwipemenu.isMenuShowing()) {
-                    mainSwipemenu.hideMenu();
+                if (TextUtils.isEmpty(AppSession.getHeadUrl())) {
+                    showCarmeaDialog();
                 } else {
-                    mainSwipemenu.showMenu();
+                    if (mainSwipemenu.isMenuShowing()) {
+                        mainSwipemenu.hideMenu();
+                    } else {
+                        mainSwipemenu.showMenu();
+                    }
                 }
             }
         });
@@ -422,8 +449,8 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
 
     /**
      * 侧滑菜单相关
+     * //更新风格代码
      */
-    //更新风格代码
     public void changeStyleCode() {
         int mStyleCode = 3 * 1000 + 2 * 100 + 2 * 10 + 2;
         mainSwipemenu.setStyleCode(mStyleCode);
@@ -507,5 +534,186 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             mVideoPosition = vvSplash.getCurrentPosition();
         }
         mHasPaused = true;
+    }
+
+    /**
+     * 拍照弹框
+     */
+    private void showCarmeaDialog() {
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.demo_choose_pic_dialog, null);
+        TextView cameraTextView = (TextView) dialogView.findViewById(R.id.cameraTextView);
+
+        TextView photoTextView = (TextView) dialogView.findViewById(R.id.photoTextView);
+        TextView cancelTextView = (TextView) dialogView.findViewById(R.id.cancelTextView);
+        dialog = new BottomDialog(MainActivity.this);
+        dialog.setView(dialogView);
+        dialog.show();
+
+        galleryConfig = new GalleryConfig.Builder()
+                .imageLoader(new PicassoImageLoader())          // ImageLoader 加载框架（必填）
+                .iHandlerCallBack(iHandlerCallBack)             // 监听接口（必填）
+                .provider("about.nocare.casaer.satanwang.fileprovider")     // provider (必填)   todo 这里复制的时候出现错误注意，详情介绍看朗创bee
+                .multiSelect(true, 1)         // 配置是否多选的同时 配置多选数量   默认：false ， 9
+                .crop(true,true)              // 快捷开启裁剪功能：单选模式、拍照、多选模式只选一张时开启
+                .isShowCamera(false)                            // 是否现实相机按钮  默认：false
+                .filePath("/Gallery/Pictures")                  // 图片存放路径
+                .build();
+
+        cameraTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                galleryConfig.getBuilder().isOpenCamera(true).build();
+                showCameraAction();
+                dialog.dismiss();
+            }
+        });
+        photoTextView.setOnClickListener(new OnClickListener() {
+                                             @Override
+                                             public void onNoDoubleClick(View v) {
+                                                 galleryConfig.getBuilder().isOpenCamera(false).build();
+                                                 initPermissions();
+                                                 dialog.dismiss();
+                                             }
+                                         }
+        );
+        cancelTextView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    // 授权管理
+    private void initPermissions() {
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Log.i("initPermissions", "需要授权 ");
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Log.i("initPermissions", "拒绝过了");
+                ToastUtil.showToastBottomLong("请在 设置-应用管理 中开启此应用的储存授权。");
+            } else {
+                Log.i("initPermissions", "进行授权");
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_READ_CONTACTS);
+            }
+        } else {
+            Log.i("initPermissions", "不需要授权 ");
+            GalleryPick.getInstance().setGalleryConfig(galleryConfig).open(this);
+        }
+    }
+
+    IHandlerCallBack iHandlerCallBack = new IHandlerCallBack() {
+        @Override
+        public void onStart() {
+        }
+
+        @Override
+        public void onSuccess(List<String> photoList) {
+            Uri uri = Uri.fromFile(new File(photoList.get(0)));
+            tvOtherLan.setImageURI(uri);
+        }
+
+        @Override
+        public void onCancel() {
+        }
+
+        @Override
+        public void onFinish() {
+        }
+
+        @Override
+        public void onError() {
+        }
+    };
+
+    private Context mContext = null;
+    private static final int REQUEST_CAMERA = 100;   // 设置拍摄照片的 REQUEST_CODE
+    private File cameraTempFile;
+    private File cropTempFile;
+    private ArrayList<String> resultPhoto = new ArrayList<>();
+    /**
+     * 打开相机
+     * 这里要注意，如果要使用以下方法打开相机，必须又两点需要配置：
+     * 1. 在"AndroidManifest.xml"中的application标签中加入以下配置：
+     * <provider
+     * android:name="android.support.v4.content.FileProvider"
+     * // 前面是包名，后面固定的fileprovider，这里对应new GalleryConfig时的.provider("com.example.demo.fileprovider")
+     * android:authorities="com.example.demo.fileprovider"
+     * android:exported="false"
+     * android:grantUriPermissions="true">
+     * <meta-data
+     * android:name="android.support.FILE_PROVIDER_PATHS"
+     * android:resource="@xml/filepaths" />
+     * </provider>
+     * 2. 在res包中需要添加一个包：xml，并在里面新建文件：filepaths.xml，内容如下：
+     * <?xml version="1.0" encoding="utf-8"?>
+     * <resources>
+     * <paths>
+     * <external-path name="external" path="" />
+     * <files-path name="files" path="" />
+     * <cache-path name="cache" path="" />
+     * </paths>
+     * </resources>
+     */
+    private void showCameraAction() {
+        mContext = MainActivity.this;
+        // 跳转到系统照相机
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(MainActivity.this.getPackageManager()) != null) {
+            // 设置系统相机拍照后的输出路径
+            // 创建临时文件
+            cameraTempFile = FileUtils.createTmpFile(MainActivity.this, galleryConfig.getFilePath());
+            Uri imageUri = FileProvider.getUriForFile(mContext, galleryConfig.getProvider(), cameraTempFile);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            List<ResolveInfo> resInfoList = mContext.getPackageManager().queryIntentActivities(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                mContext.grantUriPermission(packageName, imageUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+
+            startActivityForResult(cameraIntent, REQUEST_CAMERA);
+        } else {
+            Toast.makeText(mContext, com.yancy.gallerypick.R.string.gallery_msg_no_camera, Toast.LENGTH_SHORT).show();
+            galleryConfig.getIHandlerCallBack().onError();
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CAMERA) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (cameraTempFile != null) {
+                    if (galleryConfig.isCrop()) {
+                        resultPhoto.clear();
+                        cropTempFile = FileUtils.getCorpFile(galleryConfig.getFilePath());
+                        UCropUtils.start(MainActivity.this, cameraTempFile, cropTempFile,
+                                galleryConfig.getAspectRatioX(), galleryConfig.getAspectRatioY(),
+                                galleryConfig.getMaxWidth(), galleryConfig.getMaxHeight(), galleryConfig.isFreeCrop());
+                        return;
+                    }
+                    resultPhoto.add(cameraTempFile.getAbsolutePath());
+
+                    // 通知系统扫描该文件夹
+                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    Uri uri = Uri.fromFile(new File(FileUtils.getFilePath(mContext) + galleryConfig.getFilePath()));
+                    intent.setData(uri);
+                    sendBroadcast(intent);
+
+                    iHandlerCallBack.onSuccess(resultPhoto);
+                }
+            } else {
+                if (cameraTempFile != null && cameraTempFile.exists()) {
+                    cameraTempFile.delete();
+                }
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            resultPhoto.clear();
+            resultPhoto.add(cropTempFile.getAbsolutePath());
+            iHandlerCallBack.onSuccess(resultPhoto);
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            galleryConfig.getIHandlerCallBack().onError();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

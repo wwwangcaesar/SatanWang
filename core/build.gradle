@@ -93,4 +93,6 @@ dependencies {
     compile 'com.tencent.bugly:crashreport:latest.release'
     //带动画效果的actionBar
     compile 'com.ashokvarma.android:bottom-navigation-bar:1.3.0'
+    // picasso 图片加载器 https://github.com/square/picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

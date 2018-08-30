@@ -14,14 +14,19 @@ import java.io.File;
  */
 public class UCropUtils {
 
-    public static void start(Activity mActivity, File sourceFile, File destinationFile, float aspectRatioX, float aspectRatioY, int maxWidth, int maxHeight) {
+    public static void start(Activity mActivity, File sourceFile, File destinationFile,
+                             float aspectRatioX, float aspectRatioY, int maxWidth, int maxHeight,
+                             boolean isFreeCrop) {
         UCrop uCrop = UCrop.of(Uri.fromFile(sourceFile), Uri.fromFile(destinationFile))
-                .withAspectRatio(aspectRatioX, aspectRatioY)
                 .withMaxResultSize(maxWidth, maxHeight);
 
+        if (!isFreeCrop) {
+            uCrop.withAspectRatio(aspectRatioX, aspectRatioY);
+        }
+
         UCrop.Options options = new UCrop.Options();
-        options.setToolbarColor(mActivity.getResources().getColor(R.color.gallery_blue));
-        options.setStatusBarColor(mActivity.getResources().getColor(R.color.gallery_blue));
+        options.setToolbarColor(mActivity.getResources().getColor(R.color.gallery_black));
+        options.setStatusBarColor(mActivity.getResources().getColor(R.color.gallery_black));
         uCrop.withOptions(options);
 
 

@@ -161,7 +161,9 @@ public class GalleryPickActivity extends BaseActivity {
                     if (galleryConfig.isCrop()) {
                         cameraTempFile = new File(resultPhoto.get(0));
                         cropTempFile = FileUtils.getCorpFile(galleryConfig.getFilePath());
-                        UCropUtils.start(mActivity, cameraTempFile, cropTempFile, galleryConfig.getAspectRatioX(), galleryConfig.getAspectRatioY(), galleryConfig.getMaxWidth(), galleryConfig.getMaxHeight());
+                        UCropUtils.start(mActivity, cameraTempFile, cropTempFile,
+                                galleryConfig.getAspectRatioX(), galleryConfig.getAspectRatioY(),
+                                galleryConfig.getMaxWidth(), galleryConfig.getMaxHeight(), galleryConfig.isFreeCrop());
                         return;
                     }
                     mHandlerCallBack.onSuccess(resultPhoto);
@@ -184,6 +186,14 @@ public class GalleryPickActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (resultPhoto != null && resultPhoto.size() > 0) {
+                    if (galleryConfig.isCrop() && resultPhoto.size() == 1) {
+                        cameraTempFile = new File(resultPhoto.get(0));
+                        cropTempFile = FileUtils.getCorpFile(galleryConfig.getFilePath());
+                        UCropUtils.start(mActivity, cameraTempFile, cropTempFile,
+                                galleryConfig.getAspectRatioX(), galleryConfig.getAspectRatioY(),
+                                galleryConfig.getMaxWidth(), galleryConfig.getMaxHeight(), galleryConfig.isFreeCrop());
+                        return;
+                    }
                     mHandlerCallBack.onSuccess(resultPhoto);
                     exit();
                 }
@@ -359,7 +369,9 @@ public class GalleryPickActivity extends BaseActivity {
                         resultPhoto.clear();
                         if (galleryConfig.isCrop()) {
                             cropTempFile = FileUtils.getCorpFile(galleryConfig.getFilePath());
-                            UCropUtils.start(mActivity, cameraTempFile, cropTempFile, galleryConfig.getAspectRatioX(), galleryConfig.getAspectRatioY(), galleryConfig.getMaxWidth(), galleryConfig.getMaxHeight());
+                            UCropUtils.start(mActivity, cameraTempFile, cropTempFile,
+                                    galleryConfig.getAspectRatioX(), galleryConfig.getAspectRatioY(),
+                                    galleryConfig.getMaxWidth(), galleryConfig.getMaxHeight(), galleryConfig.isFreeCrop());
                             return;
                         }
                     }

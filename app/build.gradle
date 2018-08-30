@@ -41,6 +41,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     implementation project(':core')
     implementation project(':library')
+    implementation project(':gallerypick')
     implementation files('libs/MobCommons-2017.1201.1507.jar')
     implementation files('libs/MobTools-2017.1201.1507.jar')
     implementation files('libs/pinyin4j-2.5.0.jar')

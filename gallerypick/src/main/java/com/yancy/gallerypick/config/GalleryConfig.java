@@ -29,6 +29,7 @@ public class GalleryConfig {
     private float aspectRatioY;             // 裁剪比         默认   1：1
     private int maxWidth;                   // 最大的裁剪值   默认    500
     private int maxHeight;                  // 最大的裁剪值   默认    500
+    private boolean isFreeCrop;             // 是否开启自由裁剪
 
     private Builder builder;
 
@@ -53,6 +54,7 @@ public class GalleryConfig {
         this.maxWidth = builder.maxWidth;
         this.maxHeight = builder.maxHeight;
         this.provider = builder.provider;
+        this.isFreeCrop = builder.isFreeCrop;
         this.builder = builder;
     }
 
@@ -73,6 +75,7 @@ public class GalleryConfig {
         private float aspectRatioY = 1;
         private int maxWidth = 500;
         private int maxHeight = 500;
+        private boolean isFreeCrop = false;
 
         private String provider;
 
@@ -99,6 +102,17 @@ public class GalleryConfig {
             return this;
         }
 
+        /**
+         * 是否开启自由选择裁剪比例
+         *
+         * @param isCrop     是否开启裁剪
+         * @param isFreeCrop 是否开启自由选择裁剪比例
+         */
+        public Builder crop(boolean isCrop, boolean isFreeCrop) {
+            this.isCrop = isCrop;
+            this.isFreeCrop = isFreeCrop;
+            return this;
+        }
 
         public Builder imageLoader(ImageLoader imageLoader) {
             this.imageLoader = imageLoader;
@@ -142,6 +156,15 @@ public class GalleryConfig {
             return this;
         }
 
+        /**
+         * 是否开启自由选择裁剪比例
+         *
+         * @param isFreeCrop 是否开启自由选择裁剪比例
+         */
+        public Builder isFreeCrop(boolean isFreeCrop) {
+            this.isFreeCrop = isFreeCrop;
+            return this;
+        }
 
         public Builder pathList(List<String> pathList) {
             this.pathList.clear();
@@ -218,6 +241,14 @@ public class GalleryConfig {
 
     public String getProvider() {
         return provider;
+    }
+
+    public boolean isFreeCrop() {
+        return isFreeCrop;
+    }
+
+    public void setFreeCrop(boolean freeCrop) {
+        isFreeCrop = freeCrop;
     }
 }
 /*
