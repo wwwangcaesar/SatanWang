@@ -64,9 +64,6 @@
             android:name=".ui.home.HomeCityActivity"
             android:theme="@style/AllAppTheme" />
         <activity
-            android:name=".ui.NavigationActivity"
-            android:theme="@style/AllAppTheme" />
-        <activity
             android:name=".ui.home.HomeMapActivity"
             android:theme="@style/AllAppTheme" />
         <activity
