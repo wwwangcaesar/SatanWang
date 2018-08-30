@@ -113,6 +113,10 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     private BottomDialog dialog;
     private GalleryConfig galleryConfig;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 8;
+    /* 解决悬浮框点击拖动问题*/
+    private boolean isclick;
+    private long startTime = 0;
+    private long endTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,14 +219,6 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 ToastUtil.showToastBottomShort("点击悬浮窗");
             }
         });
-        mView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                ToastUtil.showToastBottomShort("长按悬浮窗");
-
-                return false;
-            }
-        });
         mView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -232,10 +228,13 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                         mStartX = event.getRawX();
                         mStartY = event.getRawY();
                         mDownTime = System.currentTimeMillis();
+                        isclick = false;//当按下的时候设置isclick为false
+                        startTime = System.currentTimeMillis();
                         ivDuo.setImageResource(R.drawable.duo_b);
                         break;
 
                     case MotionEvent.ACTION_MOVE://手指按下移动中
+                        isclick = true;//当按钮被移动的时候设置isclick为true
                         wmParams.x += event.getRawX() - mStartX;
                         wmParams.y += event.getRawY() - mStartY;
                         if (wmParams.y < -mCanMoveHeight) {
@@ -250,6 +249,12 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                         ivDuo.setImageResource(R.drawable.duo_b);
                         break;
                     case MotionEvent.ACTION_UP://抬起手指
+                        endTime = System.currentTimeMillis();
+                        if ((endTime - startTime) > 0.1 * 1000L) {
+                            isclick = true;
+                        } else {
+                            isclick = false;
+                        }
                         wmParams.x = mCanMoveWidth;
                         mStartX = wmParams.x;
                         if (getResources().getDisplayMetrics().widthPixels / 2 < event.getRawX()) {//如果平移 的宽度大于二分之一屏幕，在右半边屏幕
@@ -264,7 +269,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                         return mUpTime - mDownTime > 200;
                 }
                 // 消耗触摸事件
-                return false;
+                return isclick;
             }
         });
 
