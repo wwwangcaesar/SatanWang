@@ -482,12 +482,17 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 vvSplash.resume();
             }
         }
+        if (TextUtils.isEmpty(AppSession.getHeadUrl())){
+            tvOtherLan.setImageResource(R.mipmap.ic_user_default_big);
+        }else {
+            Uri uri = Uri.fromFile(new File(AppSession.getHeadUrl()));
+            tvOtherLan.setImageURI(uri);
+        }
         if (TextUtils.isEmpty(AppSession.getChooseCityName())) {
             tvCity.setText("城市");
         } else {
             tvCity.setText(AppSession.getChooseCityName());
         }
-        return;
     }
 
     @Override
@@ -614,6 +619,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         @Override
         public void onSuccess(List<String> photoList) {
             Uri uri = Uri.fromFile(new File(photoList.get(0)));
+            AppSession.setHeadUrl(photoList.get(0));
             tvOtherLan.setImageURI(uri);
         }
 
