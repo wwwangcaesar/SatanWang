@@ -47,6 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="about.nocare.casaer.satanwang.fileprovider"
@@ -56,6 +57,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
         <activity
             android:name=".ui.MainActivity"
             android:theme="@style/AllAppTheme" />
@@ -78,6 +80,8 @@
         <activity
             android:name=".ui.home.appMore.AppMoreActivity"
             android:theme="@style/AllAppTheme" />
+        <activity android:name=".ui.ChatRobotActivity"
+            android:theme="@style/ChatAppTheme" />
     </application>
 
 </manifest>

@@ -216,7 +216,8 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         mView.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                ToastUtil.showToastBottomShort("点击悬浮窗");
+                Intent intent=new Intent(MainActivity.this,ChatRobotActivity.class);
+                startActivity(intent);
             }
         });
         mView.setOnTouchListener(new View.OnTouchListener() {
