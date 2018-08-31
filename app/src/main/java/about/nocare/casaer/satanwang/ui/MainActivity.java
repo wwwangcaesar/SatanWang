@@ -59,6 +59,7 @@ import java.util.List;
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.HomeGetWelfareListAdapter;
 import about.nocare.casaer.satanwang.bean.HomeCouponBean;
+import about.nocare.casaer.satanwang.ui.chat.ChatRobotActivity;
 import about.nocare.casaer.satanwang.ui.home.HomeCityActivity;
 import about.nocare.casaer.satanwang.ui.home.HomeMapActivity;
 import about.nocare.casaer.satanwang.ui.home.appMore.AppMoreActivity;

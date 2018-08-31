@@ -1,0 +1,86 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f2f2f2"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_tool_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lv_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/divider"
+            android:divider="#00000000"
+            android:dividerHeight="0px"
+            android:transcriptMode="normal" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/rl_msg"
+            android:background="#bdbdbd" />
+
+        <RelativeLayout
+            android:id="@+id/rl_msg"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_send_msg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/ic_voice_chat" />
+            <LinearLayout
+                android:id="@+id/ll_msg"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/iv_send_msg"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/actionsheet_single_normal"
+                    android:hint="输入您的问题"
+                    android:imeOptions="actionSend|flagNoEnterAction"
+                    android:inputType="textCapSentences|textAutoCorrect|textMultiLine|textShortMessage"
+                    android:maxLength="100"
+                    android:maxLines="4"
+                    android:minHeight="32dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColor="#616161"
+                    android:textColorHint="#bdbdbd"
+                    android:layout_weight="1"
+                    android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvSend"
+                    android:layout_width="60dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/dialogui_shape_gray_round_l_corner"
+                    android:text="发送"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

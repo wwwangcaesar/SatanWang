@@ -80,8 +80,13 @@
         <activity
             android:name=".ui.home.appMore.AppMoreActivity"
             android:theme="@style/AllAppTheme" />
-        <activity android:name=".ui.ChatRobotActivity"
+        <activity android:name=".ui.chat.ChatRobotActivity"
             android:theme="@style/ChatAppTheme" />
+        <activity android:name=".ui.chat.NewsActivity"
+            android:theme="@style/ChatAppTheme" />
+        <activity android:name=".ui.chat.DetailActivity"
+            android:theme="@style/ChatAppTheme" />
+
     </application>
 
 </manifest>

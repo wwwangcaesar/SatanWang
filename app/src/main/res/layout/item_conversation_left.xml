@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f2f2f2"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:text="1分钟前"
+        android:textColor="#757575"
+        android:textSize="11sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <com.lovcreate.core.widget.CircularImage
+            android:id="@+id/civ_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="left|top"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/duo_b" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="60dp"
+            android:layout_toRightOf="@+id/civ_avatar">
+
+            <com.github.library.bubbleview.BubbleTextVew
+                android:id="@+id/btv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="phone|email"
+                android:padding="10dp"
+                android:text="你好！"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                app:angle="5dp"
+                app:arrowHeight="10dp"
+                app:arrowLocation="left"
+                app:arrowPosition="14dp"
+                app:arrowWidth="8dp"
+                app:bubbleColor="@color/selector_conversation_left" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
