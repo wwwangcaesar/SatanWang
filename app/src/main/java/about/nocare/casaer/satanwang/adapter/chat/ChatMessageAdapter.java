@@ -2,6 +2,8 @@ package about.nocare.casaer.satanwang.adapter.chat;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,7 +12,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.library.bubbleview.BubbleTextVew;
 import com.lovcreate.core.base.OnClickListener;
+import com.lovcreate.core.util.AppSession;
+import com.lovcreate.core.widget.CircularImage;
 
+import java.io.File;
 import java.util.List;
 
 import about.nocare.casaer.satanwang.R;
@@ -63,6 +68,13 @@ public class ChatMessageAdapter extends BaseListAdapter<MessageEntity> {
 
         TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
         BubbleTextVew btvMessage = ViewHolder.get(convertView, R.id.btv_message);
+        CircularImage civ_avatar = ViewHolder.get(convertView, R.id.civ_avatar);
+        if (TextUtils.isEmpty(AppSession.getHeadUrl())){
+            civ_avatar.setImageResource(R.mipmap.ic_user_default_big);
+        }else {
+            Uri uri = Uri.fromFile(new File(AppSession.getHeadUrl()));
+            civ_avatar.setImageURI(uri);
+        }
 
         if (isDisplayTime(position)) {
             tvTime.setVisibility(View.VISIBLE);
