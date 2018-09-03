@@ -65,6 +65,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //百度TTS引入
+//    implementation project(':uidialog')
 }
 //都是因为如果程序内出现不同的，support或者其他外部引用库的多个版本，Gradle在进行合并的时候会使用本地持有的，最高版本的来进行编译，
 // 所以25的support就有可能引用26的东西，就会出现 属性 merge 错误 ，或者Class丢失，解决方法就是强制使用相同版本的库：

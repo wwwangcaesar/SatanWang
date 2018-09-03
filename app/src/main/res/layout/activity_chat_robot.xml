@@ -43,6 +43,32 @@
                 android:layout_marginLeft="10dp"
                 android:src="@mipmap/ic_voice_chat" />
             <LinearLayout
+                android:id="@+id/btn_press_to_speak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_toRightOf="@+id/iv_send_msg"
+                android:layout_marginBottom="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/ease_chat_press_speak_btn"
+                android:gravity="center"
+                android:visibility="gone"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="按住说话"
+                    android:textColor="#666666"
+                    android:textSize="18sp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/ll_msg"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"

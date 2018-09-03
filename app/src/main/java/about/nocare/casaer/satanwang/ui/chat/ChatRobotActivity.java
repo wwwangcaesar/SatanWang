@@ -58,7 +58,10 @@ public class ChatRobotActivity extends BaseActivity {
     RelativeLayout rlMsg;
     @BindView(R.id.tvSend)
     TextView tvSend;
+    @BindView(R.id.btn_press_to_speak)
+    LinearLayout btnPressToSpeak;
 
+    private boolean speak = true;
     /*获取所有应用的包名*/
     private List<ResolveInfo> apps = new ArrayList<>();
 
@@ -166,6 +169,30 @@ public class ChatRobotActivity extends BaseActivity {
                 return false;
             }
         });
+        ivSendMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (speak) {
+                    ivSendMsg.setImageDrawable(getResources().getDrawable(R.mipmap.ic_keyboard_chat));
+                    btnPressToSpeak.setVisibility(View.VISIBLE);
+                    etMsg.setVisibility(View.GONE);
+                    tvSend.setVisibility(View.GONE);
+                    speak = false;
+                } else {
+                    ivSendMsg.setImageDrawable(getResources().getDrawable(R.mipmap.ic_voice_chat));
+                    btnPressToSpeak.setVisibility(View.GONE);
+                    etMsg.setVisibility(View.VISIBLE);
+                    tvSend.setVisibility(View.VISIBLE);
+                    speak = true;
+                }
+            }
+        });
+        btnPressToSpeak.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+
+            }
+        });
     }
 
     // 给Turing发送问题
@@ -215,11 +242,11 @@ public class ChatRobotActivity extends BaseActivity {
                 entity.setText(entity.getText() + "，点击查看");
                 break;
             case TulingParams.TulingCode.TEXT:
-                if (entity.getText().indexOf("日历")!= -1){
+                if (entity.getText().indexOf("日历") != -1) {
                     entity.setText(entity.getText() + "~进入日历~");
-                }else if ( entity.getText().indexOf("微信")!= -1){
+                } else if (entity.getText().indexOf("微信") != -1) {
                     entity.setText(entity.getText() + "~打开微信~");
-                }else {
+                } else {
                     entity.setText(entity.getText());
                 }
                 break;
