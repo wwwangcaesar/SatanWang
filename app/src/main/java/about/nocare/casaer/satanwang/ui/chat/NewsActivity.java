@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.lovcreate.core.base.BaseActivity;
 
 import java.util.List;
@@ -31,8 +32,6 @@ import butterknife.ButterKnife;
  */
 public class NewsActivity extends BaseActivity implements XListView.IXListViewListener {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.xlv_listView)
     XListView xlvListView;
 
@@ -51,9 +50,11 @@ public class NewsActivity extends BaseActivity implements XListView.IXListViewLi
     }
 
     private void initActionBar() {
-        toolbar.setTitle("新闻");
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        StatusBarUtil.setColor(NewsActivity.this, getResources().getColor(R.color.TulingToolBar));
+        setTitleText("新闻");
+        setTitleTextColor(R.color.white);
+        setLeftIcon(R.mipmap.ic_nav_back_white);
+        setToolbarBackground(R.color.TulingToolBar);
     }
 
     private void initData() {

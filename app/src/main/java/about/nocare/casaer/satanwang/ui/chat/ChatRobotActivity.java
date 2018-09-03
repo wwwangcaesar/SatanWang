@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,9 +27,16 @@ import java.util.List;
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.chat.ChatMessageAdapter;
 import about.nocare.casaer.satanwang.bean.chat.MessageEntity;
+import about.nocare.casaer.satanwang.constant.chat.TulingParams;
+import about.nocare.casaer.satanwang.control.RetrofitApi;
 import about.nocare.casaer.satanwang.utils.chat.TimeUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * & @Description:  聊天机器人
@@ -63,6 +71,9 @@ public class ChatRobotActivity extends BaseActivity {
         setContentView(R.layout.activity_chat_robot);
         ButterKnife.bind(this);
         packageManager = this.getPackageManager();
+
+//        new FirUpdater(this, "3c57fb226edf7facf821501e4eba08d2", "5704953c00fc74127000000a").checkVersion();
+
         /*启动系统辅助功能*/
 //        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 //        startActivity(intent);
@@ -77,6 +88,7 @@ public class ChatRobotActivity extends BaseActivity {
         /*获取手机应用的所有包名*/
         loadApps();
         initView();
+        initData();
         initEventListen();//监听，点击事件
     }
 
@@ -109,6 +121,19 @@ public class ChatRobotActivity extends BaseActivity {
     }
 
     /**
+     * 初始化数据
+     */
+    private void initData() {
+        if (msgList.size() == 0) {
+            MessageEntity entity = new MessageEntity(ChatMessageAdapter.TYPE_LEFT, TimeUtil.getCurrentTimeMillis());
+            entity.setText("你好！我是小A！\n祝你每天开心\n有什么要吩咐的么？");
+            msgList.add(entity);
+        }
+        msgAdapter = new ChatMessageAdapter(this, msgList,packageManager);
+        lvMessage.setAdapter(msgAdapter);
+        lvMessage.setSelection(msgAdapter.getCount());
+    }
+    /**
      * 监听键盘回车键
      */
     private void initEventListen() {
@@ -116,6 +141,18 @@ public class ChatRobotActivity extends BaseActivity {
             @Override
             public void onNoDoubleClick(View v) {
                 sendMessage();
+            }
+        });
+        //滑动listview的时候隐藏键盘
+        lvMessage.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                hideSoftInput();
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
             }
         });
         etMsg.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -145,7 +182,41 @@ public class ChatRobotActivity extends BaseActivity {
 //            requestApiByRetrofit(msg);
 
             // 使用 Retrofit 和 RxJava 请求接口
-//            requestApiByRetrofit_RxJava(msg);
+            requestApiByRetrofit_RxJava(msg);
         }
+    }
+    // 请求图灵API接口，获得问答信息
+    private void requestApiByRetrofit_RxJava(String info) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(TulingParams.TULING_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+        RetrofitApi api = retrofit.create(RetrofitApi.class);
+        api.getTuringInfoByRxJava(TulingParams.TULING_KEY, info)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleResponseMessage, Throwable::printStackTrace);
+    }
+
+    // 处理获得到的问答信息
+    private void handleResponseMessage(MessageEntity entity) {
+        if (entity == null) return;
+
+        entity.setTime(TimeUtil.getCurrentTimeMillis());
+        entity.setType(ChatMessageAdapter.TYPE_LEFT);
+
+        switch (entity.getCode()) {
+            case TulingParams.TulingCode.URL:
+                entity.setText(entity.getText() + "，点击网址查看：" + entity.getUrl());
+                break;
+            case TulingParams.TulingCode.NEWS:
+                entity.setText(entity.getText() + "，点击查看");
+                break;
+        }
+
+        msgList.add(entity);
+        msgAdapter.notifyDataSetChanged();
     }
 }

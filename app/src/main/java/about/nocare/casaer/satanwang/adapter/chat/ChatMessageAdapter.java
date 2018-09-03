@@ -2,6 +2,8 @@ package about.nocare.casaer.satanwang.adapter.chat;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,13 +31,15 @@ import about.nocare.casaer.satanwang.utils.chat.TimeUtil;
 public class ChatMessageAdapter extends BaseListAdapter<MessageEntity> {
 
     private Context mContext;
+    private PackageManager packageManager;
 
     public static final int TYPE_LEFT = 0;
     public static final int TYPE_RIGHT = 1;
 
-    public ChatMessageAdapter(Context context, List<MessageEntity> list) {
+    public ChatMessageAdapter(Context context, List<MessageEntity> list,PackageManager packageManager) {
         super(context, list);
         mContext = context;
+        packageManager=packageManager;
     }
 
     @Override
@@ -63,19 +67,20 @@ public class ChatMessageAdapter extends BaseListAdapter<MessageEntity> {
         if (convertView == null) {
             convertView = createViewByType(position);
         }
-
+        packageManager = mContext.getPackageManager();
         final MessageEntity entity = getItem(position);
 
         TextView tvTime = ViewHolder.get(convertView, R.id.tv_time);
         BubbleTextVew btvMessage = ViewHolder.get(convertView, R.id.btv_message);
-        CircularImage civ_avatar = ViewHolder.get(convertView, R.id.civ_avatar);
-        if (TextUtils.isEmpty(AppSession.getHeadUrl())){
-            civ_avatar.setImageResource(R.mipmap.ic_user_default_big);
-        }else {
-            Uri uri = Uri.fromFile(new File(AppSession.getHeadUrl()));
-            civ_avatar.setImageURI(uri);
-        }
+        CircularImage civ_avatar = ViewHolder.get(convertView, R.id.civ_avatar_1);
+        if (getItem(position).getType() == TYPE_RIGHT) {
+            if (TextUtils.isEmpty(AppSession.getHeadUrl())) {
 
+            } else {
+                Uri uri = Uri.fromFile(new File(AppSession.getHeadUrl()));
+                civ_avatar.setImageURI(uri);
+            }
+        }
         if (isDisplayTime(position)) {
             tvTime.setVisibility(View.VISIBLE);
             tvTime.setText(TimeUtil.friendlyTime(mContext, entity.getTime()));
@@ -90,28 +95,33 @@ public class ChatMessageAdapter extends BaseListAdapter<MessageEntity> {
             case TulingParams.TulingCode.NEWS:
                 btvMessage.setText(SpecialViewUtil.getSpannableString(entity.getText(), "点击查看"));
                 break;
+            case TulingParams.TulingCode.TEXT:
+                btvMessage.setText(SpecialViewUtil.getSpannableString(entity.getText(), "美团"));//特别关键字标记颜色
+                break;
             default:
                 btvMessage.setText(entity.getText());
                 break;
         }
-        btvMessage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onNoDoubleClick(View v) {
-                switch (entity.getCode()) {
-                    case TulingParams.TulingCode.URL:
-                        NavigateManager.gotoDetailActivity(mContext, entity.getUrl());
-                        break;
-                    case TulingParams.TulingCode.NEWS:
-                        NavigateManager.gotoNewsActivity(mContext, entity);
-                        break;
-                }
+        btvMessage.setOnClickListener(v -> {
+            switch (entity.getCode()) {
+                case TulingParams.TulingCode.URL:
+                    NavigateManager.gotoDetailActivity(mContext, entity.getUrl());
+                    break;
+                case TulingParams.TulingCode.NEWS:
+                    NavigateManager.gotoNewsActivity(mContext, entity);
+                    break;
+                case TulingParams.TulingCode.TEXT:
+                    /*打开美团*/
+                    Intent intent = packageManager.getLaunchIntentForPackage("com.sankuai.meituan");//"jp.co.johospace.jorte"就是我们获得要启动应用的包名
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    mContext.startActivity(intent);
+                    break;
             }
         });
-        btvMessage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onNoDoubleClick(View v) {
-                copyDeleteDialog(mContext, entity);
-            }
+
+        btvMessage.setOnLongClickListener(v -> {
+            copyDeleteDialog(mContext, entity);
+            return false;
         });
         return convertView;
     }

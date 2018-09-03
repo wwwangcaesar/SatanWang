@@ -26,7 +26,7 @@
         android:layout_marginTop="5dp">
 
         <com.lovcreate.core.widget.CircularImage
-            android:id="@+id/civ_avatar"
+            android:id="@+id/cirular"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="left|top"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="60dp"
-            android:layout_toRightOf="@+id/civ_avatar">
+            android:layout_toRightOf="@+id/cirular">
 
             <com.github.library.bubbleview.BubbleTextVew
                 android:id="@+id/btv_message"
