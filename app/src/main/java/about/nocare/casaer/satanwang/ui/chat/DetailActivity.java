@@ -42,12 +42,11 @@ public class DetailActivity extends BaseActivity {
     }
 
     private void initActionBar() {
-        StatusBarUtil.setColor(DetailActivity.this, R.color.TulingToolBar);
+        StatusBarUtil.setColor(DetailActivity.this, getResources().getColor(R.color.TulingToolBar));
         setTitleText("新闻内容");
         setTitleTextColor(R.color.white);
         setLeftIcon(R.mipmap.ic_nav_back_white);
         setToolbarBackground(R.color.TulingToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

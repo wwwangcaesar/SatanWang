@@ -36,10 +36,10 @@ public class ChatMessageAdapter extends BaseListAdapter<MessageEntity> {
     public static final int TYPE_LEFT = 0;
     public static final int TYPE_RIGHT = 1;
 
-    public ChatMessageAdapter(Context context, List<MessageEntity> list,PackageManager packageManager) {
+    public ChatMessageAdapter(Context context, List<MessageEntity> list, PackageManager packageManager) {
         super(context, list);
         mContext = context;
-        packageManager=packageManager;
+        packageManager = packageManager;
     }
 
     @Override
@@ -96,7 +96,14 @@ public class ChatMessageAdapter extends BaseListAdapter<MessageEntity> {
                 btvMessage.setText(SpecialViewUtil.getSpannableString(entity.getText(), "点击查看"));
                 break;
             case TulingParams.TulingCode.TEXT:
-                btvMessage.setText(SpecialViewUtil.getSpannableString(entity.getText(), "美团"));//特别关键字标记颜色
+                if (entity.getText().indexOf("日历") != -1) {
+                    btvMessage.setText(SpecialViewUtil.getSpannableString(entity.getText(), "~进入日历~"));//特别关键字标记颜色
+                } else if (entity.getText().indexOf("微信") != -1) {
+                    btvMessage.setText(SpecialViewUtil.getSpannableString(entity.getText(), "~打开微信~"));//特别关键字标记颜色
+                } else {
+                    btvMessage.setText(entity.getText());
+                }
+//                btvMessage.setText(SpecialViewUtil.getSpannableString(entity.getText(), "美团"));//特别关键字标记颜色
                 break;
             default:
                 btvMessage.setText(entity.getText());
@@ -111,10 +118,18 @@ public class ChatMessageAdapter extends BaseListAdapter<MessageEntity> {
                     NavigateManager.gotoNewsActivity(mContext, entity);
                     break;
                 case TulingParams.TulingCode.TEXT:
-                    /*打开美团*/
-                    Intent intent = packageManager.getLaunchIntentForPackage("com.sankuai.meituan");//"jp.co.johospace.jorte"就是我们获得要启动应用的包名
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    mContext.startActivity(intent);
+                    if (entity.getText().indexOf("日历") != -1) {
+                        /*打开美团*/
+                        Intent intent = packageManager.getLaunchIntentForPackage("com.android.calendar");//"jp.co.johospace.jorte"就是我们获得要启动应用的包名
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        mContext.startActivity(intent);
+                    } else if (entity.getText().indexOf("微信") != -1) {
+                        /*打开微信*/
+                        Intent intent = packageManager.getLaunchIntentForPackage("com.tencent.mm");//"jp.co.johospace.jorte"就是我们获得要启动应用的包名
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        mContext.startActivity(intent);
+                    }
+
                     break;
             }
         });

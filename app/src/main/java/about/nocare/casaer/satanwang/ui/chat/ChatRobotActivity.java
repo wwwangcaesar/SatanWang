@@ -214,6 +214,20 @@ public class ChatRobotActivity extends BaseActivity {
             case TulingParams.TulingCode.NEWS:
                 entity.setText(entity.getText() + "，点击查看");
                 break;
+            case TulingParams.TulingCode.TEXT:
+                if (entity.getText().indexOf("日历")!= -1){
+                    entity.setText(entity.getText() + "~进入日历~");
+                }else if ( entity.getText().indexOf("微信")!= -1){
+                    entity.setText(entity.getText() + "~打开微信~");
+                }else {
+                    entity.setText(entity.getText());
+                }
+                break;
+            case TulingParams.TulingCode.VIDEO:
+                entity.setText(entity.getText() + "，点击网址查看：" + entity.getUrl());
+                break;
+
+
         }
 
         msgList.add(entity);
