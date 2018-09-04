@@ -1,9 +1,14 @@
 package about.nocare.casaer.satanwang.ui.chat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,18 +22,30 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.speech.EventListener;
+import com.baidu.speech.EventManager;
+import com.baidu.speech.EventManagerFactory;
+import com.baidu.speech.asr.SpeechConstant;
+import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
+import com.lovcreate.core.util.ToastUtil;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.chat.ChatMessageAdapter;
 import about.nocare.casaer.satanwang.bean.chat.MessageEntity;
+import about.nocare.casaer.satanwang.bean.voice.BaiDuVoiceBeen;
 import about.nocare.casaer.satanwang.constant.chat.TulingParams;
 import about.nocare.casaer.satanwang.control.RetrofitApi;
+import about.nocare.casaer.satanwang.listener.AutoCheck;
 import about.nocare.casaer.satanwang.utils.chat.TimeUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +60,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * & @Author:  Satan
  * & @Time:  2018/8/30 17:23
  */
-public class ChatRobotActivity extends BaseActivity {
+public class ChatRobotActivity extends BaseActivity implements EventListener {
 
     PackageManager packageManager;
     @BindView(R.id.lv_message)
@@ -64,10 +81,11 @@ public class ChatRobotActivity extends BaseActivity {
     private boolean speak = true;
     /*获取所有应用的包名*/
     private List<ResolveInfo> apps = new ArrayList<>();
-
+    /*聊天适配器*/
     private List<MessageEntity> msgList = new ArrayList<>();
     private ChatMessageAdapter msgAdapter;
-
+    /*百度语音识别*/
+    private EventManager asr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +108,11 @@ public class ChatRobotActivity extends BaseActivity {
 //        startActivity(intent);
         /*获取手机应用的所有包名*/
         loadApps();
+        initPermission();
         initView();
+        /*百度语音识别*/
+        asr = EventManagerFactory.create(this, "asr");
+        asr.registerListener(this); //  EventListener 中 onEvent方法
         initData();
         initEventListen();//监听，点击事件
     }
@@ -132,10 +154,12 @@ public class ChatRobotActivity extends BaseActivity {
             entity.setText("你好！我是小A！\n祝你每天开心\n有什么要吩咐的么？");
             msgList.add(entity);
         }
-        msgAdapter = new ChatMessageAdapter(this, msgList,packageManager);
+        msgAdapter = new ChatMessageAdapter(this, msgList, packageManager);
         lvMessage.setAdapter(msgAdapter);
         lvMessage.setSelection(msgAdapter.getCount());
+
     }
+
     /**
      * 监听键盘回车键
      */
@@ -177,6 +201,7 @@ public class ChatRobotActivity extends BaseActivity {
                     btnPressToSpeak.setVisibility(View.VISIBLE);
                     etMsg.setVisibility(View.GONE);
                     tvSend.setVisibility(View.GONE);
+                    hideSoftInput();
                     speak = false;
                 } else {
                     ivSendMsg.setImageDrawable(getResources().getDrawable(R.mipmap.ic_voice_chat));
@@ -187,10 +212,11 @@ public class ChatRobotActivity extends BaseActivity {
                 }
             }
         });
-        btnPressToSpeak.setOnClickListener(new OnClickListener() {
+        btnPressToSpeak.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onNoDoubleClick(View v) {
-
+            public boolean onLongClick(View v) {
+                start();
+                return false;
             }
         });
     }
@@ -212,6 +238,7 @@ public class ChatRobotActivity extends BaseActivity {
             requestApiByRetrofit_RxJava(msg);
         }
     }
+
     // 请求图灵API接口，获得问答信息
     private void requestApiByRetrofit_RxJava(String info) {
         Retrofit retrofit = new Retrofit.Builder()
@@ -259,5 +286,97 @@ public class ChatRobotActivity extends BaseActivity {
 
         msgList.add(entity);
         msgAdapter.notifyDataSetChanged();
+    }
+
+    //启动百度语音TTs
+    private void start() {
+        Map<String, Object> params = new LinkedHashMap<String, Object>();
+        String event = null;
+        event = SpeechConstant.ASR_START; // 替换成测试的event
+        params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
+        // params.put(SpeechConstant.NLU, "enable");
+        // params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 0); // 长语音
+        // params.put(SpeechConstant.IN_FILE, "res:///com/baidu/android/voicedemo/16k_test.pcm");
+        // params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
+        // params.put(SpeechConstant.PROP ,20000);
+        // params.put(SpeechConstant.PID, 1537); // 中文输入法模型，有逗号
+        // 请先使用如‘在线识别’界面测试和生成识别参数。 params同ActivityRecog类中myRecognizer.start(params);
+        // 复制此段可以自动检测错误
+        (new AutoCheck(getApplicationContext(), new Handler() {
+            public void handleMessage(Message msg) {
+                if (msg.what == 100) {
+                    AutoCheck autoCheck = (AutoCheck) msg.obj;
+                    synchronized (autoCheck) {
+
+                        ; // 可以用下面一行替代，在logcat中查看代码
+                    }
+                }
+            }
+        }, false)).checkAsr(params);
+        String json = null; // 可以替换成自己的json
+        json = new JSONObject(params).toString(); // 这里可以替换成你需要测试的json
+        asr.send(event, json, null, 0, 0);
+    }
+
+    private String realut;
+
+    // 百度语音的接口回调事件
+    @Override
+    public void onEvent(String name, String params, byte[] data, int offset, int length) {
+        BaiDuVoiceBeen dataBean = new Gson().fromJson(params, BaiDuVoiceBeen.class);
+        if (dataBean!=null){
+            if (!TextUtils.isEmpty(dataBean.getBest_result())) {
+                MessageEntity entity = new MessageEntity(ChatMessageAdapter.TYPE_RIGHT, TimeUtil.getCurrentTimeMillis(), dataBean.getBest_result());
+                msgList.add(entity);
+                msgAdapter.notifyDataSetChanged();
+                requestApiByRetrofit_RxJava(dataBean.getBest_result());
+            }
+        }
+    }
+
+    /**
+     * android 6.0 以上需要动态申请权限
+     */
+    private void initPermission() {
+        String permissions[] = {Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+
+        ArrayList<String> toApplyList = new ArrayList<String>();
+
+        for (String perm : permissions) {
+            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, perm)) {
+                toApplyList.add(perm);
+                // 进入到这里代表没有权限.
+
+            }
+        }
+        String tmpList[] = new String[toApplyList.size()];
+        if (!toApplyList.isEmpty()) {
+            ActivityCompat.requestPermissions(this, toApplyList.toArray(tmpList), 123);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // 此处为android 6.0以上动态授权的回调，用户自行实现。
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
+        // 必须与registerListener成对出现，否则可能造成内存泄露
+        asr.unregisterListener(this);
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
+        Log.i("ActivityMiniRecog","On pause");
     }
 }

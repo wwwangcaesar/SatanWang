@@ -27,6 +27,8 @@
     <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <!-- 自动聚焦权限 -->
     <application
         android:name=".app.MainApplication"
@@ -80,13 +82,24 @@
         <activity
             android:name=".ui.home.appMore.AppMoreActivity"
             android:theme="@style/AllAppTheme" />
-        <activity android:name=".ui.chat.ChatRobotActivity"
+        <activity
+            android:name=".ui.chat.ChatRobotActivity"
             android:theme="@style/ChatAppTheme" />
-        <activity android:name=".ui.chat.NewsActivity"
+        <activity
+            android:name=".ui.chat.NewsActivity"
             android:theme="@style/ChatAppTheme" />
-        <activity android:name=".ui.chat.DetailActivity"
+        <activity
+            android:name=".ui.chat.DetailActivity"
             android:theme="@style/ChatAppTheme" />
-
+        <!--百度语音key-->
+        <meta-data
+            android:name="com.baidu.speech.APP_ID"
+            android:value="11764967" />
+        <meta-data
+            android:name="com.baidu.speech.API_KEY"
+            android:value="4Gfe4EvciY9G228EwxgWkP8S" />
+        <meta-data
+            android:name="com.baidu.speech.SECRET_KEY"
+            android:value="umrvQbAOKoVhsG4T3AVtB7ZvApm0UXaD" />
     </application>
-
 </manifest>
