@@ -85,11 +85,13 @@
             android:src="@drawable/ic_favorite_selector"
             android:textColor="#fff" />
 
+        <!--slike:show_text="false"  是否展示上方文字-->
+
         <com.sum.slike.SuperLikeLayout
             android:id="@+id/super_like_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            slike:show_text="false" />
+            />
     </FrameLayout>
 
 
