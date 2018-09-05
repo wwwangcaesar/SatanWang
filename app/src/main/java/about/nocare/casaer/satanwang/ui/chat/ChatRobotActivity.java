@@ -469,7 +469,6 @@ public class ChatRobotActivity extends BaseActivity implements EventListener {
         Log.i("ActivityMiniRecog", "On pause");
         if (!running) {
             myRecognizer.release();
-            finish();
         }
     }
 
