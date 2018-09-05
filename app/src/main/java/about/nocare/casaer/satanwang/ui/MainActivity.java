@@ -45,6 +45,7 @@ import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.util.ToastUtil;
 import com.lovcreate.core.widget.BottomDialog;
 import com.lovcreate.core.widget.CircularImage;
+import com.sum.slike.SuperLikeLayout;
 import com.yalantis.ucrop.UCrop;
 import com.yancy.gallerypick.config.GalleryConfig;
 import com.yancy.gallerypick.config.GalleryPick;
@@ -69,6 +70,7 @@ import about.nocare.casaer.satanwang.utils.GuideHelper;
 import about.nocare.casaer.satanwang.utils.PicassoImageLoader;
 import about.nocare.casaer.satanwang.utils.StatusBarCompat;
 import about.nocare.casaer.satanwang.utils.TextShape;
+import about.nocare.casaer.satanwang.utils.fabulous.BitmapProviderFactory;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -118,11 +120,14 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     private boolean isclick;
     private long startTime = 0;
     private long endTime = 0;
+    /* 点赞动画效果*/
+    SuperLikeLayout superLikeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        superLikeLayout = (SuperLikeLayout)findViewById(R.id.super_like_layout);
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -149,6 +154,8 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         initView();//悬浮框
         setDate();//填充数据
         initIsFirst();
+        /* 点赞动画效果*/
+        setFabulous();
         tvbeer.setText(R.string.gushi);
         mainSwipemenu.setReverseChangedBlur(MainActivity.this, R.drawable.cry7, R.color.transparent);
         changeStyleCode();//更改侧滑菜单风格，第一个参数，反向动态，第二个参数，视差移动，第三个缩放动画，第4个透明动画
@@ -690,6 +697,31 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             Toast.makeText(mContext, com.yancy.gallerypick.R.string.gallery_msg_no_camera, Toast.LENGTH_SHORT).show();
             galleryConfig.getIHandlerCallBack().onError();
         }
+    }
+
+    /**
+     *  点赞动画效果
+     */
+    private void setFabulous(){
+
+        superLikeLayout.setProvider(BitmapProviderFactory.getHDProvider(this));
+        findViewById(R.id.like_btn).setOnClickListener(new View.OnClickListener() {
+            long duration = 2000;
+            long lastClickTime;
+            @Override
+            public void onClick(View v) {
+                if(System.currentTimeMillis() - lastClickTime > duration){ // 防抖
+                    v.setSelected(!v.isSelected());
+                }
+                lastClickTime = System.currentTimeMillis();
+                if(v.isSelected()){
+                    int x = (int)(v.getX() + v.getWidth() / 2);
+                    int y = (int)(v.getY() + v.getHeight() / 2);
+                    superLikeLayout.launch(x, y);
+                }
+
+            }
+        });
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

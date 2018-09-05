@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:slike="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,56 +9,88 @@
     android:orientation="vertical"
     tools:context="about.nocare.casaer.satanwang.ui.MainActivity">
 
-    <VideoView
-        android:id="@+id/vvSplash"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/tvCity"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="80dp" />
+        android:layout_height="match_parent">
 
-    <com.lovcreate.core.widget.CircularImage
-        android:id="@+id/tvOtherLan"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="left|top"
-        android:padding="4dp"
-        android:scaleType="fitXY"
-        android:src="@mipmap/ic_user_default_big" />
+        <VideoView
+            android:id="@+id/vvSplash"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@+id/tvCity"
+            android:layout_centerInParent="true"
+            />
 
-    <TextView
-        android:id="@+id/tvCity"
+        <com.lovcreate.core.widget.CircularImage
+            android:id="@+id/tvOtherLan"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="left|top"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_user_default_big" />
+
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvOtherLan"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="城市"
+            android:textColor="@color/appBar"
+            android:textSize="21sp" />
+
+        <about.nocare.casaer.satanwang.utils.TextShape
+            android:id="@+id/textShape"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Devil May Cry"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/tvMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/vvSplash"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="地图"
+            android:textColor="@color/appBar"
+            android:textSize="21sp" />
+    </RelativeLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/tvOtherLan"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="城市"
-        android:textColor="@color/appBar"
-        android:textSize="21sp" />
+        android:layout_height="match_parent"
+        android:layout_weight="1.2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="24dp"
+        android:orientation="vertical">
 
-    <about.nocare.casaer.satanwang.utils.TextShape
-        android:id="@+id/textShape"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="Devil May Cry"
-        android:textSize="23sp" />
+        <ImageView
+            android:id="@+id/like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:src="@drawable/ic_favorite_selector"
+            android:textColor="#fff" />
 
-    <TextView
-        android:id="@+id/tvMap"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/vvSplash"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="地图"
-        android:textColor="@color/appBar"
-        android:textSize="21sp" />
+        <com.sum.slike.SuperLikeLayout
+            android:id="@+id/super_like_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            slike:show_text="false" />
+    </FrameLayout>
+
+
 </RelativeLayout>

@@ -10,4 +10,6 @@ include ':app',        //基础
         ':library',      //沉浸式状态栏
         ':swipemenu',   //侧滑菜单
         ':apt',         //X2C布局加载
-        ':lib', ':uidialog'          //X2C布局加载
+        ':lib',         //X2C布局加载
+        ':uidialog',    //百度语音识别
+        'fabulous'          //点赞表情
