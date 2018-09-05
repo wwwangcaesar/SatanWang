@@ -1,12 +1,16 @@
 package about.nocare.casaer.satanwang.ui.chat;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -30,7 +34,7 @@ import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
-import com.lovcreate.core.util.ToastUtil;
+import com.lovcreate.core.util.StringUtil;
 
 import org.json.JSONObject;
 
@@ -86,6 +90,7 @@ public class ChatRobotActivity extends BaseActivity implements EventListener {
     private ChatMessageAdapter msgAdapter;
     /*百度语音识别*/
     private EventManager asr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,6 +220,8 @@ public class ChatRobotActivity extends BaseActivity implements EventListener {
         btnPressToSpeak.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                Vibrator vibrator = (Vibrator)ChatRobotActivity.this.getSystemService(ChatRobotActivity.this.VIBRATOR_SERVICE);
+                vibrator.vibrate(30);
                 start();
                 return false;
             }
@@ -324,7 +331,7 @@ public class ChatRobotActivity extends BaseActivity implements EventListener {
     @Override
     public void onEvent(String name, String params, byte[] data, int offset, int length) {
         BaiDuVoiceBeen dataBean = new Gson().fromJson(params, BaiDuVoiceBeen.class);
-        if (dataBean!=null){
+        if (dataBean != null) {
             if (!TextUtils.isEmpty(dataBean.getBest_result())) {
                 MessageEntity entity = new MessageEntity(ChatMessageAdapter.TYPE_RIGHT, TimeUtil.getCurrentTimeMillis(), dataBean.getBest_result());
                 msgList.add(entity);
@@ -373,10 +380,12 @@ public class ChatRobotActivity extends BaseActivity implements EventListener {
         // 必须与registerListener成对出现，否则可能造成内存泄露
         asr.unregisterListener(this);
     }
+
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         asr.send(SpeechConstant.ASR_CANCEL, "{}", null, 0, 0);
-        Log.i("ActivityMiniRecog","On pause");
+        Log.i("ActivityMiniRecog", "On pause");
     }
+
 }

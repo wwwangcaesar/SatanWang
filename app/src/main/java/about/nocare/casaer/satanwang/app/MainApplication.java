@@ -5,7 +5,6 @@ import android.content.Context;
 import com.lovcreate.core.app.CoreApplication;
 import com.mob.MobSDK;
 
-import tech.linjiang.pandora.Pandora;
 
 /**
 *         app 初始化

@@ -42,4 +42,13 @@
         <item name="android:paddingTop">6dp</item>
         <item name="android:paddingBottom">6dp</item>
     </style>
+    <!--长按linerlayout-->
+    <style name="content_item">
+        <item name="android:background">@drawable/to_alpha</item>
+    </style>
+
+    <style name="content_item_white" parent="content_item">
+        <item name="android:background">@drawable/ease_chat_press_speak_btn</item>
+    </style>
+
 </resources>

@@ -52,13 +52,14 @@
                 android:layout_toRightOf="@+id/iv_send_msg"
                 android:layout_marginBottom="6dp"
                 android:layout_weight="1"
-                android:background="@drawable/ease_chat_press_speak_btn"
+                style="@style/content_item_white"
                 android:gravity="center"
                 android:visibility="gone"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp">
 
                 <TextView
+                    android:id="@+id/tvSpeak"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"

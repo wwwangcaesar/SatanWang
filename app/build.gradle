@@ -52,9 +52,6 @@ dependencies {
     implementation project(':map')
     //侧滑菜单
     implementation project(path: ':swipemenu')
-    // 查看网络数据，修改数据库信息，SP信息等
-    debugImplementation 'com.github.whataa:pandora:v1.1.3'
-    releaseImplementation 'com.github.whataa:pandora-no-op:v1.1.0'
     //X2C 掌阅布局加载框架
     annotationProcessor project(':apt')
     implementation project(':lib')

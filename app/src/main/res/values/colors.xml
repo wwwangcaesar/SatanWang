@@ -44,4 +44,6 @@
     <color name="corner_color">#00FF00</color>
     <color name="sort_catagory">#FFE0E0E0</color>
 
+    <color name="divider">#dddddd</color>
+    <color name="alpha_1">#1000</color>
 </resources>
