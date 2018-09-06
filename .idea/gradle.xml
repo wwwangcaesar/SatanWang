@@ -22,6 +22,7 @@
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/map" />
             <option value="$PROJECT_DIR$/push" />
+            <option value="$PROJECT_DIR$/shareutil" />
             <option value="$PROJECT_DIR$/swipemenu" />
             <option value="$PROJECT_DIR$/uidialog" />
           </set>
