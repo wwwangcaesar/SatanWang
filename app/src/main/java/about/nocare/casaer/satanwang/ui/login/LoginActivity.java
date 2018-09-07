@@ -2,9 +2,13 @@ package about.nocare.casaer.satanwang.ui.login;
 
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.transition.ChangeBounds;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,9 +40,13 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.wave_bezier)
     WaveViewByBezier waveViewByBezier;
     @BindView(R.id.rl_login)
-    RelativeLayout rlLogin;
+    FrameLayout rlLogin;
     @BindView(R.id.wave_sincos)
     WaveViewBySinCos waveSincos;
+    @BindView(R.id.vflag)
+    View vflag;
+    @BindView(R.id.bt)
+    Button bt;
     private List<CircleBean> circleBeanList = new ArrayList<>();
 
     @Override
@@ -60,7 +68,22 @@ public class LoginActivity extends BaseActivity {
                 onFadeClick(rlLogin, waveViewByBezier, Gravity.LEFT);//从左侧划入
                 onFadeClick(rlLogin, waveSincos, Gravity.LEFT);//从左侧划入
                 waveViewByBezier.startAnimation();
+            }
+        });
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransitionManager.beginDelayedTransition(rlLogin,
+                        new ChangeBounds().setDuration(1000));
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) waveViewByBezier.getLayoutParams();
+                params.gravity = true ? Gravity.CENTER_VERTICAL : Gravity.BOTTOM;
+                waveViewByBezier.setLayoutParams(params);
 
+                TransitionManager.beginDelayedTransition(rlLogin,
+                        new ChangeBounds().setDuration(1000));
+                FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) waveSincos.getLayoutParams();
+                params1.gravity = true ? Gravity.CENTER_VERTICAL : Gravity.TOP;//第一个Gravity是要运动到的位置，第二个参数是原来的位置
+                waveSincos.setLayoutParams(params1);
             }
         });
 
