@@ -3,10 +3,10 @@ package about.nocare.casaer.satanwang.ui.login;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
-import com.lovcreate.core.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,10 @@ import java.util.List;
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.bean.login.CircleBean;
 import about.nocare.casaer.satanwang.utils.chat.DisplayUtil;
+import about.nocare.casaer.satanwang.utils.login.WaveViewByBezier;
 import about.nocare.casaer.satanwang.widget.login.BubbleView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static java.lang.Thread.sleep;
 
 /**
  * & @Description:  登录  动画  页面
@@ -31,6 +30,8 @@ public class LoginActivity extends BaseActivity {
     BubbleView circleView;
     @BindView(R.id.center_tv)
     TextView centerTv;
+    @BindView(R.id.wave_bezier)
+    WaveViewByBezier waveViewByBezier;
     private List<CircleBean> circleBeanList = new ArrayList<>();
 
     @Override
@@ -47,9 +48,12 @@ public class LoginActivity extends BaseActivity {
         circleView.setOnBubbleAnimationListener(new BubbleView.OnBubbleAnimationListener() {
             @Override
             public void onCompletedAnimationListener() {
-
+                centerTv.setVisibility(View.GONE);
+                waveViewByBezier.setVisibility(View.VISIBLE);
+                waveViewByBezier.startAnimation();
             }
         });
+
     }
 
     /**
@@ -129,5 +133,24 @@ public class LoginActivity extends BaseActivity {
         circleBeanList.add(circleBean6);
         circleBeanList.add(circleBean7);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        waveViewByBezier.pauseAnimation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        waveViewByBezier.resumeAnimation();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        waveViewByBezier.stopAnimation();
     }
 }

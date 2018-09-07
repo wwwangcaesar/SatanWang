@@ -6,25 +6,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="about.nocare.casaer.satanwang.ui.login.LoginActivity">
+
     <about.nocare.casaer.satanwang.widget.login.BubbleView
         android:id="@+id/circle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
     <TextView
         android:id="@+id/center_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_above="@+id/vflag"
-        android:layout_marginBottom="30dp"
         android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
         android:alpha="0"
         android:text="欢迎"
         android:textColor="@color/white"
         android:textSize="40sp" />
+
     <View
         android:id="@+id/vflag"
         android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:layout_centerInParent="true" />
+
+    <about.nocare.casaer.satanwang.utils.login.WaveViewByBezier
+        android:id="@+id/wave_bezier"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
+
 </RelativeLayout>
