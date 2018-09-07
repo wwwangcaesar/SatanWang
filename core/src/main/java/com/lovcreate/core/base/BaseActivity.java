@@ -20,9 +20,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -776,7 +780,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         ToastUtil.showToastBottomShort( "已复制\n" + value);
     }
 
-
+    //    Slide （滑行）
+    public void onFadeClick(ViewGroup main, View view, int diction) {
+        Transition transition = new Slide(diction);
+        TransitionManager.beginDelayedTransition(main, transition);
+        view.setVisibility(view.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+    }
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        FragmentManager fm = getSupportFragmentManager();

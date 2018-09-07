@@ -3,7 +3,9 @@ package about.nocare.casaer.satanwang.ui.login;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
@@ -32,6 +34,8 @@ public class LoginActivity extends BaseActivity {
     TextView centerTv;
     @BindView(R.id.wave_bezier)
     WaveViewByBezier waveViewByBezier;
+    @BindView(R.id.rl_login)
+    RelativeLayout rlLogin;
     private List<CircleBean> circleBeanList = new ArrayList<>();
 
     @Override
@@ -49,7 +53,8 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onCompletedAnimationListener() {
                 centerTv.setVisibility(View.GONE);
-                waveViewByBezier.setVisibility(View.VISIBLE);
+                /*下方波浪动画*/
+                onFadeClick(rlLogin,waveViewByBezier, Gravity.LEFT);//从左侧划入
                 waveViewByBezier.startAnimation();
             }
         });
