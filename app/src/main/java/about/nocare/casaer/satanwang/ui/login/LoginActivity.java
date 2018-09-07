@@ -17,6 +17,7 @@ import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.bean.login.CircleBean;
 import about.nocare.casaer.satanwang.utils.chat.DisplayUtil;
 import about.nocare.casaer.satanwang.utils.login.WaveViewByBezier;
+import about.nocare.casaer.satanwang.utils.login.WaveViewBySinCos;
 import about.nocare.casaer.satanwang.widget.login.BubbleView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +37,8 @@ public class LoginActivity extends BaseActivity {
     WaveViewByBezier waveViewByBezier;
     @BindView(R.id.rl_login)
     RelativeLayout rlLogin;
+    @BindView(R.id.wave_sincos)
+    WaveViewBySinCos waveSincos;
     private List<CircleBean> circleBeanList = new ArrayList<>();
 
     @Override
@@ -54,8 +57,10 @@ public class LoginActivity extends BaseActivity {
             public void onCompletedAnimationListener() {
                 centerTv.setVisibility(View.GONE);
                 /*下方波浪动画*/
-                onFadeClick(rlLogin,waveViewByBezier, Gravity.LEFT);//从左侧划入
+                onFadeClick(rlLogin, waveViewByBezier, Gravity.LEFT);//从左侧划入
+                onFadeClick(rlLogin, waveSincos, Gravity.LEFT);//从左侧划入
                 waveViewByBezier.startAnimation();
+
             }
         });
 

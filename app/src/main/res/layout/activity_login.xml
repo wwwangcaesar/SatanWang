@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:wave="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rl_login"
     android:orientation="vertical"
     tools:context="about.nocare.casaer.satanwang.ui.login.LoginActivity">
 
@@ -39,4 +39,15 @@
         android:layout_alignParentBottom="true"
         android:visibility="gone" />
 
+    <about.nocare.casaer.satanwang.utils.login.WaveViewBySinCos
+        android:id="@+id/wave_sincos"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        wave:waveAmplitude="10dp"
+        wave:waveFillType="top"
+        wave:waveSpeed="3"
+        wave:waveStart="true"
+        wave:waveStartPeriod="1"
+        wave:waveType="cos" />
 </RelativeLayout>
