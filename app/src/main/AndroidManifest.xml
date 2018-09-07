@@ -28,9 +28,8 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!--震动权限-->
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
+    <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
     <!-- 自动聚焦权限 -->
     <application
         android:name=".app.MainApplication"
@@ -93,7 +92,7 @@
         <activity
             android:name=".ui.chat.DetailActivity"
             android:theme="@style/ChatAppTheme" />
-        <!--百度语音key-->
+        <!-- 百度语音key -->
         <meta-data
             android:name="com.baidu.speech.APP_ID"
             android:value="11764967" />
@@ -103,5 +102,9 @@
         <meta-data
             android:name="com.baidu.speech.SECRET_KEY"
             android:value="umrvQbAOKoVhsG4T3AVtB7ZvApm0UXaD" />
+        <!-- 百度语音key -->
+        <activity android:name=".ui.login.LoginActivity"
+            android:theme="@style/ChatAppTheme" />
     </application>
+
 </manifest>

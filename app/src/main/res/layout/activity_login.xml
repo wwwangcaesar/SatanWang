@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="about.nocare.casaer.satanwang.ui.login.LoginActivity">
+    <about.nocare.casaer.satanwang.widget.login.BubbleView
+        android:id="@+id/circle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/center_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_above="@+id/vflag"
+        android:layout_marginBottom="30dp"
+        android:layout_centerHorizontal="true"
+        android:alpha="0"
+        android:text="欢迎"
+        android:textColor="@color/white"
+        android:textSize="40sp" />
+    <View
+        android:id="@+id/vflag"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_height="1dp"/>
+</RelativeLayout>

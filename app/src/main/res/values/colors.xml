@@ -46,4 +46,8 @@
 
     <color name="divider">#dddddd</color>
     <color name="alpha_1">#1000</color>
+
+    <!--登录气泡动画-->
+    <color name="circle_start">#fa7832</color>
+    <color name="circle_end">#eb4438</color>
 </resources>

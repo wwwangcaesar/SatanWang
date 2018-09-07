@@ -23,8 +23,9 @@
 
         <com.lovcreate.core.widget.CircularImage
             android:id="@+id/tvOtherLan"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="6dp"
             android:layout_gravity="left|top"
             android:padding="4dp"
             android:scaleType="fitXY"

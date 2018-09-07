@@ -64,6 +64,7 @@ import about.nocare.casaer.satanwang.ui.chat.ChatRobotActivity;
 import about.nocare.casaer.satanwang.ui.home.HomeCityActivity;
 import about.nocare.casaer.satanwang.ui.home.HomeMapActivity;
 import about.nocare.casaer.satanwang.ui.home.appMore.AppMoreActivity;
+import about.nocare.casaer.satanwang.ui.login.LoginActivity;
 import about.nocare.casaer.satanwang.utils.DensityUtil;
 import about.nocare.casaer.satanwang.utils.FloatWindowUtils;
 import about.nocare.casaer.satanwang.utils.GuideHelper;
@@ -377,7 +378,9 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             @Override
             public void onNoDoubleClick(View v) {
                 if (TextUtils.isEmpty(AppSession.getPassword())) {//先要绑定MAinApplication，否则SP不好使
-                    ToastUtil.showToastBottomShort("点击");
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    alert.dismiss();
+                    alert.cancel();
                 } else {
 
                 }
