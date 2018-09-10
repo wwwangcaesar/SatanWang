@@ -46,14 +46,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/bt"
+        <ImageView
+            android:id="@+id/ivFeel"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:text="555555555555555555"
-            android:textColor="@color/black" />
+            android:layout_height="match_parent"
+            android:src="@mipmap/feel"
+            android:visibility="invisible"
+            />
+        <about.nocare.casaer.satanwang.widget.login.AnimationButton
+            android:id="@+id/bt"
+            android:layout_width="104dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="56dp"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 
     <about.nocare.casaer.satanwang.utils.login.WaveViewByBezier

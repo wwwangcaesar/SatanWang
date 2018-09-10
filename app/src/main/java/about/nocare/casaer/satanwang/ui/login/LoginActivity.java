@@ -1,15 +1,18 @@
 package about.nocare.casaer.satanwang.ui.login;
 
+import android.animation.Animator;
 import android.graphics.PointF;
+import android.os.Build;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
+import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewAnimationUtils;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
@@ -22,6 +25,7 @@ import about.nocare.casaer.satanwang.bean.login.CircleBean;
 import about.nocare.casaer.satanwang.utils.chat.DisplayUtil;
 import about.nocare.casaer.satanwang.utils.login.WaveViewByBezier;
 import about.nocare.casaer.satanwang.utils.login.WaveViewBySinCos;
+import about.nocare.casaer.satanwang.widget.login.AnimationButton;
 import about.nocare.casaer.satanwang.widget.login.BubbleView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +50,9 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.vflag)
     View vflag;
     @BindView(R.id.bt)
-    Button bt;
+    AnimationButton bt;
+    @BindView(R.id.ivFeel)
+    ImageView ivFeel;
     private List<CircleBean> circleBeanList = new ArrayList<>();
 
     @Override
@@ -54,39 +60,110 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        initPoint();//设置bean数据
+        initView();
+        initEnvt();//点击事件
+    }
 
-        initPoint();
+    /**
+     * 初始化控件
+     */
+    private void initView() {
         circleView.setCircleBeen(circleBeanList);
         //开启动画
         circleView.setCenterImg(centerTv);
         circleView.openAnimation();
+    }
+
+    /**
+     * 初始化点击事件
+     */
+    private void initEnvt() {
         circleView.setOnBubbleAnimationListener(new BubbleView.OnBubbleAnimationListener() {
             @Override
             public void onCompletedAnimationListener() {
                 centerTv.setVisibility(View.GONE);
+                bt.setVisibility(View.VISIBLE);
                 /*下方波浪动画*/
                 onFadeClick(rlLogin, waveViewByBezier, Gravity.LEFT);//从左侧划入
                 onFadeClick(rlLogin, waveSincos, Gravity.LEFT);//从左侧划入
                 waveViewByBezier.startAnimation();
             }
         });
-        bt.setOnClickListener(new View.OnClickListener() {
+        bt.setAnimationButtonListener(new AnimationButton.AnimationButtonListener() {
             @Override
-            public void onClick(View v) {
+            public void onClickListener() {
+                bt.start();
+            }
+
+            @Override
+            public void animationFinish() {
+                bt.setVisibility(View.GONE);
                 TransitionManager.beginDelayedTransition(rlLogin,
-                        new ChangeBounds().setDuration(1000));
+                        new ChangeBounds().setDuration(4000).addListener(new Transition.TransitionListener() {
+                            @Override
+                            public void onTransitionStart(Transition transition) {
+
+                            }
+
+                            @Override
+                            public void onTransitionEnd(Transition transition) {
+                                waveViewByBezier.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onTransitionCancel(Transition transition) {
+
+                            }
+
+                            @Override
+                            public void onTransitionPause(Transition transition) {
+
+                            }
+
+                            @Override
+                            public void onTransitionResume(Transition transition) {
+
+                            }
+                        }));
                 FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) waveViewByBezier.getLayoutParams();
                 params.gravity = true ? Gravity.CENTER_VERTICAL : Gravity.BOTTOM;
                 waveViewByBezier.setLayoutParams(params);
 
+
                 TransitionManager.beginDelayedTransition(rlLogin,
-                        new ChangeBounds().setDuration(1000));
+                        new ChangeBounds().setDuration(4000).addListener(new Transition.TransitionListener() {
+                            @Override
+                            public void onTransitionStart(Transition transition) {
+
+                            }
+
+                            @Override
+                            public void onTransitionEnd(Transition transition) {
+                                waveSincos.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onTransitionCancel(Transition transition) {
+
+                            }
+
+                            @Override
+                            public void onTransitionPause(Transition transition) {
+
+                            }
+
+                            @Override
+                            public void onTransitionResume(Transition transition) {
+
+                            }
+                        }));
                 FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) waveSincos.getLayoutParams();
                 params1.gravity = true ? Gravity.CENTER_VERTICAL : Gravity.TOP;//第一个Gravity是要运动到的位置，第二个参数是原来的位置
                 waveSincos.setLayoutParams(params1);
+                Exposeanimation();
             }
         });
-
     }
 
     /**
@@ -168,6 +245,30 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    /**
+     *  揭露动画图片
+     */
+    private void Exposeanimation(){
+        final int centerX = 0;
+        final int centerY = 0;
+        final float radius = (float) Math.hypot(ivFeel.getWidth(), ivFeel.getHeight());
+
+        if (ivFeel.getVisibility() == View.VISIBLE) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Animator animator = ViewAnimationUtils.createCircularReveal(ivFeel, centerX, centerY, radius, 0);
+                animator.setDuration(6000);
+                animator.start();
+            }
+
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Animator animator = ViewAnimationUtils.createCircularReveal(ivFeel, centerX, centerY, 0, radius);
+                animator.setDuration(8000);
+                ivFeel.setVisibility(View.VISIBLE);
+                animator.start();
+            }
+        }
+    }
     @Override
     protected void onPause() {
         super.onPause();
