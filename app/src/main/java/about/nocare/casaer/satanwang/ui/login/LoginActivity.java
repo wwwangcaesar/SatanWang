@@ -186,6 +186,23 @@ public class LoginActivity extends BaseActivity {
                 Exposeanimation();
             }
         });
+        /*判断密码输入的对比情况*/
+        password.setComparePassword(new PayPsdInputView.onPasswordListener() {
+            @Override
+            public void onDifference(String oldPsd, String newPsd) {
+
+            }
+
+            @Override
+            public void onEqual(String psd) {
+
+            }
+
+            @Override
+            public void inputFinished(String inputPsd) {
+
+            }
+        });
     }
 
     /**
