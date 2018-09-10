@@ -2,10 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:wave="http://schemas.android.com/apk/res-auto"
+    xmlns:psd="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="about.nocare.casaer.satanwang.ui.login.LoginActivity">
+
 
     <about.nocare.casaer.satanwang.widget.login.BubbleView
         android:id="@+id/circle_view"
@@ -44,6 +46,7 @@
         wave:waveType="cos" />
 
     <RelativeLayout
+        android:id="@+id/rlChange"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
@@ -61,12 +64,23 @@
             android:layout_marginLeft="40dp"
             android:visibility="gone"
             />
+        <about.nocare.casaer.satanwang.widget.login.PayPsdInputView
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bt"
+            android:layout_margin="10dp"
+            android:inputType="number"
+            android:visibility="gone"
+            psd:maxCount="6"
+            psd:psdType="bottomLine" />
         <about.nocare.casaer.satanwang.widget.login.AnimationButton
             android:id="@+id/bt"
             android:layout_width="104dp"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="56dp"
             android:visibility="gone"
             />

@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionManager;
@@ -11,8 +12,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
@@ -28,6 +31,7 @@ import about.nocare.casaer.satanwang.utils.login.WaveViewBySinCos;
 import about.nocare.casaer.satanwang.widget.login.AnimationButton;
 import about.nocare.casaer.satanwang.widget.login.BubbleView;
 import about.nocare.casaer.satanwang.widget.login.DragBallView;
+import about.nocare.casaer.satanwang.widget.login.PayPsdInputView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -56,11 +60,16 @@ public class LoginActivity extends BaseActivity {
     ImageView ivFeel;
     @BindView(R.id.drag_ball_view)
     DragBallView dragBallView;
+    @BindView(R.id.rlChange)
+    RelativeLayout rlChange;
+    @BindView(R.id.password)
+    PayPsdInputView password;
     private List<CircleBean> circleBeanList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initPoint();//设置bean数据
@@ -89,6 +98,7 @@ public class LoginActivity extends BaseActivity {
                 centerTv.setVisibility(View.GONE);
                 bt.setVisibility(View.VISIBLE);
                 dragBallView.setVisibility(View.VISIBLE);
+                password.setVisibility(View.VISIBLE);
                 /*下方波浪动画*/
                 onFadeClick(rlLogin, waveViewByBezier, Gravity.LEFT);//从左侧划入
                 onFadeClick(rlLogin, waveSincos, Gravity.LEFT);//从左侧划入
@@ -108,7 +118,13 @@ public class LoginActivity extends BaseActivity {
                         new ChangeBounds().setDuration(4000).addListener(new Transition.TransitionListener() {
                             @Override
                             public void onTransitionStart(Transition transition) {
-
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        password.setVisibility(View.GONE); //view是要隐藏的控件
+                                    }
+                                }, 2000);
                             }
 
                             @Override
