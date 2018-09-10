@@ -53,6 +53,14 @@
             android:src="@mipmap/feel"
             android:visibility="invisible"
             />
+        <about.nocare.casaer.satanwang.widget.login.DragBallView
+            android:id="@+id/drag_ball_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/bt"
+            android:layout_marginLeft="40dp"
+            android:visibility="gone"
+            />
         <about.nocare.casaer.satanwang.widget.login.AnimationButton
             android:id="@+id/bt"
             android:layout_width="104dp"

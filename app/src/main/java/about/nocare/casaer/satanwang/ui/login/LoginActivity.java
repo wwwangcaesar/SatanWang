@@ -27,6 +27,7 @@ import about.nocare.casaer.satanwang.utils.login.WaveViewByBezier;
 import about.nocare.casaer.satanwang.utils.login.WaveViewBySinCos;
 import about.nocare.casaer.satanwang.widget.login.AnimationButton;
 import about.nocare.casaer.satanwang.widget.login.BubbleView;
+import about.nocare.casaer.satanwang.widget.login.DragBallView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -53,6 +54,8 @@ public class LoginActivity extends BaseActivity {
     AnimationButton bt;
     @BindView(R.id.ivFeel)
     ImageView ivFeel;
+    @BindView(R.id.drag_ball_view)
+    DragBallView dragBallView;
     private List<CircleBean> circleBeanList = new ArrayList<>();
 
     @Override
@@ -73,6 +76,7 @@ public class LoginActivity extends BaseActivity {
         //开启动画
         circleView.setCenterImg(centerTv);
         circleView.openAnimation();
+        dragBallView.setMsgCount(100);
     }
 
     /**
@@ -84,6 +88,7 @@ public class LoginActivity extends BaseActivity {
             public void onCompletedAnimationListener() {
                 centerTv.setVisibility(View.GONE);
                 bt.setVisibility(View.VISIBLE);
+                dragBallView.setVisibility(View.VISIBLE);
                 /*下方波浪动画*/
                 onFadeClick(rlLogin, waveViewByBezier, Gravity.LEFT);//从左侧划入
                 onFadeClick(rlLogin, waveSincos, Gravity.LEFT);//从左侧划入
@@ -109,6 +114,7 @@ public class LoginActivity extends BaseActivity {
                             @Override
                             public void onTransitionEnd(Transition transition) {
                                 waveViewByBezier.setVisibility(View.GONE);
+                                dragBallView.setVisibility(View.GONE);
                             }
 
                             @Override
@@ -246,9 +252,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     /**
-     *  揭露动画图片
+     * 揭露动画图片
      */
-    private void Exposeanimation(){
+    private void Exposeanimation() {
         final int centerX = 0;
         final int centerY = 0;
         final float radius = (float) Math.hypot(ivFeel.getWidth(), ivFeel.getHeight());
@@ -263,12 +269,13 @@ public class LoginActivity extends BaseActivity {
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Animator animator = ViewAnimationUtils.createCircularReveal(ivFeel, centerX, centerY, 0, radius);
-                animator.setDuration(8000);
+                animator.setDuration(6500);
                 ivFeel.setVisibility(View.VISIBLE);
                 animator.start();
             }
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
