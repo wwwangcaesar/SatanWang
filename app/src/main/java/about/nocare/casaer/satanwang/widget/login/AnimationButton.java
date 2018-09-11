@@ -14,6 +14,7 @@ import android.graphics.PathEffect;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -48,11 +49,11 @@ public class AnimationButton extends View {
     /**
      * 背景颜色
      */
-    private int bg_color = 0xaaFF7E37;
+    private int bg_color = 0xaa3F3F3F;
     /**
      * 按钮文字字符串
      */
-    private String buttonString = "完成";
+    public static String buttonString = "完成";
     /**
      * 动画执行时间
      */

@@ -7,15 +7,20 @@ import android.graphics.PointF;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.transition.ChangeBounds;
+import android.transition.Fade;
 import android.transition.Transition;
 import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
+import com.lovcreate.core.util.AppSession;
+import com.lovcreate.core.widget.ClearMaterialEditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +37,16 @@ import java.util.List;
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.bean.login.CircleBean;
 import about.nocare.casaer.satanwang.listener.login.KeyboardWatcher;
+import about.nocare.casaer.satanwang.ui.guide.xianyuApp.Guide2Activity;
 import about.nocare.casaer.satanwang.utils.chat.DisplayUtil;
 import about.nocare.casaer.satanwang.utils.login.WaveViewByBezier;
 import about.nocare.casaer.satanwang.utils.login.WaveViewBySinCos;
 import about.nocare.casaer.satanwang.widget.login.AnimationButton;
 import about.nocare.casaer.satanwang.widget.login.BubbleView;
-import about.nocare.casaer.satanwang.widget.login.DragBallView;
 import about.nocare.casaer.satanwang.widget.login.PayPsdInputView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 /**
  * & @Description:  登录  动画  页面
@@ -71,11 +79,15 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
     ImageView ivLogo;
     @BindView(R.id.llLogin)
     LinearLayout llLogin;
+    @BindView(R.id.phoneNumEditText)
+    ClearMaterialEditText phoneNumEditText;
+    @BindView(R.id.tvtitle)
+    TextView tvtitle;
     private List<CircleBean> circleBeanList = new ArrayList<>();
 
 
     private KeyboardWatcher keyboardWatcher;
-    private float scale = 0.8f; //logo缩放比例
+    private float scale = 0.4f; //logo缩放比例
     private int screenHeight = 0;//屏幕高度
 
     @Override
@@ -112,6 +124,19 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
                 centerTv.setVisibility(View.GONE);
                 bt.setVisibility(View.VISIBLE);
                 password.setVisibility(View.VISIBLE);
+
+                TransitionSet set = new TransitionSet()
+                        .addTransition(new Fade());
+                set.setDuration(3000);
+                TransitionManager.beginDelayedTransition(rlChange, set);
+                ivLogo.setVisibility(ivLogo.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+
+                TransitionSet set1 = new TransitionSet()
+                        .addTransition(new Fade());
+                set1.setDuration(3000);
+                TransitionManager.beginDelayedTransition(llLogin, set1);
+                llLogin.setVisibility(llLogin.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+
                 /*下方波浪动画*/
                 onFadeClick(rlLogin, waveViewByBezier, Gravity.LEFT);//从左侧划入
                 onFadeClick(rlLogin, waveSincos, Gravity.LEFT);//从左侧划入
@@ -121,7 +146,24 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
         bt.setAnimationButtonListener(new AnimationButton.AnimationButtonListener() {
             @Override
             public void onClickListener() {
-                bt.start();
+                if (TextUtils.isEmpty(phoneNumEditText.getText().toString())||TextUtils.isEmpty(password.getText().toString())){
+                    AnimationButton.buttonString="账号或者密码不能为空";
+                    bt.invalidate();//重新绘制界面
+//                    bt.requestLayout();
+                    Guide2Activity.startShakeByPropertyAnim(bt, 0.9f, 1.1f, 10f, 1000);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            AnimationButton.buttonString="完成";
+                            bt.invalidate();//重新绘制界面
+                        }
+                    }, 1000);
+                }else {
+                    bt.start();
+                    AppSession.setPhone(phoneNumEditText.getText().toString());
+                    AppSession.setPassword(password.getText().toString());
+                }
             }
 
             @Override
@@ -137,8 +179,15 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
                                     @Override
                                     public void run() {
                                         password.setVisibility(View.GONE); //view是要隐藏的控件
+                                        tvtitle.setVisibility(View.GONE);
+                                        phoneNumEditText.setVisibility(View.GONE);
+                                        TransitionSet set = new TransitionSet()
+                                                .addTransition(new Fade());
+                                        set.setDuration(1000);
+                                        TransitionManager.beginDelayedTransition(rlChange, set);
+                                        ivLogo.setVisibility(ivLogo.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
                                     }
-                                }, 2000);
+                                }, 1500);
                             }
 
                             @Override

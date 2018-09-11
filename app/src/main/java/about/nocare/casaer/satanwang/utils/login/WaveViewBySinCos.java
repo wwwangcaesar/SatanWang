@@ -40,7 +40,7 @@ public class WaveViewBySinCos extends View {
     /**
      * 波形的颜色
      */
-    private int waveColor = 0xaaFF7E37;
+    private int waveColor = 0xaa3F3F3F;
 
     /**
      * 初相

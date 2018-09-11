@@ -156,7 +156,7 @@ public class Guide2Activity extends FragmentActivity {
      * @param shakeDegrees
      * @param duration
      */
-    private void startShakeByPropertyAnim(View view, float scaleSmall, float scaleLarge, float shakeDegrees, long duration) {
+    public static void startShakeByPropertyAnim(View view, float scaleSmall, float scaleLarge, float shakeDegrees, long duration) {
         if (view == null) {
             return;
         }

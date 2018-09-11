@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:wave="http://schemas.android.com/apk/res-auto"
     xmlns:psd="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -61,7 +62,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivLogo"
+            android:visibility="gone"
             android:orientation="vertical">
+            <com.lovcreate.core.widget.ClearMaterialEditText
+                android:id="@+id/phoneNumEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="32dp"
+                android:background="@null"
+                android:hint="账号"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:textSize="15sp"
+                app:et_dividerColor="@color/divider"
+                app:et_dividerErrorColor="@color/divider"
+                app:et_dividerHeight="1dp"
+                app:et_dividerPadding="8dp"
+                app:et_labelEnable="true"
+                app:et_labelPadding="12dp"
+                app:et_labelTextSize="10sp"
+                app:et_supportMode="helper"
+                app:et_supportPadding="16dp"
+                app:et_supportTextErrorColor="@color/black"
+                app:et_supportTextSize="10sp"
+                >
+
+            </com.lovcreate.core.widget.ClearMaterialEditText>
+            <TextView
+                android:id="@+id/tvtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="支付密码"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:textColor="#808198"
+                android:textSize="15sp"/>
             <about.nocare.casaer.satanwang.widget.login.PayPsdInputView
                 android:id="@+id/password"
                 android:layout_width="match_parent"
@@ -73,10 +110,13 @@
                 psd:psdType="bottomLine" />
             <about.nocare.casaer.satanwang.widget.login.AnimationButton
                 android:id="@+id/bt"
-                android:layout_width="104dp"
+                android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
                 android:visibility="gone"
                 />
         </LinearLayout>
@@ -85,7 +125,8 @@
             android:layout_width="wrap_content"
             android:src="@mipmap/cry11"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="120dp"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             />
 
