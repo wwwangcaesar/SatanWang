@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
+import com.lovcreate.core.base.OnClickListener;
 import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.widget.ClearMaterialEditText;
 
@@ -158,7 +159,7 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
                             AnimationButton.buttonString="完成";
                             bt.invalidate();//重新绘制界面
                         }
-                    }, 1000);
+                    }, 2000);
                 }else {
                     bt.start();
                     AppSession.setPhone(phoneNumEditText.getText().toString());
@@ -263,6 +264,13 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
             @Override
             public void inputFinished(String inputPsd) {
 
+            }
+        });
+
+        ivFeel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                finish();
             }
         });
     }

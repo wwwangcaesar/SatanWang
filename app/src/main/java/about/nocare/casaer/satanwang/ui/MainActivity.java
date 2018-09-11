@@ -169,9 +169,11 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         textShape.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-//                onGuild();
-//                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                startActivity(new Intent(MainActivity.this, AppMoreActivity.class));
+                if (TextUtils.isEmpty(AppSession.getPassword())){
+                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                }else {
+                    startActivity(new Intent(MainActivity.this, AppMoreActivity.class));
+                }
             }
         });
         tvCity.setOnClickListener(new OnClickListener() {
