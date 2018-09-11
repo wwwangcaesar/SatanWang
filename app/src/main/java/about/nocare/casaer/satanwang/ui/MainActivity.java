@@ -72,6 +72,7 @@ import about.nocare.casaer.satanwang.utils.PicassoImageLoader;
 import about.nocare.casaer.satanwang.utils.StatusBarCompat;
 import about.nocare.casaer.satanwang.utils.TextShape;
 import about.nocare.casaer.satanwang.utils.fabulous.BitmapProviderFactory;
+import about.nocare.casaer.satanwang.widget.login.DragBallView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -97,6 +98,10 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     SwipeMenu mainSwipemenu;
     @BindView(R.id.tvbeer)
     TextView tvbeer;
+    @BindView(R.id.drag_ball_view)
+    DragBallView dragBallView;
+    @BindView(R.id.like_btn)
+    ImageView likeBtn;
     private int mVideoPosition;
     private boolean mHasPaused;
 
@@ -123,12 +128,13 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     private long endTime = 0;
     /* 点赞动画效果*/
     SuperLikeLayout superLikeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        superLikeLayout = (SuperLikeLayout)findViewById(R.id.super_like_layout);
+        superLikeLayout = (SuperLikeLayout) findViewById(R.id.super_like_layout);
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -225,7 +231,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         mView.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                Intent intent=new Intent(MainActivity.this,ChatRobotActivity.class);
+                Intent intent = new Intent(MainActivity.this, ChatRobotActivity.class);
                 startActivity(intent);
             }
         });
@@ -282,6 +288,8 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 return isclick;
             }
         });
+        //黏性小球
+        dragBallView.setMsgCount(100);
 
     }
 
@@ -494,9 +502,9 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 vvSplash.resume();
             }
         }
-        if (TextUtils.isEmpty(AppSession.getHeadUrl())){
+        if (TextUtils.isEmpty(AppSession.getHeadUrl())) {
             tvOtherLan.setImageResource(R.mipmap.ic_user_default_big);
-        }else {
+        } else {
             Uri uri = Uri.fromFile(new File(AppSession.getHeadUrl()));
             tvOtherLan.setImageURI(uri);
         }
@@ -576,7 +584,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 .iHandlerCallBack(iHandlerCallBack)             // 监听接口（必填）
                 .provider("about.nocare.casaer.satanwang.fileprovider")     // provider (必填)   todo 这里复制的时候出现错误注意，详情介绍看朗创bee
                 .multiSelect(true, 1)         // 配置是否多选的同时 配置多选数量   默认：false ， 9
-                .crop(true,true)              // 快捷开启裁剪功能：单选模式、拍照、多选模式只选一张时开启
+                .crop(true, true)              // 快捷开启裁剪功能：单选模式、拍照、多选模式只选一张时开启
                 .isShowCamera(false)                            // 是否现实相机按钮  默认：false
                 .filePath("/Gallery/Pictures")                  // 图片存放路径
                 .build();
@@ -653,6 +661,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     private File cameraTempFile;
     private File cropTempFile;
     private ArrayList<String> resultPhoto = new ArrayList<>();
+
     /**
      * 打开相机
      * 这里要注意，如果要使用以下方法打开相机，必须又两点需要配置：
@@ -703,29 +712,31 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     }
 
     /**
-     *  点赞动画效果
+     * 点赞动画效果
      */
-    private void setFabulous(){
+    private void setFabulous() {
 
         superLikeLayout.setProvider(BitmapProviderFactory.getHDProvider(this));
         findViewById(R.id.like_btn).setOnClickListener(new View.OnClickListener() {
             long duration = 2000;
             long lastClickTime;
+
             @Override
             public void onClick(View v) {
-                if(System.currentTimeMillis() - lastClickTime > duration){ // 防抖
+                if (System.currentTimeMillis() - lastClickTime > duration) { // 防抖
                     v.setSelected(!v.isSelected());
                 }
                 lastClickTime = System.currentTimeMillis();
-                if(v.isSelected()){
-                    int x = (int)(v.getX() + v.getWidth() / 2);
-                    int y = (int)(v.getY() + v.getHeight() / 2);
+                if (v.isSelected()) {
+                    int x = (int) (v.getX() + v.getWidth() / 2);
+                    int y = (int) (v.getY() + v.getHeight() / 2);
                     superLikeLayout.launch(x, y);
                 }
 
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CAMERA) {

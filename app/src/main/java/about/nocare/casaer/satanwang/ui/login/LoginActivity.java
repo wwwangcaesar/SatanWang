@@ -1,6 +1,8 @@
 package about.nocare.casaer.satanwang.ui.login;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.graphics.PointF;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,9 +14,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.view.WindowManager;
+import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +29,7 @@ import java.util.List;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.bean.login.CircleBean;
+import about.nocare.casaer.satanwang.listener.login.KeyboardWatcher;
 import about.nocare.casaer.satanwang.utils.chat.DisplayUtil;
 import about.nocare.casaer.satanwang.utils.login.WaveViewByBezier;
 import about.nocare.casaer.satanwang.utils.login.WaveViewBySinCos;
@@ -40,7 +45,7 @@ import butterknife.ButterKnife;
  * & @Author:  Satan
  * & @Time:  2018/9/7 14:28
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftKeyboardStateListener {
     private static final String TAG = "LoginActivity";
     @BindView(R.id.circle_view)
     BubbleView circleView;
@@ -58,23 +63,33 @@ public class LoginActivity extends BaseActivity {
     AnimationButton bt;
     @BindView(R.id.ivFeel)
     ImageView ivFeel;
-    @BindView(R.id.drag_ball_view)
-    DragBallView dragBallView;
     @BindView(R.id.rlChange)
     RelativeLayout rlChange;
     @BindView(R.id.password)
     PayPsdInputView password;
+    @BindView(R.id.ivLogo)
+    ImageView ivLogo;
+    @BindView(R.id.llLogin)
+    LinearLayout llLogin;
     private List<CircleBean> circleBeanList = new ArrayList<>();
+
+
+    private KeyboardWatcher keyboardWatcher;
+    private float scale = 0.8f; //logo缩放比例
+    private int screenHeight = 0;//屏幕高度
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initPoint();//设置bean数据
         initView();
         initEnvt();//点击事件
+        screenHeight = this.getResources().getDisplayMetrics().heightPixels; //获取屏幕高度
+
+        keyboardWatcher = new KeyboardWatcher(findViewById(Window.ID_ANDROID_CONTENT));
+        keyboardWatcher.addSoftKeyboardStateListener(this);
     }
 
     /**
@@ -85,7 +100,6 @@ public class LoginActivity extends BaseActivity {
         //开启动画
         circleView.setCenterImg(centerTv);
         circleView.openAnimation();
-        dragBallView.setMsgCount(100);
     }
 
     /**
@@ -97,7 +111,6 @@ public class LoginActivity extends BaseActivity {
             public void onCompletedAnimationListener() {
                 centerTv.setVisibility(View.GONE);
                 bt.setVisibility(View.VISIBLE);
-                dragBallView.setVisibility(View.VISIBLE);
                 password.setVisibility(View.VISIBLE);
                 /*下方波浪动画*/
                 onFadeClick(rlLogin, waveViewByBezier, Gravity.LEFT);//从左侧划入
@@ -118,6 +131,7 @@ public class LoginActivity extends BaseActivity {
                         new ChangeBounds().setDuration(4000).addListener(new Transition.TransitionListener() {
                             @Override
                             public void onTransitionStart(Transition transition) {
+                                hideSoftInput();
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     @Override
@@ -130,7 +144,6 @@ public class LoginActivity extends BaseActivity {
                             @Override
                             public void onTransitionEnd(Transition transition) {
                                 waveViewByBezier.setVisibility(View.GONE);
-                                dragBallView.setVisibility(View.GONE);
                             }
 
                             @Override
@@ -326,5 +339,84 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         waveViewByBezier.stopAnimation();
+        keyboardWatcher.removeSoftKeyboardStateListener(this);
+    }
+
+    /**
+     * 缩小
+     *
+     * @param view
+     */
+    public void zoomIn(final View view, float dist) {
+        view.setPivotY(view.getHeight());
+        view.setPivotX(view.getWidth() / 2);
+        AnimatorSet mAnimatorSet = new AnimatorSet();
+        ObjectAnimator mAnimatorScaleX = ObjectAnimator.ofFloat(view, "scaleX", 1.0f, scale);
+        ObjectAnimator mAnimatorScaleY = ObjectAnimator.ofFloat(view, "scaleY", 1.0f, scale);
+        ObjectAnimator mAnimatorTranslateY = ObjectAnimator.ofFloat(view, "translationY", 0.0f, -dist);
+
+        mAnimatorSet.play(mAnimatorTranslateY).with(mAnimatorScaleX).with(mAnimatorScaleY);
+
+        mAnimatorSet.setDuration(300);
+        mAnimatorSet.start();
+
+    }
+
+    /**
+     * f放大
+     *
+     * @param view
+     */
+    public void zoomOut(final View view) {
+        if (view.getTranslationY() == 0) {
+            return;
+        }
+        view.setPivotY(view.getHeight());
+        view.setPivotX(view.getWidth() / 2);
+        AnimatorSet mAnimatorSet = new AnimatorSet();
+
+        ObjectAnimator mAnimatorScaleX = ObjectAnimator.ofFloat(view, "scaleX", scale, 1.0f);
+        ObjectAnimator mAnimatorScaleY = ObjectAnimator.ofFloat(view, "scaleY", scale, 1.0f);
+        ObjectAnimator mAnimatorTranslateY = ObjectAnimator.ofFloat(view, "translationY", view.getTranslationY(), 0);
+
+        mAnimatorSet.play(mAnimatorTranslateY).with(mAnimatorScaleX).with(mAnimatorScaleY);
+        mAnimatorSet.setDuration(300);
+        mAnimatorSet.start();
+
+    }
+
+    /**
+     * 软键盘监听事件接口回调
+     *
+     * @param
+     */
+    @Override
+    public void onSoftKeyboardOpened(int keyboardSize) {
+        Log.e("wenzhihao", "----->show" + keyboardSize);
+        int[] location = new int[2];
+        llLogin.getLocationOnScreen(location); //获取body在屏幕中的坐标,控件左上角
+        int x = location[0];
+        int y = location[1];
+        Log.e("wenzhihao", "y = " + y + ",x=" + x);
+        int bottom = screenHeight - (y + llLogin.getHeight());
+        Log.e("wenzhihao", "bottom = " + bottom);
+        Log.e("wenzhihao", "con-h = " + llLogin.getHeight());
+        if (keyboardSize > bottom) {
+            ObjectAnimator mAnimatorTranslateY = ObjectAnimator.ofFloat(llLogin, "translationY", 0.0f, -(keyboardSize - bottom));
+            mAnimatorTranslateY.setDuration(300);
+            mAnimatorTranslateY.setInterpolator(new AccelerateDecelerateInterpolator());
+            mAnimatorTranslateY.start();
+            zoomIn(ivLogo, keyboardSize - bottom);
+        }
+    }
+
+    @Override
+    public void onSoftKeyboardClosed() {
+        Log.e("wenzhihao", "----->hide");
+        ObjectAnimator mAnimatorTranslateY = ObjectAnimator.ofFloat(llLogin, "translationY", rlChange.getTranslationY(), 0);
+        mAnimatorTranslateY.setDuration(300);
+        mAnimatorTranslateY.setInterpolator(new AccelerateDecelerateInterpolator());
+        mAnimatorTranslateY.start();
+        zoomOut(ivLogo);
     }
 }

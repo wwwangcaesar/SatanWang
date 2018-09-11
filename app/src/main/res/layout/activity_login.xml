@@ -56,34 +56,39 @@
             android:src="@mipmap/feel"
             android:visibility="invisible"
             />
-        <about.nocare.casaer.satanwang.widget.login.DragBallView
-            android:id="@+id/drag_ball_view"
+        <LinearLayout
+            android:id="@+id/llLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/bt"
-            android:layout_marginLeft="40dp"
-            android:visibility="gone"
-            />
-        <about.nocare.casaer.satanwang.widget.login.PayPsdInputView
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bt"
-            android:layout_margin="10dp"
-            android:inputType="number"
-            android:visibility="gone"
-            psd:maxCount="6"
-            psd:psdType="bottomLine" />
-        <about.nocare.casaer.satanwang.widget.login.AnimationButton
-            android:id="@+id/bt"
-            android:layout_width="104dp"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/ivLogo"
+            android:orientation="vertical">
+            <about.nocare.casaer.satanwang.widget.login.PayPsdInputView
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:inputType="number"
+                android:visibility="gone"
+                psd:maxCount="6"
+                psd:psdType="bottomLine" />
+            <about.nocare.casaer.satanwang.widget.login.AnimationButton
+                android:id="@+id/bt"
+                android:layout_width="104dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/cry11"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="56dp"
-            android:visibility="gone"
+            android:layout_marginTop="100dp"
+            android:layout_height="wrap_content"
             />
+
     </RelativeLayout>
 
     <about.nocare.casaer.satanwang.utils.login.WaveViewByBezier

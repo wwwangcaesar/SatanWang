@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="about.nocare.casaer.satanwang.ui.MainActivity">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -20,7 +19,12 @@
             android:layout_below="@+id/tvCity"
             android:layout_centerInParent="true"
             />
-
+        <about.nocare.casaer.satanwang.widget.login.DragBallView
+            android:id="@+id/drag_ball_view"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            />
         <com.lovcreate.core.widget.CircularImage
             android:id="@+id/tvOtherLan"
             android:layout_width="40dp"
