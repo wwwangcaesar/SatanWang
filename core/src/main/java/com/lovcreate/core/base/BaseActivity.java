@@ -2,6 +2,7 @@ package com.lovcreate.core.base;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -24,6 +26,7 @@ import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +35,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -785,6 +789,28 @@ public abstract class BaseActivity extends AppCompatActivity {
         Transition transition = new Slide(diction);
         TransitionManager.beginDelayedTransition(main, transition);
         view.setVisibility(view.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+    }
+
+    //显示协议内容
+    public  void showAgreeMent(String title,String content){
+        View view = LayoutInflater.from(mContext).inflate(R.layout.view_alert_agreement, null);
+        TextView tv_title=(TextView)view.findViewById(R.id.tv_title);
+        ImageView image_close=(ImageView)view.findViewById(R.id.image_close);
+        TextView tv_content=(TextView)view.findViewById(R.id.tv_content);
+        final Dialog dialog = new Dialog(mContext, R.style.AlertDialogStyle);
+        dialog.setContentView(view);
+        dialog.setCancelable(false);//按对话框以外的地方不起作用。按返回键也不起作用
+        dialog.show();
+
+        tv_title.setText(title);
+        tv_content.setText(Html.fromHtml(content));
+
+        image_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
     }
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {

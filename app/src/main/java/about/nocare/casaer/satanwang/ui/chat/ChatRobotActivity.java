@@ -40,6 +40,7 @@ import com.lovcreate.core.baidu.listener.IRecogListener;
 import com.lovcreate.core.baidu.listener.MessageStatusRecogListener;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
+import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.util.StringUtil;
 import com.lovcreate.core.util.ToastUtil;
 
@@ -446,6 +447,7 @@ public class ChatRobotActivity extends BaseActivity implements EventListener {
                     msgList.add(entity);
                     msgAdapter.notifyDataSetChanged();
                     requestApiByRetrofit_RxJava(results.get(0).toString());
+                    AppSession.setMessageUnread(AppSession.getMessageUnread()-1);
                 }
             } else {
                 ToastUtil.showToastBottomShort("识别失败，请使用普通话");

@@ -2,6 +2,9 @@
     <string name="app_name">SatanWang</string>
     <string name="change">切换下一个</string>
     <string name="gushi">君不见，\n黄河之水天上来，奔流到海不复回。\n君不见，\n高堂明镜悲白发，朝如青丝暮成雪。\n人生得意须尽欢，莫使金樽空对月。\n天生我材必有用，千金散尽还复来。\n烹羊宰牛且为乐，会须一饮三百杯。\n岑夫子，丹丘生，将进酒，杯莫停。\n与君歌一曲，请君为我倾耳听。\n钟鼓馔玉不足贵，但愿长醉不复醒。\n古来圣贤皆寂寞，惟有饮者留其名。\n陈王昔时宴平乐，斗酒十千恣欢谑。\n主人何为言少钱，径须沽取对君酌。\n五花马，千金裘，呼儿将出换美酒，与尔同销万古愁。</string>
+    <string name="explain1">点击首页右上角图片可以设置头像，头像可以同时应用在和小A聊天页面。设置完成头像，再次点击右上角图片，可以开启侧滑菜单。如果想在再次更换头像，可以长按右上角图片哦</string>
+    <string name="explain2">当用户没有登录时，每次登录会弹出优惠券弹框，点击查看优惠券可以跳转到登录页面。或者点击主页中间英文“Devil May Cry”也可以跳转登录页面。完成登录后，点击图片回到主页。</string>
+    <string name="explain3">小A是聊天机器人，有什么不懂可以问他哦。聊天过程中，可以输入微信，点击小A返回蓝色信息，可以应用内打开微信。或者输入日历，调用并打开系统日历。同时支持语音输入转换文字。输入新闻，可以跳转到新闻列表页面，点击查看详情新闻等，一个应用玩转手机。其他功能需要添加相关配置，后续优化ing</string>
 
     <!--图灵机器人-->
     <string name="just_now">刚刚</string>
@@ -16,5 +19,6 @@
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
+
 
 </resources>

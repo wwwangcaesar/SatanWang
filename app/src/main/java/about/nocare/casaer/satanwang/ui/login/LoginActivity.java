@@ -164,6 +164,7 @@ public class LoginActivity extends BaseActivity implements KeyboardWatcher.SoftK
                     bt.start();
                     AppSession.setPhone(phoneNumEditText.getText().toString());
                     AppSession.setPassword(password.getText().toString());
+                    AppSession.setMessageUnread(AppSession.getMessageUnread()-1);
                 }
             }
 

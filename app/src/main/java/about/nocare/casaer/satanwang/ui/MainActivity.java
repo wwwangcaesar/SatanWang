@@ -129,6 +129,8 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     /* 点赞动画效果*/
     SuperLikeLayout superLikeLayout;
 
+    private boolean noHeadUrl;
+    private boolean noPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,6 +203,31 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                     } else {
                         mainSwipemenu.showMenu();
                     }
+                }
+            }
+        });
+        //长按设置头像
+        tvOtherLan.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showCarmeaDialog();
+                return false;
+            }
+        });
+        if (AppSession.getMessageUnread()==0){
+            dragBallView.setVisibility(View.GONE);
+        }else {
+            dragBallView.setMsgCount(AppSession.getMessageUnread());
+        }
+        dragBallView.setOnDragBallListener(new DragBallView.OnDragBallListener() {
+            @Override
+            public void onDisappear() {
+                if (noHeadUrl){
+                    showAgreeMent("设置头像",getResources().getString(R.string.explain1));
+                }else if(noPassword){
+                    showAgreeMent("登录账号",getResources().getString(R.string.explain2));
+                }else {
+                    showAgreeMent("关于小A",getResources().getString(R.string.explain3));
                 }
             }
         });
@@ -290,9 +317,6 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 return isclick;
             }
         });
-        //黏性小球
-        dragBallView.setMsgCount(100);
-
     }
 
     /**
@@ -303,12 +327,19 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         boolean isfer = shared.getBoolean("isfirst", true);
         final SharedPreferences.Editor editor = shared.edit();
         if (isfer) {
+            AppSession.setMessageUnread(3);
             onGuild();
             editor.putBoolean("isfirst", false);
             editor.commit();
         } else {
             //弹出广告弹框
             showTicketDialog();
+            if (TextUtils.isEmpty(AppSession.getHeadUrl())){
+                noHeadUrl=true;
+            }
+            if (TextUtils.isEmpty(AppSession.getPassword())){
+                noPassword=true;
+            }
         }
     }
 
@@ -642,6 +673,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         public void onSuccess(List<String> photoList) {
             Uri uri = Uri.fromFile(new File(photoList.get(0)));
             AppSession.setHeadUrl(photoList.get(0));
+            AppSession.setMessageUnread(AppSession.getMessageUnread()-1);
             tvOtherLan.setImageURI(uri);
         }
 
