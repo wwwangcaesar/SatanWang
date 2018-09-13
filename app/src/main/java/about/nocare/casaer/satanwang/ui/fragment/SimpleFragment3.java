@@ -18,13 +18,13 @@ import about.nocare.casaer.satanwang.R;
  * Email: chjie.jaeger@gmail.com
  * GitHub: https://github.com/laobie
  */
-public class SimpleFragment extends Fragment {
+public class SimpleFragment3 extends Fragment {
     private TextView mTvTitle;
     private View mFakeStatusBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragement_simple, container, false);
+        return inflater.inflate(R.layout.fragement_simple3, container, false);
     }
 
     @Override

@@ -15,7 +15,9 @@ import java.util.Random;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.ui.fragment.ImageFragment;
-import about.nocare.casaer.satanwang.ui.fragment.SimpleFragment;
+import about.nocare.casaer.satanwang.ui.fragment.SimpleFragment2;
+import about.nocare.casaer.satanwang.ui.fragment.SimpleFragment3;
+import about.nocare.casaer.satanwang.ui.fragment.SimpleFragment4;
 
 public class AppMoreActivity extends BaseActivity {
     private ViewPager mVpHome;
@@ -28,10 +30,10 @@ public class AppMoreActivity extends BaseActivity {
         setStatusBar();
         mVpHome = (ViewPager) findViewById(R.id.vp_home);
         mBottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
-        mBottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_favorite, "One"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_gavel, "Two"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_grade, "Three"))
-                .addItem(new BottomNavigationItem(R.drawable.ic_group_work, "Four"))
+        mBottomNavigationBar.addItem(new BottomNavigationItem(R.drawable.ic_favorite, "Satan"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_gavel, "图片"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_grade, "视频"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_group_work, "AR"))
                 .initialise();
 
         mBottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
@@ -52,9 +54,9 @@ public class AppMoreActivity extends BaseActivity {
         });
 
         mFragmentList.add(new ImageFragment());
-        mFragmentList.add(new SimpleFragment());
-        mFragmentList.add(new SimpleFragment());
-        mFragmentList.add(new SimpleFragment());
+        mFragmentList.add(new SimpleFragment2());
+        mFragmentList.add(new SimpleFragment3());
+        mFragmentList.add(new SimpleFragment4());
 
         mVpHome.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -65,15 +67,27 @@ public class AppMoreActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 mBottomNavigationBar.selectTab(position);
+                Random random = new Random();
+                int color = 0xff000000 | random.nextInt(0xffffff);
                 switch (position) {
                     case 0:
                         break;
-                    default:
-                        Random random = new Random();
-                        int color = 0xff000000 | random.nextInt(0xffffff);
-                        if (mFragmentList.get(position) instanceof SimpleFragment) {
-                            ((SimpleFragment) mFragmentList.get(position)).setTvTitleBackgroundColor(color);
+                    case 1:
+                        if (mFragmentList.get(position) instanceof SimpleFragment2) {
+                            ((SimpleFragment2) mFragmentList.get(position)).setTvTitleBackgroundColor(color);
                         }
+                        break;
+                    case 2:
+                        if (mFragmentList.get(position) instanceof SimpleFragment3) {
+                            ((SimpleFragment3) mFragmentList.get(position)).setTvTitleBackgroundColor(color);
+                        }
+                        break;
+                    case 3:
+                        if (mFragmentList.get(position) instanceof SimpleFragment4) {
+                            ((SimpleFragment4) mFragmentList.get(position)).setTvTitleBackgroundColor(color);
+                        }
+                        break;
+                    default:
                         break;
                 }
             }
