@@ -332,13 +332,13 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             editor.putBoolean("isfirst", false);
             editor.commit();
         } else {
-            //弹出广告弹框
-            showTicketDialog();
             if (TextUtils.isEmpty(AppSession.getHeadUrl())){
                 noHeadUrl=true;
             }
             if (TextUtils.isEmpty(AppSession.getPassword())){
                 noPassword=true;
+                //弹出广告弹框
+                showTicketDialog();
             }
         }
     }
