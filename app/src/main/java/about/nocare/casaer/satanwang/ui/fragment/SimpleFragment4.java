@@ -1,5 +1,7 @@
 package about.nocare.casaer.satanwang.ui.fragment;
 
+import android.animation.AnimatorInflater;
+import android.animation.StateListAnimator;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -9,14 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.lovcreate.core.base.OnClickListener;
+
 import about.nocare.casaer.satanwang.R;
 
 
 /**
- * Created by Jaeger on 16/8/11.
- *
- * Email: chjie.jaeger@gmail.com
- * GitHub: https://github.com/laobie
+ & @Description:   ARFragment
+ & @Author:  Satan
+ & @Time:  2018/9/13 15:27
  */
 public class SimpleFragment4 extends Fragment {
     private TextView mTvTitle;
@@ -32,6 +35,25 @@ public class SimpleFragment4 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mTvTitle = (TextView) view.findViewById(R.id.tv_title);
         mFakeStatusBar = view.findViewById(R.id.fake_status_bar);
+        StateListAnimator stateListAnimator = AnimatorInflater.loadStateListAnimator(getActivity(), R.animator.anim_view_state_change_2);
+        StateListAnimator stateListAnimator1 = AnimatorInflater.loadStateListAnimator(getActivity(), R.animator.anim_view_state_change_3);
+
+        view.findViewById(R.id.tvAR).setStateListAnimator(stateListAnimator);
+        view.findViewById(R.id.tvHourse).setStateListAnimator(stateListAnimator1);
+
+        view.findViewById(R.id.tvAR).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+
+            }
+        });
+        view.findViewById(R.id.tvHourse).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+
+            }
+        });
+
     }
 
     public void setTvTitleBackgroundColor(@ColorInt int color) {
