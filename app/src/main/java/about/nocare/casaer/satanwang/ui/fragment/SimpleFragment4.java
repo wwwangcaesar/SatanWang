@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.lovcreate.core.base.OnClickListener;
 
 import about.nocare.casaer.satanwang.R;
+import about.nocare.casaer.satanwang.ui.appMore.simple4.VRGyroscopeActivity;
 
 
 /**
@@ -56,7 +57,7 @@ public class SimpleFragment4 extends Fragment {
         view.findViewById(R.id.tvHourse).setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-
+                startActivity(new Intent(getActivity(), VRGyroscopeActivity.class));
             }
         });
 

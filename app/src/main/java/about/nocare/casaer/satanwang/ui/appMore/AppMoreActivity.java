@@ -1,4 +1,4 @@
-package about.nocare.casaer.satanwang.ui.home.appMore;
+package about.nocare.casaer.satanwang.ui.appMore;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

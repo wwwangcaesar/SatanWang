@@ -47,7 +47,7 @@
         android:background="@android:color/white"
         android:clickable="true"
         android:gravity="center"
-        android:text="VR看房"
+        android:text="VR看房 \n \n 通过陀螺仪浏览图片"
         android:textColor="@color/black" />
 
 </LinearLayout>
