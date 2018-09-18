@@ -32,7 +32,7 @@
         android:background="@android:color/white"
         android:clickable="true"
         android:gravity="center"
-        android:text="AR"
+        android:text="AR \n \n跳转至其他应用体验"
         android:textColor="@color/black" />
 
     <TextView

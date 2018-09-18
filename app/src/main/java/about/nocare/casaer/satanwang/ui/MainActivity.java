@@ -131,6 +131,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
 
     private boolean noHeadUrl;
     private boolean noPassword;
+    private boolean noShow=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -214,7 +215,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 return false;
             }
         });
-        if (AppSession.getMessageUnread()==0){
+        if (!noShow){
             dragBallView.setVisibility(View.GONE);
         }else {
             dragBallView.setMsgCount(AppSession.getMessageUnread());
@@ -224,10 +225,13 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             public void onDisappear() {
                 if (noHeadUrl){
                     showAgreeMent("设置头像",getResources().getString(R.string.explain1));
+                    noHeadUrl=false;
                 }else if(noPassword){
                     showAgreeMent("登录账号",getResources().getString(R.string.explain2));
+                    noPassword=false;
                 }else {
                     showAgreeMent("关于小A",getResources().getString(R.string.explain3));
+                    noShow=false;
                 }
             }
         });
@@ -545,6 +549,9 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             tvCity.setText("城市");
         } else {
             tvCity.setText(AppSession.getChooseCityName());
+        }
+        if (AppSession.getMessageUnread()==0){
+            noShow=false;
         }
     }
 
