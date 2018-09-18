@@ -1,9 +1,11 @@
 package about.nocare.casaer.satanwang.ui.appMore.simple4;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.jaeger.library.StatusBarUtil;
 import com.lovcreate.core.base.BaseActivity;
+import com.lovcreate.core.base.OnClickListener;
 import com.squareup.picasso.Picasso;
 
 import about.nocare.casaer.satanwang.R;
@@ -43,6 +45,13 @@ public class VRGyroscopeActivity extends BaseActivity {
                         .load(PIC3_URL)
                         .transform(new GyroscopeTransFormation(width, height))
                         .into(headImage);
+            }
+        });
+        headImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                CoverActivity.startActivityWithAnimation(VRGyroscopeActivity.this, PIC3_URL,
+                        headImage);
             }
         });
     }

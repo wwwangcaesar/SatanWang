@@ -50,5 +50,10 @@
     <style name="content_item_white" parent="content_item">
         <item name="android:background">@drawable/ease_chat_press_speak_btn</item>
     </style>
-
+    <!--VR查看大图ac-->
+    <style name="TranslucentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

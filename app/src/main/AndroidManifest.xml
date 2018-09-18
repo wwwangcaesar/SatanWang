@@ -109,6 +109,8 @@
             android:theme="@style/ChatAppTheme" />
         <activity android:name=".ui.appMore.simple4.VRGyroscopeActivity"
             android:theme="@style/ChatAppTheme" />
+        <activity android:name=".ui.appMore.simple4.CoverActivity"
+            android:theme="@style/TranslucentTheme" />
     </application>
 
 </manifest>
