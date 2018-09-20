@@ -447,6 +447,7 @@ public class ChatRobotActivity extends BaseActivity implements EventListener {
                     msgList.add(entity);
                     msgAdapter.notifyDataSetChanged();
                     requestApiByRetrofit_RxJava(results.get(0).toString());
+                    AppSession.setUserId("isSpreak");
                     AppSession.setMessageUnread(AppSession.getMessageUnread()-1);
                 }
             } else {

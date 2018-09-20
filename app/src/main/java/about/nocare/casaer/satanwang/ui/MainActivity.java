@@ -129,9 +129,6 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
     /* 点赞动画效果*/
     SuperLikeLayout superLikeLayout;
 
-    private boolean noHeadUrl;
-    private boolean noPassword;
-    private boolean noShow=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,9 +169,9 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         textShape.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                if (TextUtils.isEmpty(AppSession.getPassword())){
-                    startActivity(new Intent(MainActivity.this,LoginActivity.class));
-                }else {
+                if (TextUtils.isEmpty(AppSession.getPassword())) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                } else {
                     startActivity(new Intent(MainActivity.this, AppMoreActivity.class));
                 }
             }
@@ -215,23 +212,16 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
                 return false;
             }
         });
-        if (!noShow){
-            dragBallView.setVisibility(View.GONE);
-        }else {
-            dragBallView.setMsgCount(AppSession.getMessageUnread());
-        }
+
         dragBallView.setOnDragBallListener(new DragBallView.OnDragBallListener() {
             @Override
             public void onDisappear() {
-                if (noHeadUrl){
-                    showAgreeMent("设置头像",getResources().getString(R.string.explain1));
-                    noHeadUrl=false;
-                }else if(noPassword){
-                    showAgreeMent("登录账号",getResources().getString(R.string.explain2));
-                    noPassword=false;
-                }else {
-                    showAgreeMent("关于小A",getResources().getString(R.string.explain3));
-                    noShow=false;
+                if (TextUtils.isEmpty(AppSession.getHeadUrl())) {
+                    showAgreeMent("设置头像", getResources().getString(R.string.explain1));
+                } else if (TextUtils.isEmpty(AppSession.getPassword())) {
+                    showAgreeMent("登录账号", getResources().getString(R.string.explain2));
+                } else if (TextUtils.isEmpty(AppSession.getUserId())){
+                    showAgreeMent("关于小A", getResources().getString(R.string.explain3));
                 }
             }
         });
@@ -335,15 +325,9 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
             onGuild();
             editor.putBoolean("isfirst", false);
             editor.commit();
-        } else {
-            if (TextUtils.isEmpty(AppSession.getHeadUrl())){
-                noHeadUrl=true;
-            }
-            if (TextUtils.isEmpty(AppSession.getPassword())){
-                noPassword=true;
-                //弹出广告弹框
-                showTicketDialog();
-            }
+        } else if (TextUtils.isEmpty(AppSession.getPassword())) {
+            //弹出广告弹框
+            showTicketDialog();
         }
     }
 
@@ -550,8 +534,11 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         } else {
             tvCity.setText(AppSession.getChooseCityName());
         }
-        if (AppSession.getMessageUnread()==0){
-            noShow=false;
+        if (AppSession.getMessageUnread() == 0) {
+            dragBallView.setVisibility(View.GONE);
+        }else {
+            dragBallView.setVisibility(View.VISIBLE);
+            dragBallView.setMsgCount(AppSession.getMessageUnread());
         }
     }
 
@@ -680,7 +667,7 @@ public class MainActivity extends BaseActivity implements MediaPlayer.OnCompleti
         public void onSuccess(List<String> photoList) {
             Uri uri = Uri.fromFile(new File(photoList.get(0)));
             AppSession.setHeadUrl(photoList.get(0));
-            AppSession.setMessageUnread(AppSession.getMessageUnread()-1);
+            AppSession.setMessageUnread(AppSession.getMessageUnread() - 1);
             tvOtherLan.setImageURI(uri);
         }
 
