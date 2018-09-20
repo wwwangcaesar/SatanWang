@@ -1,17 +1,26 @@
 package about.nocare.casaer.satanwang.ui.appMore.simple4;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
+import com.lovcreate.core.util.DialogUtil;
 import com.squareup.picasso.Picasso;
 
 import about.nocare.casaer.satanwang.R;
+import about.nocare.casaer.satanwang.widget.appmore.ar.ExpandableTextView;
 import about.nocare.casaer.satanwang.widget.appmore.ar.RoundImageView;
 import about.nocare.casaer.satanwang.widget.appmore.ar.WhewView;
 import about.nocare.casaer.satanwang.widget.vr.gyroscope.GyroscopeImageView;
@@ -98,6 +107,40 @@ public class VRGyroscopeActivity extends BaseActivity {
             public void onNoDoubleClick(View v) {
                 CoverActivity.startActivityWithAnimation(VRGyroscopeActivity.this, PIC3_URL,
                         headImage);
+            }
+        });
+        myPhoto.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_one_layout, null);
+                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(VRGyroscopeActivity.this, com.lovcreate.core.R.style.dialog);
+                mDialogBuilder.setView(view);
+                mDialogBuilder.setCancelable(true);
+                AlertDialog alert = mDialogBuilder.create();
+                Window dialogWindow = alert.getWindow();
+                dialogWindow.setGravity(Gravity.CENTER);
+                alert.setCanceledOnTouchOutside(true);
+                alert.setCancelable(true);
+                ExpandableTextView readText=(ExpandableTextView)view.findViewById(R.id.readText);
+                TextView sure=(TextView)view.findViewById(R.id.sure);
+                String text="通过对AR的了解，以及之前项目的总结。实现简单自定义AR呈现的功能，本功能基于Vuforia提供的SDK，并阅读相关API，集成制作出来。详情戳 https://developer.vuforia.com/ \n注意：\n AR实现需要扫描特定图片才会显示出来（类似支付宝扫福字，才会出现福字效果，并提供自定义图片等（展示支持图片，动画有待研究））";
+                readText.setContent(text);
+                readText.setLinkClickListener(new ExpandableTextView.OnLinkClickListener() {
+                    @Override
+                    public void onLinkClickListener(ExpandableTextView.LinkType type, String content) {
+                        Uri uri = Uri.parse("https://developer.vuforia.com/");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
+                sure.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onNoDoubleClick(View v) {
+
+                        alert.dismiss();
+                    }
+                });
+                alert.show();
             }
         });
 

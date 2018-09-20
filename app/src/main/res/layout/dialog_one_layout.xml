@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:background="@color/arColor"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:text="提示" />
+    <about.nocare.casaer.satanwang.widget.appmore.ar.ExpandableTextView
+        android:id="@+id/readText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:lineSpacingExtra="4dp"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:ep_max_line="5"
+        app:ep_need_contract="true"
+        app:ep_need_expand="true" />
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/gray"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/sure"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textColor="@color/arColor"
+        android:textSize="16sp"
+        android:text="通向未来"/>
+</LinearLayout>

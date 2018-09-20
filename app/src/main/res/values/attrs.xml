@@ -89,4 +89,28 @@
         <attr name="border_inside_color" format="color" />
         <attr name="border_outside_color" format="color"></attr>
     </declare-styleable>
+    <!--一个支持展开 收起 网页链接 和 @用户 点击识别 的TextView-->
+    <declare-styleable name="ExpandableTextView">
+        <attr name="ep_max_line" format="integer" />
+        <!--是否需要展开-->
+        <attr name="ep_need_expand" format="boolean" />
+        <!--是否需要收起 这个是建立在开启展开的基础上的-->
+        <attr name="ep_need_contract" format="boolean" />
+        <!--是否需要动画-->
+        <attr name="ep_need_animation" format="boolean" />
+        <!--收起的文案-->
+        <attr name="ep_contract_text" format="string" />
+        <!--展开的文案-->
+        <attr name="ep_expand_text" format="string" />
+        <!--展开的文字的颜色-->
+        <attr name="ep_expand_color" format="color" />
+        <!--收起的文字的颜色-->
+        <attr name="ep_contract_color" format="color" />
+        <!--在收回和展开前面添加的内容的字体颜色-->
+        <attr name="ep_end_color" format="color" />
+        <!--链接的文字的颜色-->
+        <attr name="ep_link_color" format="color" />
+        <!--链接的图标-->
+        <attr name="ep_link_res" format="reference" />
+    </declare-styleable>
 </resources>
