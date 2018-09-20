@@ -16,10 +16,10 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
-import com.lovcreate.core.util.DialogUtil;
 import com.squareup.picasso.Picasso;
 
 import about.nocare.casaer.satanwang.R;
+import about.nocare.casaer.satanwang.ui.appMore.simple4.MyAR.ImageTargets.ImageTargets;
 import about.nocare.casaer.satanwang.widget.appmore.ar.ExpandableTextView;
 import about.nocare.casaer.satanwang.widget.appmore.ar.RoundImageView;
 import about.nocare.casaer.satanwang.widget.appmore.ar.WhewView;
@@ -136,7 +136,8 @@ public class VRGyroscopeActivity extends BaseActivity {
                 sure.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onNoDoubleClick(View v) {
-
+                        Intent i = new Intent(VRGyroscopeActivity.this,ImageTargets.class);
+                        startActivity(i);
                         alert.dismiss();
                     }
                 });

@@ -50,4 +50,6 @@
     <!--登录气泡动画-->
     <color name="circle_start">#fa7832</color>
     <color name="circle_end">#eb4438</color>
+    <!--AR-->
+    <color name="light_gray">#D3D3D3</color>
 </resources>

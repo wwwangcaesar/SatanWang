@@ -111,6 +111,12 @@
             android:theme="@style/ChatAppTheme" />
         <activity android:name=".ui.appMore.simple4.CoverActivity"
             android:theme="@style/TranslucentTheme" />
+        <activity
+            android:name=".ui.appMore.simple4.MyAR.ImageTargets.ImageTargets"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
+            android:theme="@style/SampleAppsTheme"
+            android:launchMode="singleTask"
+            />
     </application>
 
 </manifest>
