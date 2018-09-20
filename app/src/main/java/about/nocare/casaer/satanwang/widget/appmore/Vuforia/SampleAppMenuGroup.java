@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -95,12 +96,10 @@ public class SampleAppMenuGroup
         selectorResource = android.R.drawable.list_selector_background;
         
         mFont = Typeface.create("sans-serif", Typeface.NORMAL);
-        
+        //小标头 radiobutton
         TextView titleView = (TextView) mLayout
             .findViewById(R.id.menu_group_title);
         titleView.setText(title);
-        titleView.setTextSize(mActivity.getResources().getDimension(
-            R.dimen.menu_entries_title));
         titleView.setClickable(false);
         
         if (!hasTitle)
@@ -183,8 +182,8 @@ public class SampleAppMenuGroup
         else
             newTextView.setBackgroundDrawable(selectorDrawable);
         
-        newTextView.setTypeface(mFont);
-        newTextView.setTextSize(mEntriesTextSize);
+//        newTextView.setTypeface(mFont);
+//        newTextView.setTextSize(mEntriesTextSize);
         newTextView.setTag(command);
         newTextView.setVisibility(View.VISIBLE);
         newTextView.setPadding(mEntriesSidesPadding, mEntriesUpDownPadding,
@@ -215,9 +214,9 @@ public class SampleAppMenuGroup
             newSwitchView.setText(text);
             
             newSwitchView.setBackground(selectorDrawable);
-            
-            newSwitchView.setTypeface(mFont);
-            newSwitchView.setTextSize(mEntriesTextSize);
+            newSwitchView.setGravity(Gravity.CENTER);
+//            newSwitchView.setTypeface(mFont);
+//            newSwitchView.setTextSize(mEntriesTextSize);
             newSwitchView.setTag(command);
             newSwitchView.setVisibility(View.VISIBLE);
             newSwitchView.setPadding(mEntriesSidesPadding,
@@ -239,8 +238,8 @@ public class SampleAppMenuGroup
                 newView.setBackgroundDrawable(selectorDrawable);
             
             newView.setText(text);
-            newView.setTypeface(mFont);
-            newView.setTextSize(mEntriesTextSize);
+//            newView.setTypeface(mFont);
+//            newView.setTextSize(mEntriesTextSize);
             newView.setTag(command);
             newView.setVisibility(View.VISIBLE);
             newView.setPadding(mEntriesSidesPadding + leftPadding,
@@ -282,8 +281,8 @@ public class SampleAppMenuGroup
         else
             newRadioButton.setBackgroundDrawable(selectorDrawable);
         
-        newRadioButton.setTypeface(mFont);
-        newRadioButton.setTextSize(mEntriesTextSize);
+//        newRadioButton.setTypeface(mFont);
+//        newRadioButton.setTextSize(mEntriesTextSize);
         newRadioButton.setPadding(mEntriesSidesPadding,
             mEntriesUpDownRadioPadding, mEntriesSidesPadding,
             mEntriesUpDownRadioPadding);

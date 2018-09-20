@@ -94,7 +94,7 @@ public class SampleAppMenu
         mMovableListView = (LinearLayout) mParentMenuView
             .findViewById(R.id.settings_menu);
         mMovableListView.setBackgroundColor(Color.WHITE);
-        
+        //标头 SatanWang
         TextView title = (TextView) mMovableListView
             .findViewById(R.id.settings_menu_title);
         title.setText(menuTitle);

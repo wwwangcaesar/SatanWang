@@ -19,7 +19,7 @@
     <!--全屏显示，防黑屏-->
     <style name="AllAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowIsTranslucent">true</item>
-<!--"android:windowIsTranslucent"能达到Acitivity透明效果，Activity A启动之后，启动Activity B，Activity A的onStop不会被调用。-->
+        <!--"android:windowIsTranslucent"能达到Acitivity透明效果，Activity A启动之后，启动Activity B，Activity A的onStop不会被调用。-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -28,6 +28,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/indicator_uncheck</item>
     </style>
