@@ -3,6 +3,9 @@ apply plugin: 'seal'
 android {
     compileSdkVersion 25
     buildToolsVersion "28.0.1"
+    sourceSets {
+        main { jniLibs.srcDirs = ['libs'] }
+    }
     defaultConfig {
         applicationId "about.nocare.casaer.satanwang"
         minSdkVersion 21
@@ -21,6 +24,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+            ndk {
+                abiFilters "armeabi-v7a"
+            }
         }
     }
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
@@ -66,6 +79,7 @@ dependencies {
     implementation project(':uidialog')
     //点赞花样弹出表情
     implementation project(':fabulous')
+    implementation files('libs/Vuforia.jar')
 }
 //都是因为如果程序内出现不同的，support或者其他外部引用库的多个版本，Gradle在进行合并的时候会使用本地持有的，最高版本的来进行编译，
 // 所以25的support就有可能引用26的东西，就会出现 属性 merge 错误 ，或者Class丢失，解决方法就是强制使用相同版本的库：
