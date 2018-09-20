@@ -35,7 +35,7 @@ import about.nocare.casaer.satanwang.utils.appAr.SampleAppMenuInterface;
 /**
  & @Description:   AR界面右侧侧滑菜单
  & @Author:  Satan
- & @Time:  2018/9/20 11:24
+ & @Time:  2018/9/20 13:38
  */
 public class SampleAppMenuGroup
 {

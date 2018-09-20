@@ -484,7 +484,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
                     tvMsg.setText(regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle());
                     tvAdress.setText(regeocodeResult.getRegeocodeAddress().getPois().get(0).getTitle());
                 }
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+//                aMap.moveCamera(CameraUpdateFactory.zoomTo(15));
             }
         }
     }
