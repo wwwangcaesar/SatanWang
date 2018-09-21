@@ -100,4 +100,7 @@ dependencies {
     // picasso 图片加载器 https://github.com/square/picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
     implementation files('libs/bdasr_V3_20180801_d6f298a.jar')
+    //gif
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+
 }
