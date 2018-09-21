@@ -1,5 +1,5 @@
 /*===============================================================================
-Copyright (c) 2016 PTC Inc. All Rights Reserved.
+Copyright (c) 2016-2018 PTC Inc. All Rights Reserved.
 
 Copyright (c) 2012-2015 Qualcomm Connected Experiences, Inc. All Rights Reserved.
 
@@ -10,13 +10,18 @@ countries.
 package about.nocare.casaer.satanwang.utils.appAr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 
-import com.vuforia.COORDINATE_SYSTEM_TYPE;
+import com.vuforia.CameraCalibration;
 import com.vuforia.CameraDevice;
 import com.vuforia.Device;
 import com.vuforia.GLTextureUnit;
@@ -36,13 +41,17 @@ import com.vuforia.VideoBackgroundConfig;
 import com.vuforia.VideoMode;
 import com.vuforia.ViewList;
 
+import java.lang.ref.WeakReference;
+
 public class SampleAppRenderer {
 
     private static final String LOGTAG = "SampleAppRenderer";
 
     private RenderingPrimitives mRenderingPrimitives = null;
     private SampleAppRendererControl mRenderingInterface = null;
-    private Activity mActivity = null;
+    private WeakReference<Activity> mActivityRef = null;
+
+    private int mVideoMode = CameraDevice.MODE.MODE_DEFAULT;
 
     private Renderer mRenderer = null;
     private int currentView = VIEW.VIEW_SINGULAR;
@@ -64,11 +73,18 @@ public class SampleAppRenderer {
 
     // Stores orientation
     private boolean mIsPortrait = false;
+    private boolean mInitialized = false;
 
     public SampleAppRenderer(SampleAppRendererControl renderingInterface, Activity activity, int deviceMode,
                              boolean stereo, float nearPlane, float farPlane)
     {
-        mActivity = activity;
+        this(renderingInterface, activity, deviceMode, CameraDevice.MODE.MODE_DEFAULT, stereo, nearPlane, farPlane);
+    }
+
+    public SampleAppRenderer(SampleAppRendererControl renderingInterface, Activity activity, int deviceMode, int videoMode,
+                             boolean stereo, float nearPlane, float farPlane)
+    {
+        mActivityRef = new WeakReference<>(activity);
 
         mRenderingInterface = renderingInterface;
         mRenderer = Renderer.getInstance();
@@ -90,6 +106,8 @@ public class SampleAppRenderer {
         Device device = Device.getInstance();
         device.setViewerActive(stereo); // Indicates if the app will be using a viewer, stereo mode and initializes the rendering primitives
         device.setMode(deviceMode); // Select if we will be in AR or VR mode
+
+        mVideoMode = videoMode;
     }
 
     public void onSurfaceCreated()
@@ -99,16 +117,26 @@ public class SampleAppRenderer {
 
     public void onConfigurationChanged(boolean isARActive)
     {
+        if(mInitialized) { return; }
+
         updateActivityOrientation();
         storeScreenDimensions();
 
         if(isARActive)
             configureVideoBackground();
 
+        updateRenderingPrimitives();
+
+        mInitialized = true;
+    }
+
+
+    public synchronized void updateRenderingPrimitives()
+    {
         mRenderingPrimitives = Device.getInstance().getRenderingPrimitives();
     }
 
-    void initRendering()
+    private void initRendering()
     {
         vbShaderProgramID = SampleUtils.createProgramFromShaderSrc(VideoBackgroundShader.VB_VERTEX_SHADER,
                 VideoBackgroundShader.VB_FRAGMENT_SHADER);
@@ -179,9 +207,9 @@ public class SampleAppRenderer {
             // Set scissor
             GLES20.glScissor(viewport.getData()[0], viewport.getData()[1], viewport.getData()[2], viewport.getData()[3]);
 
-            // Get projection matrix for the current view. COORDINATE_SYSTEM_CAMERA used for AR and
-            // COORDINATE_SYSTEM_WORLD for VR
-            Matrix34F projMatrix = mRenderingPrimitives.getProjectionMatrix(viewID, COORDINATE_SYSTEM_TYPE.COORDINATE_SYSTEM_CAMERA);
+            // Get projection matrix for the current view.
+            Matrix34F projMatrix = mRenderingPrimitives.getProjectionMatrix(viewID,
+                                                                            state.getCameraCalibration());
 
             // Create GL matrix setting up the near and far planes
             float rawProjectionMatrixGL[] = Tool.convertPerspectiveProjection2GLMatrix(
@@ -210,13 +238,13 @@ public class SampleAppRenderer {
         mRenderer.end();
     }
 
-    public void setNearFarPlanes(float near, float far)
+    private void setNearFarPlanes(float near, float far)
     {
         mNearPlane = near;
         mFarPlane = far;
     }
 
-    public void renderVideoBackground()
+    public void renderVideoBackground(State state)
     {
         if(currentView == VIEW.VIEW_POSTPROCESS)
             return;
@@ -231,14 +259,14 @@ public class SampleAppRenderer {
         }
 
         float[] vbProjectionMatrix = Tool.convert2GLMatrix(
-                mRenderingPrimitives.getVideoBackgroundProjectionMatrix(currentView, COORDINATE_SYSTEM_TYPE.COORDINATE_SYSTEM_CAMERA)).getData();
+                mRenderingPrimitives.getVideoBackgroundProjectionMatrix(currentView)).getData();
 
         // Apply the scene scale on video see-through eyewear, to scale the video background and augmentation
         // so that the display lines up with the real world
         // This should not be applied on optical see-through devices, as there is no video background,
         // and the calibration ensures that the augmentation matches the real world
         if (Device.getInstance().isViewerActive()) {
-            float sceneScaleFactor = (float)getSceneScaleFactor();
+            float sceneScaleFactor = (float)getSceneScaleFactor(state.getCameraCalibration());
             Matrix.scaleM(vbProjectionMatrix, 0, sceneScaleFactor, sceneScaleFactor, 1.0f);
         }
 
@@ -274,13 +302,19 @@ public class SampleAppRenderer {
     }
 
 
-    static final float VIRTUAL_FOV_Y_DEGS = 85.0f;
-    static final float M_PI = 3.14159f;
+    private static final float VIRTUAL_FOV_Y_DEGS = 85.0f;
+    private static final float M_PI = 3.14159f;
 
-    double getSceneScaleFactor()
+    private double getSceneScaleFactor(CameraCalibration cameraCalib)
     {
+        if (cameraCalib == null)
+        {
+            Log.e(LOGTAG, "Cannot compute scene scale factor, camera calibration is invalid");
+            return 0.0;
+        }
+
         // Get the y-dimension of the physical camera field of view
-        Vec2F fovVector = CameraDevice.getInstance().getCameraCalibration().getFieldOfViewRads();
+        Vec2F fovVector = cameraCalib.getFieldOfViewRads();
         float cameraFovYRads = fovVector.getData()[1];
 
         // Get the y-dimension of the virtual camera field of view
@@ -305,13 +339,12 @@ public class SampleAppRenderer {
     public void configureVideoBackground()
     {
         CameraDevice cameraDevice = CameraDevice.getInstance();
-        VideoMode vm = cameraDevice.getVideoMode(CameraDevice.MODE.MODE_DEFAULT);
+        VideoMode vm = cameraDevice.getVideoMode(mVideoMode);
 
         VideoBackgroundConfig config = new VideoBackgroundConfig();
-        config.setEnabled(true);
         config.setPosition(new Vec2I(0, 0));
 
-        int xSize = 0, ySize = 0;
+        int xSize, ySize;
         // We keep the aspect ratio to keep the video correctly rendered. If it is portrait we
         // preserve the height and scale width and vice versa if it is landscape, we preserve
         // the width and we check if the selected values fill the screen, otherwise we invert
@@ -358,7 +391,32 @@ public class SampleAppRenderer {
     {
         // Query display dimensions:
         Point size = new Point();
-        mActivity.getWindowManager().getDefaultDisplay().getRealSize(size);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+        {
+            mActivityRef.get().getWindowManager().getDefaultDisplay().getRealSize(size);
+        }
+        else
+        {
+            WindowManager windowManager = (WindowManager) mActivityRef.get().getSystemService(Context.WINDOW_SERVICE);
+
+            if (windowManager != null)
+            {
+                DisplayMetrics metrics = new DisplayMetrics();
+                Display display = windowManager.getDefaultDisplay();
+                display.getMetrics(metrics);
+
+                size.x = metrics.widthPixels;
+                size.y = metrics.heightPixels;
+            }
+            else
+            {
+                Log.e(LOGTAG, "Could not get display metrics!");
+                size.x = 0;
+                size.y = 0;
+            }
+        }
+
         mScreenWidth = size.x;
         mScreenHeight = size.y;
     }
@@ -367,7 +425,7 @@ public class SampleAppRenderer {
     // Stores the orientation depending on the current resources configuration
     private void updateActivityOrientation()
     {
-        Configuration config = mActivity.getResources().getConfiguration();
+        Configuration config = mActivityRef.get().getResources().getConfiguration();
 
         switch (config.orientation)
         {

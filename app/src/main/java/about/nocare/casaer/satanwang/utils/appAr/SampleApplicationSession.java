@@ -17,6 +17,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.vuforia.CameraDevice;
 import com.vuforia.Device;
@@ -491,6 +492,7 @@ public class SampleApplicationSession implements UpdateCallbackInterface
             return mActivity.getString(R.string.INIT_LICENSE_ERROR_PRODUCT_TYPE_MISMATCH);
         else
         {
+            Toast.makeText(mActivity,code,Toast.LENGTH_LONG).show();
             return mActivity.getString(R.string.INIT_LICENSE_ERROR_UNKNOWN_ERROR);
         }
     }

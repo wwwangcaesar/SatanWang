@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.vuforia.CameraDevice;
 import com.vuforia.DataSet;
 import com.vuforia.ObjectTracker;
+import com.vuforia.PositionalDeviceTracker;
 import com.vuforia.STORAGE_TYPE;
 import com.vuforia.State;
 import com.vuforia.Trackable;
@@ -84,7 +85,8 @@ public class ImageTargets extends Activity implements SampleApplicationControl,
     private boolean mFlash = false;
     private boolean mContAutofocus = false;
     private boolean mExtendedTracking = false;
-    
+    private boolean mDeviceTracker = false;
+
     private View mFlashOptionView;
     
     private RelativeLayout mUILayout;
@@ -529,34 +531,84 @@ public class ImageTargets extends Activity implements SampleApplicationControl,
         }
         return result;
     }
-    
-    
+
+
     @Override
     public boolean doStartTrackers()
     {
         // Indicate if the trackers were started correctly
         boolean result = true;
-        
-        Tracker objectTracker = TrackerManager.getInstance().getTracker(
-            ObjectTracker.getClassType());
-        if (objectTracker != null)
-            objectTracker.start();
-        
+
+        TrackerManager trackerManager = TrackerManager.getInstance();
+
+        Tracker objectTracker = trackerManager.getTracker(ObjectTracker.getClassType());
+
+        if (objectTracker != null && objectTracker.start())
+        {
+            Log.i(LOGTAG, "Successfully started Object Tracker");
+        }
+        else
+        {
+            Log.e(LOGTAG, "Failed to start Object Tracker");
+            result = false;
+        }
+
+        if (isDeviceTrackingActive())
+        {
+            PositionalDeviceTracker deviceTracker = (PositionalDeviceTracker) trackerManager
+                    .getTracker(PositionalDeviceTracker.getClassType());
+
+            if (deviceTracker != null && deviceTracker.start())
+            {
+                Log.i(LOGTAG, "Successfully started Device Tracker");
+            }
+            else
+            {
+                Log.e(LOGTAG, "Failed to start Device Tracker");
+            }
+        }
+
         return result;
     }
-    
-    
+
+
     @Override
     public boolean doStopTrackers()
     {
         // Indicate if the trackers were stopped correctly
         boolean result = true;
-        
-        Tracker objectTracker = TrackerManager.getInstance().getTracker(
-            ObjectTracker.getClassType());
+
+        TrackerManager trackerManager = TrackerManager.getInstance();
+
+        Tracker objectTracker = trackerManager.getTracker(ObjectTracker.getClassType());
         if (objectTracker != null)
+        {
             objectTracker.stop();
-        
+            Log.i(LOGTAG, "Successfully stopped object tracker");
+        }
+        else
+        {
+            Log.e(LOGTAG, "Failed to stop object tracker");
+            result = false;
+        }
+
+        // Stop the device tracker
+        if(isDeviceTrackingActive())
+        {
+
+            Tracker deviceTracker = trackerManager.getTracker(PositionalDeviceTracker.getClassType());
+
+            if (deviceTracker != null)
+            {
+                deviceTracker.stop();
+                Log.i(LOGTAG, "Successfully stopped device tracker");
+            }
+            else
+            {
+                Log.e(LOGTAG, "Could not stop device tracker");
+            }
+        }
+
         return result;
     }
     
@@ -796,7 +848,10 @@ public class ImageTargets extends Activity implements SampleApplicationControl,
         
         return result;
     }
-    
+    boolean isDeviceTrackingActive()
+    {
+        return mDeviceTracker;
+    }
     
     private void showToast(String text)
     {
