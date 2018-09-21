@@ -40,7 +40,9 @@
     <color name="titleBackground">#D1F8F8F8</color>
     <color name="secondaryBackground">#F7F7F7</color>
     <color name="lightOrangeBackground">#FFF3EE</color>
+    <color name="arColor">#5D76EC</color>
     <!--图灵机器人颜色    -->
     <color name="TulingToolBar">#22292C</color>
+
 
 </resources>
