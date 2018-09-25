@@ -624,18 +624,108 @@ public class ImageTargets extends Activity implements SampleApplicationControl,
         
         return result;
     }
-    
-    
-    @Override
+
+    public float  oldDist = 90f;
+    private final float TOUCH_SCALE_FACTOR = 180.0f / 320;
+    private float mPreviousX;
+    private float mPreviousY;
+    private float x, y;
+
+
     public boolean onTouchEvent(MotionEvent event)
+
     {
-        // Process the Gestures
-        if (mSampleAppMenu != null && mSampleAppMenu.processEvent(event))
-            return true;
-        
-        return mGestureDetector.onTouchEvent(event);
+
+        int pointerCount = event.getPointerCount();
+
+        int action = event.getAction();
+
+        y = event.getY();
+        x = event.getX();
+
+        // 单点触控的情况主要控制模型的旋转
+
+        if (pointerCount == 1) {
+
+            switch (action) {
+
+                case MotionEvent.ACTION_DOWN:
+
+                    System.out.println("ACTION_DOWN pointerCount=" + pointerCount);
+
+                    break;
+
+                case MotionEvent.ACTION_UP:
+
+                    System.out.println("ACTION_UP pointerCount=" + pointerCount);
+
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+
+                    System.out.println("ACTION_MOVE pointerCount=" + pointerCount);
+
+                    float dy = y - mPreviousY;//计算触控笔Y位移
+                    float dx = x - mPreviousX;//计算触控笔X位移
+                    mRenderer.setmAngleX(mRenderer.getmAngleX() + dy * TOUCH_SCALE_FACTOR);//设置沿x轴旋转角度
+                    mRenderer.setmAngleY(mRenderer.getmAngleY() + dx * TOUCH_SCALE_FACTOR);//设置沿y轴旋转角度
+                    break;
+
+            }
+
+        }
+
+        // 两点触控的情况主要控制模型的缩放
+
+        if (pointerCount == 2) {
+
+            switch (action & MotionEvent.ACTION_MASK) {
+
+                case MotionEvent.ACTION_DOWN:
+
+                    System.out.println("ACTION_DOWN pointerCount=" + pointerCount);
+
+                    break;
+
+                case MotionEvent.ACTION_POINTER_DOWN:
+
+                    oldDist = (float) Math.sqrt((event.getX(0) - event.getX(1)) * (event.getX(0) - event.getX(1)) + (event.getY(0) - event.getY(1)) * (event.getY(0) - event.getY(1)));
+
+                    System.out.println("ACTION_UP pointerCount=" + pointerCount);
+
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+
+                    System.out.println("ACTION_MOVE pointerCount=" + pointerCount);
+
+                    float newDist = (float) Math.sqrt((event.getX(0) - event.getX(1)) * (event.getX(0) - event.getX(1)) + (event.getY(0) - event.getY(1)) * (event.getY(0) - event.getY(1)));
+
+                    float scale = newDist / oldDist;
+
+                    if (scale >= 1.5f) {
+
+                        scale = 1.5f;
+
+                    } else if (scale <= 0.2f) {
+
+                        scale = 0.2f;
+
+                    }
+
+                    mRenderer.setScale(scale);//调用本地方法传值
+
+                    break;
+
+            }
+
+        }
+        mPreviousY = y;//记录触控笔位置
+        mPreviousX = x;//记录触控笔位置
+        return true;
+
     }
-    
+
     
     boolean isExtendedTrackingActive()
     {
