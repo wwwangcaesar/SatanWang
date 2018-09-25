@@ -446,22 +446,27 @@ public class HomeCityActivity extends BaseActivity implements SideBar.OnTouching
         switch (view.getId()) {
             case R.id.tvBeijing:
                 AppSession.setChooseCityName("北京");
+                AppSession.setIsFlag(true);
                 finish();
                 break;
             case R.id.tvShanghai:
                 AppSession.setChooseCityName("上海");
+                AppSession.setIsFlag(true);
                 finish();
                 break;
             case R.id.tvGuangzhou:
                 AppSession.setChooseCityName("广州");
+                AppSession.setIsFlag(true);
                 finish();
                 break;
             case R.id.tvShenzhen:
                 AppSession.setChooseCityName("深圳");
+                AppSession.setIsFlag(true);
                 finish();
                 break;
             case R.id.tvHangzhou:
                 AppSession.setChooseCityName("杭州");
+                AppSession.setIsFlag(true);
                 finish();
                 break;
             case R.id.ivRefresh:
@@ -487,6 +492,7 @@ public class HomeCityActivity extends BaseActivity implements SideBar.OnTouching
 //                        HomeMapActivity.aMapLocation = aMapLocation;
                         AppSession.setChooseCityName(aMapLocation.getCity());
                         tvCityName.setText(aMapLocation.getCity());
+                        AppSession.setIsFlag(false);
                         ivRefresh.clearAnimation();
                     }
                 });

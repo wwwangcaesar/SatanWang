@@ -51,6 +51,7 @@ import com.lovcreate.amap.service.LocationService;
 import com.lovcreate.amap.util.MapUtil;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
+import com.lovcreate.core.util.AppSession;
 import com.lovcreate.core.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import about.nocare.casaer.satanwang.R;
+import about.nocare.casaer.satanwang.constant.MapBean;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -156,6 +158,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
         // 在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         mapView.onCreate(savedInstanceState);
         // 初始化地图控制器对象, 添加相应配置
+
         initMap();
 
         initEvent();
@@ -199,11 +202,57 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
         myLocationStyle.strokeWidth(0f);// 设置圆形的边框粗细
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATE);// 定位的类型，设置为定位一次，且将视角移动到地图中心点
         aMap.setMyLocationStyle(myLocationStyle);
-
-        // 注册广播
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("android.intent.action.location");
-        LocalBroadcastManager.getInstance(this).registerReceiver(mItemViewListClickReceiver, intentFilter);
+        if (AppSession.getIsFlag()){
+            if (AppSession.getChooseCityName().equals("北京")){
+                aMap.animateCamera(CameraUpdateFactory
+                        .changeLatLng(new LatLng(MapBean.bejing.latitude, MapBean.bejing.longitude)));
+                aMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(MapBean.bejing.latitude, MapBean.bejing.longitude), MAP_ZOOM),
+                        500, null);
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+            }else if (AppSession.getChooseCityName().equals("上海")){
+                aMap.animateCamera(CameraUpdateFactory
+                        .changeLatLng(new LatLng(MapBean.shanghai.latitude, MapBean.shanghai.longitude)));
+                aMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(MapBean.shanghai.latitude, MapBean.shanghai.longitude), MAP_ZOOM),
+                        500, null);
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+            }
+            else if (AppSession.getChooseCityName().equals("广州")){
+                aMap.animateCamera(CameraUpdateFactory
+                        .changeLatLng(new LatLng(MapBean.guangzhou.latitude, MapBean.guangzhou.longitude)));
+                aMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(MapBean.guangzhou.latitude, MapBean.guangzhou.longitude), MAP_ZOOM),
+                        500, null);
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+            }
+            else if (AppSession.getChooseCityName().equals("深圳")){
+                aMap.animateCamera(CameraUpdateFactory
+                        .changeLatLng(new LatLng(MapBean.shenzhen.latitude, MapBean.shenzhen.longitude)));
+                aMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(MapBean.shenzhen.latitude, MapBean.shenzhen.longitude), MAP_ZOOM),
+                        500, null);
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+            }
+            else if (AppSession.getChooseCityName().equals("杭州")){
+                aMap.animateCamera(CameraUpdateFactory
+                        .changeLatLng(new LatLng(MapBean.hangzhou.latitude, MapBean.hangzhou.longitude)));
+                aMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(MapBean.hangzhou.latitude, MapBean.hangzhou.longitude), MAP_ZOOM),
+                        500, null);
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+            }
+        }else {
+            // 注册广播
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("android.intent.action.location");
+            LocalBroadcastManager.getInstance(this).registerReceiver(mItemViewListClickReceiver, intentFilter);
+        }
 
         tvMsgTime.setText("提示");
         tvMsg.setText("周围地点");
@@ -269,38 +318,39 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
         @Override
         public void onReceive(Context context, Intent intent) {
             amapLocation = intent.getParcelableExtra("location");
-            if (mListener != null && amapLocation != null) {
-                if (amapLocation.getErrorCode() == 0 && aMap != null) {
-                    amapLocation.setAccuracy(0);
-                    mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
-                    // 设置中心点
-                    if (isFirstLoc) {
-                        aMap.animateCamera(CameraUpdateFactory
-                                .changeLatLng(new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude())));
-                        aMap.animateCamera(
-                                CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude()), MAP_ZOOM),
-                                500, null);
-                        aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+                if (mListener != null && amapLocation != null) {
+                    if (amapLocation.getErrorCode() == 0 && aMap != null) {
+                        amapLocation.setAccuracy(0);
+                        mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
+                        // 设置中心点
+                        if (isFirstLoc) {
+                            aMap.animateCamera(CameraUpdateFactory
+                                    .changeLatLng(new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude())));
+                            aMap.animateCamera(
+                                    CameraUpdateFactory.newLatLngZoom(
+                                            new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude()), MAP_ZOOM),
+                                    500, null);
+                            aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
 
+                        }
+                    } else {
+                        String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
+                        Log.e("AMapErr", errText);
+
+                        // 定位失败
+                        amapLocation.setCityCode(DEFAULT_CITY_CODE);
+                        amapLocation.setLatitude(DEFAULT_LAT_LNG.latitude);
+                        amapLocation.setLongitude(DEFAULT_LAT_LNG.longitude);
+                        amapLocation.setCity(DEFAULT_CITY);
                     }
-                } else {
-                    String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
-                    Log.e("AMapErr", errText);
-
-                    // 定位失败
-                    amapLocation.setCityCode(DEFAULT_CITY_CODE);
-                    amapLocation.setLatitude(DEFAULT_LAT_LNG.latitude);
-                    amapLocation.setLongitude(DEFAULT_LAT_LNG.longitude);
-                    amapLocation.setCity(DEFAULT_CITY);
-                }
-                if (isFirstLoc) {
-                    isFirstLoc = false;
-                    // 获取车检站列表
-                    setMoreMarker();
+                    if (isFirstLoc) {
+                        isFirstLoc = false;
+                        // 获取车检站列表
+                        setMoreMarker();
 //                    addLocationMarker(amapLocation);
+                    }
                 }
-            }
+
         }
     };
 
