@@ -39,7 +39,7 @@
     <string name="button_OK">OK</string>
 
     <string name="menu_back">返回</string>
-    <string name="menu_extended_tracking">Extended Tracking</string>
+    <string name="menu_extended_tracking">是否存在</string>
     <string name="menu_character_mode">Character Mode</string>
     <string name="menu_flash">手电筒</string>
     <string name="menu_flash_error_on">Unable to turn on flash</string>
