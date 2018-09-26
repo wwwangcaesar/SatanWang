@@ -210,7 +210,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
                         CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(MapBean.bejing.latitude, MapBean.bejing.longitude), MAP_ZOOM),
                         500, null);
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(8));
             }else if (AppSession.getChooseCityName().equals("上海")){
                 aMap.animateCamera(CameraUpdateFactory
                         .changeLatLng(new LatLng(MapBean.shanghai.latitude, MapBean.shanghai.longitude)));
@@ -218,7 +218,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
                         CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(MapBean.shanghai.latitude, MapBean.shanghai.longitude), MAP_ZOOM),
                         500, null);
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(8));
             }
             else if (AppSession.getChooseCityName().equals("广州")){
                 aMap.animateCamera(CameraUpdateFactory
@@ -227,7 +227,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
                         CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(MapBean.guangzhou.latitude, MapBean.guangzhou.longitude), MAP_ZOOM),
                         500, null);
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(8));
             }
             else if (AppSession.getChooseCityName().equals("深圳")){
                 aMap.animateCamera(CameraUpdateFactory
@@ -236,7 +236,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
                         CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(MapBean.shenzhen.latitude, MapBean.shenzhen.longitude), MAP_ZOOM),
                         500, null);
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(8));
             }
             else if (AppSession.getChooseCityName().equals("杭州")){
                 aMap.animateCamera(CameraUpdateFactory
@@ -245,7 +245,7 @@ public class HomeMapActivity extends BaseActivity implements GeocodeSearch.OnGeo
                         CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(MapBean.hangzhou.latitude, MapBean.hangzhou.longitude), MAP_ZOOM),
                         500, null);
-                aMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM));
+                aMap.moveCamera(CameraUpdateFactory.zoomTo(8));
             }
         }else {
             // 注册广播

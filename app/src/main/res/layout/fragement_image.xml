@@ -2,19 +2,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
-    <ImageView
+    <about.nocare.casaer.satanwang.widget.appmore.image.MyBanner
+        android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg_monkey_king"/>
-    <TextView
-        android:layout_width="wrap_content"
+        android:adjustViewBounds="true"
+        app:banner_default_image="@mipmap/ic_launcher"
+        app:image_scale_type="center_crop"
+        app:indicator_drawable_selected="@color/app_main_color"
+        app:indicator_drawable_unselected="@android:color/white"
+        app:indicator_height="2dp"
+        app:indicator_margin="6dp"
+        app:indicator_width="10dp" />
+    <!--消息轮播-->
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="56dp"
-        android:text="This is a fragment."
-        android:textSize="22sp"/>
+        android:layout_marginTop="60dp"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler2"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_toRightOf="@+id/tv_title"
+            android:layout_marginRight="16dp"
+            />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="5dp"
+            android:text="轮播消息"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            />
+    </RelativeLayout>
 
 </LinearLayout>
