@@ -8,7 +8,7 @@
         android:id="@+id/fake_status_bar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -18,14 +18,19 @@
         android:gravity="center"
         android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textSize="24sp"/>
+        android:textSize="24sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <about.nocare.casaer.satanwang.widget.appmore.video.DragableGridView
+        android:id="@+id/drag_grid_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="56dp"
-        android:text="This is a fragment, too."
-        android:textSize="22sp"/>
+        android:gravity="center"
+        android:layout_marginTop="64dp"
+        android:horizontalSpacing="14dip"
+        android:numColumns="2"
+        android:scrollbars="vertical"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="14.0px"/>
+
 
 </LinearLayout>
