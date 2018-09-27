@@ -1,19 +1,30 @@
 package about.nocare.casaer.satanwang.ui.fragment;
 
+import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
+
+import com.lovcreate.core.base.OnItemClickListener;
+import com.transitionseverywhere.Explode;
+import com.transitionseverywhere.Transition;
+import com.transitionseverywhere.TransitionManager;
+import com.transitionseverywhere.TransitionSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.appmore.MyAdapter;
+import about.nocare.casaer.satanwang.ui.home.SearchActivity;
 import about.nocare.casaer.satanwang.widget.appmore.video.DragableGridView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +43,8 @@ public class SimpleFragment3 extends Fragment {
     Unbinder unbinder;
     private TextView mTvTitle;
     private View mFakeStatusBar;
+    private MyAdapter adapter;
+    private List<String> list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,8 +58,8 @@ public class SimpleFragment3 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mTvTitle = (TextView) view.findViewById(R.id.tv_title);
         mFakeStatusBar = view.findViewById(R.id.fake_status_bar);
-        MyAdapter adapter = new MyAdapter(getActivity());
-        List<String> list = new ArrayList<String>();
+        adapter = new MyAdapter(getActivity());
+        list = new ArrayList<String>();
         list.add("抖音视频\n效果");
         list.add("腾讯新闻\n视频效果");
         list.add("不同模式\n播放视频");
