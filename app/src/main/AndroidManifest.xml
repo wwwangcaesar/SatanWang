@@ -117,6 +117,8 @@
             android:theme="@style/SampleAppsTheme"
             android:launchMode="singleTask"
             />
+        <activity android:name=".ui.appMore.simple3.ViewPagerLayoutManagerActivity"
+            android:theme="@style/AppTheme.Skid_1" />
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.OnItemClickListener;
+import com.lovcreate.core.util.ToastUtil;
 import com.transitionseverywhere.Explode;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.appmore.MyAdapter;
+import about.nocare.casaer.satanwang.ui.appMore.simple3.ViewPagerLayoutManagerActivity;
 import about.nocare.casaer.satanwang.ui.home.SearchActivity;
 import about.nocare.casaer.satanwang.widget.appmore.video.DragableGridView;
 import butterknife.BindView;
@@ -66,6 +68,21 @@ public class SimpleFragment3 extends Fragment {
         list.add("拍摄小视\n频");
         adapter.setList(list);
         dragGridView.setAdapter(adapter);
+        dragGridView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            protected void onItemNoDoubleClick(AdapterView<?> parent, View view, int position, long id) {
+                if (parent.getAdapter().getItem(position).toString().equals("抖音视频\n效果")){
+                    startActivity(new Intent(getActivity(), ViewPagerLayoutManagerActivity.class));
+                }else if (parent.getAdapter().getItem(position).toString().equals("腾讯新闻\n视频效果")){
+                    ToastUtil.showToastBottomShort("腾讯新闻");
+                }else if (parent.getAdapter().getItem(position).toString().equals("不同模式\n播放视频")){
+                    ToastUtil.showToastBottomShort("不同模式");
+                }else if (parent.getAdapter().getItem(position).toString().equals("拍摄小视\n频")){
+                        ToastUtil.showToastBottomShort("拍摄小视");
+                }
+
+            }
+        });
     }
 
     public void setTvTitleBackgroundColor(@ColorInt int color) {
