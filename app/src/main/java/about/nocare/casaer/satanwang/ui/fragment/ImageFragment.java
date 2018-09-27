@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import about.nocare.casaer.satanwang.R;
+import about.nocare.casaer.satanwang.adapter.appmore.MyNewsAdapter;
 import about.nocare.casaer.satanwang.utils.fragment.BannerLayoutManager;
 import about.nocare.casaer.satanwang.widget.appmore.image.MyBanner;
 
@@ -61,7 +62,7 @@ public class ImageFragment extends Fragment {
 
         /*消息轮播*/
         mRecycler_2 = (RecyclerView)view.findViewById(R.id.recycler2);
-        MyNewsAdapter myNewsAdapter = new MyNewsAdapter();
+        MyNewsAdapter myNewsAdapter = new MyNewsAdapter(getActivity());
         BannerLayoutManager bannerNewsLayoutManager = new BannerLayoutManager(getActivity(),mRecycler_2,8, OrientationHelper.VERTICAL);
         bannerNewsLayoutManager.setTimeSmooth(400f);
         mRecycler_2.setLayoutManager(bannerNewsLayoutManager);
@@ -98,42 +99,5 @@ public class ImageFragment extends Fragment {
                     .into(imageView);
         }
     }
-    /**
-     * 新闻轮播适配器
-     */
-    class MyNewsAdapter extends RecyclerView.Adapter<MyNewsAdapter.ViewHolder> {
-        private String[] mTitles = {
-                "天高云淡 望断南飞雁",
-                "不到长城非好汉 屈指行程二万",
-                "六盘山上高峰 红旗漫卷西风",
-                "今日长缨在手 何时缚住苍龙",
-                "钟山风雨起苍黄 百万雄师过大江",
-                "虎距龙盘今胜昔 天翻地覆慨而慷",
-                "宜将剩勇追穷寇 不可沽名学霸王",
-                "天若有情天亦老 人间正道是沧桑",
-        };
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.item_banner_news, parent, false);
-            return new ViewHolder(view);
-        }
 
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
-            holder.tv_news.setText(mTitles[position%8]);
-        }
-
-        @Override
-        public int getItemCount() {
-            return Integer.MAX_VALUE;
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            TextView tv_news;
-            public ViewHolder(View itemView) {
-                super(itemView);
-                tv_news = (TextView)itemView.findViewById(R.id.tv_news);
-            }
-        }
-    }
 }
