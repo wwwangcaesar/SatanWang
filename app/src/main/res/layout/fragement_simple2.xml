@@ -23,11 +23,11 @@
     <TextView
         android:id="@+id/tvBeautify"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="160dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="56dp"
-        android:textSize="16sp"
+        android:textSize="21sp"
         android:background="@drawable/drawable_beautify"
         android:gravity="center"
         android:text="美化图片" />
