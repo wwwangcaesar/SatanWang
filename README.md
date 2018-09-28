@@ -55,6 +55,6 @@
   
   
  [Demo下载](https://github.com/wwwangcaesar/SatanWang/raw/master/app/release/Satan.apk)
- https://github.com/wwwangcaesar/SatanWang/raw/master/app/release/Satan.apk
+
  **由于运用本地视频，图片，音乐，jar包等比较大，请耐心下载**
 
