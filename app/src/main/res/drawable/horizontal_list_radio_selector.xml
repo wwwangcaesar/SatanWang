@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/horizontal_list_radio_selected" android:state_checked="true" /> <!-- checked -->
+
+    <item android:drawable="@drawable/horizontal_list_radio_unselected" android:state_checked="false" /> <!-- default -->
+
+    <item android:drawable="@drawable/horizontal_list_radio_unselected" />
+
+</selector>

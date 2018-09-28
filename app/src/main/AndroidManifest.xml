@@ -107,18 +107,22 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:theme="@style/ChatAppTheme" />
-        <activity android:name=".ui.appMore.simple4.VRGyroscopeActivity"
+        <activity
+            android:name=".ui.appMore.simple4.VRGyroscopeActivity"
             android:theme="@style/ChatAppTheme" />
-        <activity android:name=".ui.appMore.simple4.CoverActivity"
+        <activity
+            android:name=".ui.appMore.simple4.CoverActivity"
             android:theme="@style/TranslucentTheme" />
         <activity
             android:name=".ui.appMore.simple4.MyAR.ImageTargets.ImageTargets"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
-            android:theme="@style/SampleAppsTheme"
             android:launchMode="singleTask"
-            />
-        <activity android:name=".ui.appMore.simple3.ViewPagerLayoutManagerActivity"
+            android:theme="@style/SampleAppsTheme" />
+        <activity
+            android:name=".ui.appMore.simple3.ViewPagerLayoutManagerActivity"
             android:theme="@style/AppTheme.Skid_1" />
+        <activity android:name=".ui.appMore.simple2.PicActivity"
+            android:theme="@style/ChatAppTheme" />
     </application>
 
 </manifest>
