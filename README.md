@@ -54,6 +54,6 @@
   
   
   
- [Demo下载](https://pan.baidu.com/s/1_kf0AY9xLo6EIFHMlqZwoA)
- **提取码: q6bw**
+ [Demo下载](https://github.com/wwwangcaesar/SatanWang/blob/master/app/release/Satan.apk)
+ **由于运用本地视频，图片，音乐，jar包等比较大，请耐心下载**
 
