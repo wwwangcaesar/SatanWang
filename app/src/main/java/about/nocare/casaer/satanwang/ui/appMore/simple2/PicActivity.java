@@ -12,10 +12,12 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
@@ -56,6 +58,16 @@ public class PicActivity extends BaseActivity {
     LinearLayout mainLayout;
     @BindView(R.id.tllet)
     TextView tllet;
+    @BindView(R.id.btn_cancel)
+    TextView btnCancel;
+    @BindView(R.id.btn_ok)
+    TextView btnOk;
+    @BindView(R.id.rl_tool)
+    RelativeLayout rlTool;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
+    @BindView(R.id.llAdd)
+    LinearLayout llAdd;
     private HorizontalListAdapter adapter;
 
     private List<String> listBrings = new ArrayList<>();
@@ -131,6 +143,15 @@ public class PicActivity extends BaseActivity {
             @Override
             protected void onItemNoDoubleClick(AdapterView<?> parent, View view, int position, long id) {
                 ToastUtil.showToastBottomShort(" " + position);
+                rlTool.setVisibility(View.VISIBLE);
+                llAdd.setVisibility(View.VISIBLE);
+
+                final LayoutInflater inflater = LayoutInflater.from(PicActivity.this);
+                // 获取需要被添加控件的布局  
+                // 获取需要添加的布局  
+                RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.filterslist, null).findViewById(R.id.filtersList);
+                // 将布局加入到当前布局中  
+                llAdd.addView(layout);
             }
         });
         DisplayMetrics metric = new DisplayMetrics();
@@ -151,6 +172,13 @@ public class PicActivity extends BaseActivity {
             @Override
             public void onNoDoubleClick(View v) {
                 getPictureFromPhoto();
+            }
+        });
+        btnCancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                llAdd.setVisibility(View.GONE);
+                rlTool.setVisibility(View.GONE);
             }
         });
     }
@@ -194,6 +222,7 @@ public class PicActivity extends BaseActivity {
         }
         tllet.setVisibility(View.GONE);
         mainLayout.setVisibility(View.VISIBLE);
+        llAdd.setVisibility(View.INVISIBLE);
         recyBringinto.setVisibility(View.VISIBLE);
 
         switch (requestCode) {
@@ -224,7 +253,6 @@ public class PicActivity extends BaseActivity {
                 } else {
                     compressed();
                 }
-
                 break;
             case PHOTO_FRAME_WITH_DATA:
             case PHOTO_MOSAIC_WITH_DATA:
@@ -257,6 +285,9 @@ public class PicActivity extends BaseActivity {
                 mainLayout);
         pictureShow.setImageBitmap(resizeBmp);
         camera_path = SaveBitmap(resizeBmp, "saveTemp");
+        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) llBottom.getLayoutParams(); //取控件textView当前的布局参数
+        linearParams.height = 0;// 控件的高强制设成0
+        llBottom.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
     }
 
     final Handler myHandler = new Handler() {
