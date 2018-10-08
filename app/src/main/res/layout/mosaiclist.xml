@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filtersList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <HorizontalScrollView
+        android:id="@+id/filtersSV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/mosaic1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="花色"
+                />
+
+            <TextView
+                android:id="@+id/mosaic2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="基本"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/mosaic3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="毛玻璃"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/mosaic4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="大小"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/mosaic5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="橡皮檫"
+                android:gravity="center"
+                />
+        </LinearLayout>
+    </HorizontalScrollView>
+</RelativeLayout>

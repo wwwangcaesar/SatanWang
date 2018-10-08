@@ -18,12 +18,13 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
 import com.lovcreate.core.base.OnItemClickListener;
-import com.lovcreate.core.util.ToastUtil;
 import com.lovcreate.core.widget.HorizontalListView;
 
 import java.io.File;
@@ -68,6 +69,14 @@ public class PicActivity extends BaseActivity {
     LinearLayout llBottom;
     @BindView(R.id.llAdd)
     LinearLayout llAdd;
+    @BindView(R.id.saturation)
+    SeekBar saturation;
+    @BindView(R.id.brightness)
+    SeekBar brightness;
+    @BindView(R.id.contrast)
+    SeekBar contrast;
+    @BindView(R.id.tone_sub_menu)
+    TableLayout toneSubMenu;
     private HorizontalListAdapter adapter;
 
     private List<String> listBrings = new ArrayList<>();
@@ -139,19 +148,82 @@ public class PicActivity extends BaseActivity {
         recyBringinto = (HorizontalListView) findViewById(R.id.horizontalListView);
         adapter = new HorizontalListAdapter(this, getData());
         recyBringinto.setAdapter(adapter);
-        recyBringinto.setOnItemClickListener(new OnItemClickListener() {
+        recyBringinto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            protected void onItemNoDoubleClick(AdapterView<?> parent, View view, int position, long id) {
-                ToastUtil.showToastBottomShort(" " + position);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 rlTool.setVisibility(View.VISIBLE);
                 llAdd.setVisibility(View.VISIBLE);
-
                 final LayoutInflater inflater = LayoutInflater.from(PicActivity.this);
                 // 获取需要被添加控件的布局  
                 // 获取需要添加的布局  
-                RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.filterslist, null).findViewById(R.id.filtersList);
-                // 将布局加入到当前布局中  
-                llAdd.addView(layout);
+                switch (position) {
+                    //滤镜
+                    case 0:
+                        llAdd.removeAllViews();
+                        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.filterslist, null).findViewById(R.id.filtersList);
+                        // 将布局加入到当前布局中  
+                        llAdd.addView(layout);
+                        break;
+                    //人体变形
+                    case 1:
+                        llAdd.removeAllViews();
+                        break;
+                    //边框
+                    case 2:
+                        llAdd.removeAllViews();
+                        RelativeLayout layout2 = (RelativeLayout) inflater.inflate(R.layout.framelist, null).findViewById(R.id.filtersList);
+                        // 将布局加入到当前布局中  
+                        llAdd.addView(layout2);
+                        break;
+                    //涂鸦
+                    case 3:
+                        llAdd.removeAllViews();
+                        RelativeLayout layout3 = (RelativeLayout) inflater.inflate(R.layout.graffitilist, null).findViewById(R.id.filtersList);
+                        // 将布局加入到当前布局中  
+                        llAdd.addView(layout3);
+                        break;
+                    //马赛克
+                    case 4:
+                        llAdd.removeAllViews();
+                        RelativeLayout layout4 = (RelativeLayout) inflater.inflate(R.layout.mosaiclist, null).findViewById(R.id.filtersList);
+                        // 将布局加入到当前布局中  
+                        llAdd.addView(layout4);
+                        break;
+                    //剪切
+                    case 5:
+                        llAdd.removeAllViews();
+                        RelativeLayout layout5 = (RelativeLayout) inflater.inflate(R.layout.shearlist, null).findViewById(R.id.filtersList);
+                        // 将布局加入到当前布局中  
+                        llAdd.addView(layout5);
+                        break;
+                    //添加水印
+                    case 6:
+                        llAdd.removeAllViews();
+                        RelativeLayout layout6 = (RelativeLayout) inflater.inflate(R.layout.addwatermark, null).findViewById(R.id.filtersList);
+                        // 将布局加入到当前布局中  
+                        llAdd.addView(layout6);
+                        break;
+                    //图像增强
+                    case 7:
+                        llAdd.setVisibility(View.GONE);
+                        recyBringinto.setVisibility(View.GONE);
+                        toneSubMenu.setVisibility(View.VISIBLE);
+                        break;
+                    //旋转
+                    case 8:
+                        llAdd.removeAllViews();
+                        RelativeLayout layout8 = (RelativeLayout) inflater.inflate(R.layout.rotatelist, null).findViewById(R.id.filtersList);
+                        // 将布局加入到当前布局中  
+                        llAdd.addView(layout8);
+                        break;
+                    //添加文字
+                    case 9:
+                        llAdd.removeAllViews();
+                        RelativeLayout layout9 = (RelativeLayout) inflater.inflate(R.layout.writtenwordslist, null).findViewById(R.id.filtersList);
+                        // 将布局加入到当前布局中  
+                        llAdd.addView(layout9);
+                        break;
+                }
             }
         });
         DisplayMetrics metric = new DisplayMetrics();
@@ -179,6 +251,8 @@ public class PicActivity extends BaseActivity {
             public void onNoDoubleClick(View v) {
                 llAdd.setVisibility(View.GONE);
                 rlTool.setVisibility(View.GONE);
+                recyBringinto.setVisibility(View.VISIBLE);
+                toneSubMenu.setVisibility(View.GONE);
             }
         });
     }

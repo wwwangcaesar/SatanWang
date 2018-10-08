@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filtersList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <HorizontalScrollView
+        android:id="@+id/filtersSV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/shear1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="自由剪切"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/shear2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="1:1剪切"
+                />
+
+            <TextView
+                android:id="@+id/shear3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="3:2剪切"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/shear4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="4:3剪切"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/shear5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="16:9剪切"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/shear6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="旋转"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/shear7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="上下翻转"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/shear8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="左右翻转"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/shear9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:drawableTop="@mipmap/star_blue"
+                android:text="执行剪切"
+                android:gravity="center"
+                />
+        </LinearLayout>
+    </HorizontalScrollView>
+</RelativeLayout>

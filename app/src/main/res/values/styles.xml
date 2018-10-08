@@ -74,4 +74,11 @@
         <item name="android:windowAllowReturnTransitionOverlap" tools:targetApi="lollipop">false</item>
         <item name="android:windowAllowEnterTransitionOverlap" tools:targetApi="lollipop">false</item>
     </style>
+    <!--图像增强-->
+    <style name="sub_menu">
+        <item name="android:gravity">center</item>
+        <item name="android:background">#b2000000</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">45.0dip</item>
+    </style>
 </resources>
