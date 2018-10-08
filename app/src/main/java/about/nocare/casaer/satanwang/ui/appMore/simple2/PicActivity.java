@@ -25,8 +25,6 @@ import android.widget.TextView;
 
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
-import com.lovcreate.core.base.OnItemClickListener;
-import com.lovcreate.core.util.ToastUtil;
 import com.lovcreate.core.widget.HorizontalListView;
 
 import java.io.File;
@@ -45,11 +43,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jarlen.photoedit.filters.NativeFilter;
 import cn.jarlen.photoedit.photoframe.PhotoFrame;
+import cn.jarlen.photoedit.scrawl.DrawAttribute;
+import cn.jarlen.photoedit.scrawl.DrawingBoardView;
+import cn.jarlen.photoedit.scrawl.ScrawlTools;
 
 /**
  * 图片处理
  */
-public class PicActivity extends BaseActivity implements View.OnClickListener{
+public class PicActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.horizontalListView)
     HorizontalListView recyBringinto;
@@ -81,6 +82,10 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     SeekBar contrast;
     @BindView(R.id.tone_sub_menu)
     TableLayout toneSubMenu;
+    @BindView(R.id.drawView)
+    DrawingBoardView drawView;
+    @BindView(R.id.drawLayout)
+    LinearLayout drawLayout;
     private HorizontalListAdapter adapter;
 
     private List<String> listBrings = new ArrayList<>();
@@ -124,7 +129,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     /*  测试接口 */
     private static final int PHOTO_TEST_TEXT_DATA = 3034;
 
-    private Bitmap newBitmap,oldBitmap;
+    private Bitmap newBitmap, oldBitmap;
     private int srcWidth, srcHeight;
     /* 照相机拍照得到的图片 */
     private File mCurrentPhotoFile;
@@ -134,7 +139,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     int width = 0;
 
     //是否取消
-    private int canal=1;
+    private int canal = 1;
     public static final String filePath = Environment.getExternalStorageDirectory() + "/PictureTest/";
 
     OperateUtils operateUtils;
@@ -193,6 +198,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
                     //涂鸦
                     case 3:
                         llAdd.removeAllViews();
+                        drawLayout.setVisibility(View.VISIBLE);
+                        pictureShow.setVisibility(View.GONE);
                         RelativeLayout layout3 = (RelativeLayout) inflater.inflate(R.layout.graffitilist, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
                         initgraffiti(layout3);
@@ -248,19 +255,21 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
             }
         });
     }
+
     Bitmap resultImg = null;
     /**
-     *  滤镜效果
+     * 滤镜效果
      */
     private NativeFilter nativeFilters = new NativeFilter();
-    private void initfilters(RelativeLayout layout){
-        TextView filterGray=(TextView)layout.findViewById(R.id.filterGray);
-        TextView filterMosatic=(TextView)layout.findViewById(R.id.filterMosatic);
-        TextView filterLOMO=(TextView)layout.findViewById(R.id.filterLOMO);
-        TextView filterNostalgic=(TextView)layout.findViewById(R.id.filterNostalgic);
-        TextView filterComics=(TextView)layout.findViewById(R.id.filterComics);
-        TextView filterBrown=(TextView)layout.findViewById(R.id.filterBrown);
-        TextView filterSketchPencil=(TextView)layout.findViewById(R.id.filterSketchPencil);
+
+    private void initfilters(RelativeLayout layout) {
+        TextView filterGray = (TextView) layout.findViewById(R.id.filterGray);
+        TextView filterMosatic = (TextView) layout.findViewById(R.id.filterMosatic);
+        TextView filterLOMO = (TextView) layout.findViewById(R.id.filterLOMO);
+        TextView filterNostalgic = (TextView) layout.findViewById(R.id.filterNostalgic);
+        TextView filterComics = (TextView) layout.findViewById(R.id.filterComics);
+        TextView filterBrown = (TextView) layout.findViewById(R.id.filterBrown);
+        TextView filterSketchPencil = (TextView) layout.findViewById(R.id.filterSketchPencil);
         filterGray.setOnClickListener(this);
         filterMosatic.setOnClickListener(this);
         filterLOMO.setOnClickListener(this);
@@ -271,28 +280,31 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
-     *  边框效果
+     * 边框效果
      */
     private PhotoFrame mImageFrame;
-    private void initframe(RelativeLayout layout){
-        ImageView photoRes_one=(ImageView)layout.findViewById(R.id.photoRes_one);
-        ImageView photoRes_two=(ImageView)layout.findViewById(R.id.photoRes_two);
-        ImageView photoRes_three=(ImageView)layout.findViewById(R.id.photoRes_three);
+
+    private void initframe(RelativeLayout layout) {
+        ImageView photoRes_one = (ImageView) layout.findViewById(R.id.photoRes_one);
+        ImageView photoRes_two = (ImageView) layout.findViewById(R.id.photoRes_two);
+        ImageView photoRes_three = (ImageView) layout.findViewById(R.id.photoRes_three);
         photoRes_one.setOnClickListener(this);
         photoRes_two.setOnClickListener(this);
         photoRes_three.setOnClickListener(this);
     }
 
     /**
-     *  涂鸦效果
+     * 涂鸦效果
      */
-    private void initgraffiti(RelativeLayout layout){
-        TextView graffit1=(TextView)layout.findViewById(R.id.graffit1);
-        TextView graffit2=(TextView)layout.findViewById(R.id.graffit2);
-        TextView graffit3=(TextView)layout.findViewById(R.id.graffit3);
-        TextView graffit4=(TextView)layout.findViewById(R.id.graffit4);
-        TextView graffit5=(TextView)layout.findViewById(R.id.graffit5);
-        TextView graffit6=(TextView)layout.findViewById(R.id.graffit6);
+    ScrawlTools casualWaterUtil = null;
+
+    private void initgraffiti(RelativeLayout layout) {
+        TextView graffit1 = (TextView) layout.findViewById(R.id.graffit1);
+        TextView graffit2 = (TextView) layout.findViewById(R.id.graffit2);
+        TextView graffit3 = (TextView) layout.findViewById(R.id.graffit3);
+        TextView graffit4 = (TextView) layout.findViewById(R.id.graffit4);
+        TextView graffit5 = (TextView) layout.findViewById(R.id.graffit5);
+        TextView graffit6 = (TextView) layout.findViewById(R.id.graffit6);
         graffit1.setOnClickListener(this);
         graffit2.setOnClickListener(this);
         graffit3.setOnClickListener(this);
@@ -301,15 +313,40 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
         graffit6.setOnClickListener(this);
     }
 
+    private void initdraw() {
+
+        Bitmap resizeBmp = operateUtils.compressionFiller(newBitmap, drawLayout);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                resizeBmp.getWidth(), resizeBmp.getHeight());
+
+        drawView.setLayoutParams(layoutParams);
+
+        casualWaterUtil = new ScrawlTools(this, drawView, resizeBmp);
+
+        Bitmap paintBitmap = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.crayon);
+
+        // int[] res = new int[]{
+        // R.drawable.stamp0star,R.drawable.stamp1star,R.drawable.stamp2star,R.drawable.stamp3star
+        // };
+
+        casualWaterUtil.creatDrawPainter(DrawAttribute.DrawStatus.PEN_WATER,
+                paintBitmap, 0xffacb8bd);
+
+        // casualWaterUtil.creatStampPainter(DrawAttribute.DrawStatus.PEN_STAMP,res,0xff00ff00);
+
+    }
+
     /**
-     *  马赛克效果
+     * 马赛克效果
      */
-    private void initmosaic(RelativeLayout layout){
-        TextView mosaic1=(TextView)layout.findViewById(R.id.mosaic1);
-        TextView mosaic2=(TextView)layout.findViewById(R.id.mosaic2);
-        TextView mosaic3=(TextView)layout.findViewById(R.id.mosaic3);
-        TextView mosaic4=(TextView)layout.findViewById(R.id.mosaic4);
-        TextView mosaic5=(TextView)layout.findViewById(R.id.mosaic5);
+    private void initmosaic(RelativeLayout layout) {
+        TextView mosaic1 = (TextView) layout.findViewById(R.id.mosaic1);
+        TextView mosaic2 = (TextView) layout.findViewById(R.id.mosaic2);
+        TextView mosaic3 = (TextView) layout.findViewById(R.id.mosaic3);
+        TextView mosaic4 = (TextView) layout.findViewById(R.id.mosaic4);
+        TextView mosaic5 = (TextView) layout.findViewById(R.id.mosaic5);
         mosaic1.setOnClickListener(this);
         mosaic2.setOnClickListener(this);
         mosaic3.setOnClickListener(this);
@@ -318,18 +355,18 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
-     *  剪切效果
+     * 剪切效果
      */
-    private void initshear(RelativeLayout layout){
-        TextView shear1=(TextView)layout.findViewById(R.id.shear1);
-        TextView shear2=(TextView)layout.findViewById(R.id.shear2);
-        TextView shear3=(TextView)layout.findViewById(R.id.shear3);
-        TextView shear4=(TextView)layout.findViewById(R.id.shear4);
-        TextView shear5=(TextView)layout.findViewById(R.id.shear5);
-        TextView shear6=(TextView)layout.findViewById(R.id.shear6);
-        TextView shear7=(TextView)layout.findViewById(R.id.shear7);
-        TextView shear8=(TextView)layout.findViewById(R.id.shear8);
-        TextView shear9=(TextView)layout.findViewById(R.id.shear9);
+    private void initshear(RelativeLayout layout) {
+        TextView shear1 = (TextView) layout.findViewById(R.id.shear1);
+        TextView shear2 = (TextView) layout.findViewById(R.id.shear2);
+        TextView shear3 = (TextView) layout.findViewById(R.id.shear3);
+        TextView shear4 = (TextView) layout.findViewById(R.id.shear4);
+        TextView shear5 = (TextView) layout.findViewById(R.id.shear5);
+        TextView shear6 = (TextView) layout.findViewById(R.id.shear6);
+        TextView shear7 = (TextView) layout.findViewById(R.id.shear7);
+        TextView shear8 = (TextView) layout.findViewById(R.id.shear8);
+        TextView shear9 = (TextView) layout.findViewById(R.id.shear9);
         shear1.setOnClickListener(this);
         shear2.setOnClickListener(this);
         shear3.setOnClickListener(this);
@@ -342,22 +379,22 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
-     *  水印效果
+     * 水印效果
      */
-    private void initaddwatermark(RelativeLayout layout){
-        TextView chunvzuo=(TextView)layout.findViewById(R.id.chunvzuo);
-        TextView shenhuifu=(TextView)layout.findViewById(R.id.shenhuifu);
-        TextView qiugouda=(TextView)layout.findViewById(R.id.qiugouda);
-        TextView guaishushu=(TextView)layout.findViewById(R.id.guaishushu);
-        TextView haoxingzuo=(TextView)layout.findViewById(R.id.haoxingzuo);
-        TextView wanhuaile=(TextView)layout.findViewById(R.id.wanhuaile);
-        TextView xiangsi=(TextView)layout.findViewById(R.id.xiangsi);
-        TextView xingzuokong=(TextView)layout.findViewById(R.id.xingzuokong);
-        TextView xinnian=(TextView)layout.findViewById(R.id.xinnian);
-        TextView zaoan=(TextView)layout.findViewById(R.id.zaoan);
-        TextView zuile=(TextView)layout.findViewById(R.id.zuile);
-        TextView jiuyaozuo=(TextView)layout.findViewById(R.id.jiuyaozuo);
-        TextView zui=(TextView)layout.findViewById(R.id.zui);
+    private void initaddwatermark(RelativeLayout layout) {
+        TextView chunvzuo = (TextView) layout.findViewById(R.id.chunvzuo);
+        TextView shenhuifu = (TextView) layout.findViewById(R.id.shenhuifu);
+        TextView qiugouda = (TextView) layout.findViewById(R.id.qiugouda);
+        TextView guaishushu = (TextView) layout.findViewById(R.id.guaishushu);
+        TextView haoxingzuo = (TextView) layout.findViewById(R.id.haoxingzuo);
+        TextView wanhuaile = (TextView) layout.findViewById(R.id.wanhuaile);
+        TextView xiangsi = (TextView) layout.findViewById(R.id.xiangsi);
+        TextView xingzuokong = (TextView) layout.findViewById(R.id.xingzuokong);
+        TextView xinnian = (TextView) layout.findViewById(R.id.xinnian);
+        TextView zaoan = (TextView) layout.findViewById(R.id.zaoan);
+        TextView zuile = (TextView) layout.findViewById(R.id.zuile);
+        TextView jiuyaozuo = (TextView) layout.findViewById(R.id.jiuyaozuo);
+        TextView zui = (TextView) layout.findViewById(R.id.zui);
         chunvzuo.setOnClickListener(this);
         shenhuifu.setOnClickListener(this);
         qiugouda.setOnClickListener(this);
@@ -374,13 +411,13 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
-     *  旋转效果
+     * 旋转效果
      */
-    private void initrotate(RelativeLayout layout){
-        Button rotate1=(Button)layout.findViewById(R.id.rotate1);
-        Button rotate2=(Button)layout.findViewById(R.id.rotate2);
-        Button rotate3=(Button)layout.findViewById(R.id.rotate3);
-        Button rotate4=(Button)layout.findViewById(R.id.rotate4);
+    private void initrotate(RelativeLayout layout) {
+        Button rotate1 = (Button) layout.findViewById(R.id.rotate1);
+        Button rotate2 = (Button) layout.findViewById(R.id.rotate2);
+        Button rotate3 = (Button) layout.findViewById(R.id.rotate3);
+        Button rotate4 = (Button) layout.findViewById(R.id.rotate4);
         rotate1.setOnClickListener(this);
         rotate2.setOnClickListener(this);
         rotate3.setOnClickListener(this);
@@ -388,12 +425,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
-     *  添加文字
+     * 添加文字
      */
-    private void initwrittenwords(RelativeLayout layout){
-        Button writtenwordslist1=(Button)layout.findViewById(R.id.writtenwordslist1);
-        Button writtenwordslist2=(Button)layout.findViewById(R.id.writtenwordslist2);
-        Button writtenwordslist3=(Button)layout.findViewById(R.id.writtenwordslist3);
+    private void initwrittenwords(RelativeLayout layout) {
+        Button writtenwordslist1 = (Button) layout.findViewById(R.id.writtenwordslist1);
+        Button writtenwordslist2 = (Button) layout.findViewById(R.id.writtenwordslist2);
+        Button writtenwordslist3 = (Button) layout.findViewById(R.id.writtenwordslist3);
         writtenwordslist1.setOnClickListener(this);
         writtenwordslist2.setOnClickListener(this);
         writtenwordslist3.setOnClickListener(this);
@@ -401,8 +438,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if (canal==0){
-            newBitmap=oldBitmap;
+        if (canal == 0) {
+            newBitmap = oldBitmap;
         }
         srcWidth = newBitmap.getWidth();
         srcHeight = newBitmap.getHeight();
@@ -410,7 +447,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
         int[] pix = new int[srcWidth * srcHeight];
         newBitmap.getPixels(pix, 0, srcWidth, 0, 0, srcWidth, srcHeight);
 
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.filterGray:
                 dataResult = nativeFilters.gray(pix, srcWidth, srcHeight,
                         1);
@@ -507,16 +544,51 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
             /*边框效果结束*/
 
             case R.id.graffit1:
+                Bitmap paintBitmap1 = BitmapFactory.decodeResource(
+                        this.getResources(), R.drawable.marker);
+                casualWaterUtil.creatDrawPainter(
+                        DrawAttribute.DrawStatus.PEN_WATER, paintBitmap1,
+                        0xffadb8bd);
                 break;
             case R.id.graffit2:
+                Bitmap paintBitmap2 = BitmapFactory.decodeResource(
+                        this.getResources(), R.drawable.crayon);
+                casualWaterUtil.creatDrawPainter(
+                        DrawAttribute.DrawStatus.PEN_CRAYON, paintBitmap2,
+                        0xffadb8bd);
                 break;
             case R.id.graffit3:
+                BitmapFactory.Options option = new BitmapFactory.Options();
+                option.inSampleSize = 2;
+                Bitmap paintBitmap3 = BitmapFactory.decodeResource(
+                        this.getResources(), R.drawable.marker, option);
+                casualWaterUtil.creatDrawPainter(
+                        DrawAttribute.DrawStatus.PEN_WATER, paintBitmap3,
+                        0xffadb8bd);
                 break;
             case R.id.graffit4:
+                Bitmap paintBitmap4 = BitmapFactory.decodeResource(
+                        this.getResources(), R.drawable.marker);
+                casualWaterUtil.creatDrawPainter(
+                        DrawAttribute.DrawStatus.PEN_WATER, paintBitmap4,
+                        0xff002200);
+
                 break;
             case R.id.graffit5:
+                int[] res = new int[]{R.drawable.stamp0star,
+                        R.drawable.stamp1star, R.drawable.stamp2star,
+                        R.drawable.stamp3star};
+
+                casualWaterUtil.creatStampPainter(
+                        DrawAttribute.DrawStatus.PEN_STAMP, res, 0xff00ff00);
                 break;
             case R.id.graffit6:
+                Bitmap paintBitmap6 = BitmapFactory.decodeResource(
+                        this.getResources(), R.drawable.eraser);
+
+                casualWaterUtil.creatDrawPainter(
+                        DrawAttribute.DrawStatus.PEN_ERASER, paintBitmap6,
+                        0xffadb8bd);
                 break;
             /*涂鸦效果结束*/
 
@@ -601,6 +673,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
 
         }
     }
+
     private void initEvnt() {
         carme.setOnClickListener(new OnClickListener() {
             @Override
@@ -623,13 +696,15 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
                 toneSubMenu.setVisibility(View.GONE);
                 pictureShow.setImageBitmap(oldBitmap);
                 updateImageFrame(oldBitmap);
-                canal=0;
+                drawLayout.setVisibility(View.GONE);
+                pictureShow.setVisibility(View.VISIBLE);
+                canal = 0;
             }
         });
         btnOk.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                newBitmap=resultImg;
+                newBitmap = resultImg;
                 updateImageFrame(newBitmap);
                 toneSubMenu.setVisibility(View.GONE);
                 llAdd.setVisibility(View.GONE);
@@ -738,8 +813,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     private void compressed() {
         Bitmap resizeBmp = operateUtils.compressionFiller(photoPath,
                 mainLayout);
-        newBitmap=resizeBmp;
-        oldBitmap=resizeBmp;
+        newBitmap = resizeBmp;
+        oldBitmap = resizeBmp;
         updateImageFrame(resizeBmp);
         pictureShow.setImageBitmap(resizeBmp);
         camera_path = SaveBitmap(resizeBmp, "saveTemp");
@@ -749,10 +824,10 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
-     *  更新ImageFrame
+     * 更新ImageFrame
      */
-    private void updateImageFrame(Bitmap resizeBmp){
-        mImageFrame= new PhotoFrame(this, resizeBmp);
+    private void updateImageFrame(Bitmap resizeBmp) {
+        mImageFrame = new PhotoFrame(this, resizeBmp);
     }
 
     final Handler myHandler = new Handler() {
@@ -765,6 +840,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
                     // 取消定时器
                     timer.cancel();
                     compressed();
+                    initdraw();
                 }
             }
         }
