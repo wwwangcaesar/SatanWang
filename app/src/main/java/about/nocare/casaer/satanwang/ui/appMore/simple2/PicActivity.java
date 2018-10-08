@@ -44,6 +44,7 @@ import about.nocare.casaer.satanwang.utils.appAr.simple2.OperateUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jarlen.photoedit.filters.NativeFilter;
+import cn.jarlen.photoedit.photoframe.PhotoFrame;
 
 /**
  * 图片处理
@@ -270,6 +271,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     /**
      *  边框效果
      */
+    private PhotoFrame mImageFrame;
     private void initframe(RelativeLayout layout){
         ImageView photoRes_one=(ImageView)layout.findViewById(R.id.photoRes_one);
         ImageView photoRes_two=(ImageView)layout.findViewById(R.id.photoRes_two);
@@ -402,6 +404,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
         int[] dataResult = null;
         int[] pix = new int[srcWidth * srcHeight];
         newBitmap.getPixels(pix, 0, srcWidth, 0, 0, srcWidth, srcHeight);
+
         switch (v.getId()){
             case R.id.filterGray:
                 dataResult = nativeFilters.gray(pix, srcWidth, srcHeight,
@@ -456,10 +459,45 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
             /*滤镜效果结束*/
 
             case R.id.photoRes_one:
+                mImageFrame.setFrameType(PhotoFrame.FRAME_SMALL);
+                mImageFrame.setFrameResources(
+                        R.drawable.frame_around1_left_top,
+                        R.drawable.frame_around1_left,
+                        R.drawable.frame_around1_left_bottom,
+                        R.drawable.frame_around1_bottom,
+                        R.drawable.frame_around1_right_bottom,
+                        R.drawable.frame_around1_right,
+                        R.drawable.frame_around1_right_top,
+                        R.drawable.frame_around1_top);
+                resultImg = mImageFrame.combineFrameRes();
+
+                pictureShow.setImageBitmap(resultImg);
+                pictureShow.invalidate();
                 break;
             case R.id.photoRes_two:
+                mImageFrame.setFrameType(PhotoFrame.FRAME_SMALL);
+                mImageFrame.setFrameResources(
+                        R.drawable.frame_around2_left_top,
+                        R.drawable.frame_around2_left,
+                        R.drawable.frame_around2_left_bottom,
+                        R.drawable.frame_around2_bottom,
+                        R.drawable.frame_around2_right_bottom,
+                        R.drawable.frame_around2_right,
+                        R.drawable.frame_around2_right_top,
+                        R.drawable.frame_around2_top);
+                resultImg = mImageFrame.combineFrameRes();
+
+                pictureShow.setImageBitmap(resultImg);
+                pictureShow.invalidate();
                 break;
             case R.id.photoRes_three:
+                mImageFrame.setFrameType(PhotoFrame.FRAME_BIG);
+                mImageFrame.setFrameResources(R.drawable.frame_big1);
+
+                resultImg = mImageFrame.combineFrameRes();
+
+                pictureShow.setImageBitmap(resultImg);
+                pictureShow.invalidate();
                 break;
             /*边框效果结束*/
 
@@ -581,6 +619,16 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
                 pictureShow.setImageBitmap(oldBitmap);
             }
         });
+        btnOk.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                newBitmap=resultImg;
+                updateImageFrame(newBitmap);
+                toneSubMenu.setVisibility(View.GONE);
+                llAdd.setVisibility(View.GONE);
+
+            }
+        });
     }
 
     /* 从相册中获取照片 */
@@ -685,11 +733,19 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
                 mainLayout);
         newBitmap=resizeBmp;
         oldBitmap=resizeBmp;
+        updateImageFrame(resizeBmp);
         pictureShow.setImageBitmap(resizeBmp);
         camera_path = SaveBitmap(resizeBmp, "saveTemp");
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) llBottom.getLayoutParams(); //取控件textView当前的布局参数
         linearParams.height = 0;// 控件的高强制设成0
         llBottom.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
+    }
+
+    /**
+     *  更新ImageFrame
+     */
+    private void updateImageFrame(Bitmap resizeBmp){
+        mImageFrame= new PhotoFrame(this, resizeBmp);
     }
 
     final Handler myHandler = new Handler() {
