@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
 import com.lovcreate.core.base.OnItemClickListener;
+import com.lovcreate.core.util.ToastUtil;
 import com.lovcreate.core.widget.HorizontalListView;
 
 import java.io.File;
@@ -45,7 +47,7 @@ import butterknife.ButterKnife;
 /**
  * 图片处理
  */
-public class PicActivity extends BaseActivity {
+public class PicActivity extends BaseActivity implements View.OnClickListener{
 
     @BindView(R.id.horizontalListView)
     HorizontalListView recyBringinto;
@@ -148,6 +150,10 @@ public class PicActivity extends BaseActivity {
         recyBringinto = (HorizontalListView) findViewById(R.id.horizontalListView);
         adapter = new HorizontalListAdapter(this, getData());
         recyBringinto.setAdapter(adapter);
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        width = metric.widthPixels; // 屏幕宽度（像素）
+        operateUtils = new OperateUtils(this);
         recyBringinto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -162,6 +168,8 @@ public class PicActivity extends BaseActivity {
                         llAdd.removeAllViews();
                         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.filterslist, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
+                        //美化效果
+                        initfilters(layout);
                         llAdd.addView(layout);
                         break;
                     //人体变形
@@ -173,6 +181,7 @@ public class PicActivity extends BaseActivity {
                         llAdd.removeAllViews();
                         RelativeLayout layout2 = (RelativeLayout) inflater.inflate(R.layout.framelist, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
+                        initframe(layout2);
                         llAdd.addView(layout2);
                         break;
                     //涂鸦
@@ -180,6 +189,7 @@ public class PicActivity extends BaseActivity {
                         llAdd.removeAllViews();
                         RelativeLayout layout3 = (RelativeLayout) inflater.inflate(R.layout.graffitilist, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
+                        initgraffiti(layout3);
                         llAdd.addView(layout3);
                         break;
                     //马赛克
@@ -187,6 +197,7 @@ public class PicActivity extends BaseActivity {
                         llAdd.removeAllViews();
                         RelativeLayout layout4 = (RelativeLayout) inflater.inflate(R.layout.mosaiclist, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
+                        initmosaic(layout4);
                         llAdd.addView(layout4);
                         break;
                     //剪切
@@ -194,6 +205,7 @@ public class PicActivity extends BaseActivity {
                         llAdd.removeAllViews();
                         RelativeLayout layout5 = (RelativeLayout) inflater.inflate(R.layout.shearlist, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
+                        initshear(layout5);
                         llAdd.addView(layout5);
                         break;
                     //添加水印
@@ -201,6 +213,7 @@ public class PicActivity extends BaseActivity {
                         llAdd.removeAllViews();
                         RelativeLayout layout6 = (RelativeLayout) inflater.inflate(R.layout.addwatermark, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
+                        initaddwatermark(layout6);
                         llAdd.addView(layout6);
                         break;
                     //图像增强
@@ -213,7 +226,8 @@ public class PicActivity extends BaseActivity {
                     case 8:
                         llAdd.removeAllViews();
                         RelativeLayout layout8 = (RelativeLayout) inflater.inflate(R.layout.rotatelist, null).findViewById(R.id.filtersList);
-                        // 将布局加入到当前布局中  
+                        // 将布局加入到当前布局中 
+                        initrotate(layout8);
                         llAdd.addView(layout8);
                         break;
                     //添加文字
@@ -221,18 +235,283 @@ public class PicActivity extends BaseActivity {
                         llAdd.removeAllViews();
                         RelativeLayout layout9 = (RelativeLayout) inflater.inflate(R.layout.writtenwordslist, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
+                        initwrittenwords(layout9);
                         llAdd.addView(layout9);
                         break;
                 }
             }
         });
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        width = metric.widthPixels; // 屏幕宽度（像素）
-        operateUtils = new OperateUtils(this);
-
+    }
+    /**
+     *  滤镜效果
+     */
+    private void initfilters(RelativeLayout layout){
+        TextView filterGray=(TextView)layout.findViewById(R.id.filterGray);
+        TextView filterMosatic=(TextView)layout.findViewById(R.id.filterMosatic);
+        TextView filterLOMO=(TextView)layout.findViewById(R.id.filterLOMO);
+        TextView filterNostalgic=(TextView)layout.findViewById(R.id.filterNostalgic);
+        TextView filterComics=(TextView)layout.findViewById(R.id.filterComics);
+        TextView filterBrown=(TextView)layout.findViewById(R.id.filterBrown);
+        TextView filterSketchPencil=(TextView)layout.findViewById(R.id.filterSketchPencil);
+        filterGray.setOnClickListener(this);
+        filterMosatic.setOnClickListener(this);
+        filterLOMO.setOnClickListener(this);
+        filterNostalgic.setOnClickListener(this);
+        filterComics.setOnClickListener(this);
+        filterBrown.setOnClickListener(this);
+        filterSketchPencil.setOnClickListener(this);
     }
 
+    /**
+     *  边框效果
+     */
+    private void initframe(RelativeLayout layout){
+        ImageView photoRes_one=(ImageView)layout.findViewById(R.id.photoRes_one);
+        ImageView photoRes_two=(ImageView)layout.findViewById(R.id.photoRes_two);
+        ImageView photoRes_three=(ImageView)layout.findViewById(R.id.photoRes_three);
+        photoRes_one.setOnClickListener(this);
+        photoRes_two.setOnClickListener(this);
+        photoRes_three.setOnClickListener(this);
+    }
+
+    /**
+     *  涂鸦效果
+     */
+    private void initgraffiti(RelativeLayout layout){
+        TextView graffit1=(TextView)layout.findViewById(R.id.graffit1);
+        TextView graffit2=(TextView)layout.findViewById(R.id.graffit2);
+        TextView graffit3=(TextView)layout.findViewById(R.id.graffit3);
+        TextView graffit4=(TextView)layout.findViewById(R.id.graffit4);
+        TextView graffit5=(TextView)layout.findViewById(R.id.graffit5);
+        TextView graffit6=(TextView)layout.findViewById(R.id.graffit6);
+        graffit1.setOnClickListener(this);
+        graffit2.setOnClickListener(this);
+        graffit3.setOnClickListener(this);
+        graffit4.setOnClickListener(this);
+        graffit5.setOnClickListener(this);
+        graffit6.setOnClickListener(this);
+    }
+
+    /**
+     *  马赛克效果
+     */
+    private void initmosaic(RelativeLayout layout){
+        TextView mosaic1=(TextView)layout.findViewById(R.id.mosaic1);
+        TextView mosaic2=(TextView)layout.findViewById(R.id.mosaic2);
+        TextView mosaic3=(TextView)layout.findViewById(R.id.mosaic3);
+        TextView mosaic4=(TextView)layout.findViewById(R.id.mosaic4);
+        TextView mosaic5=(TextView)layout.findViewById(R.id.mosaic5);
+        mosaic1.setOnClickListener(this);
+        mosaic2.setOnClickListener(this);
+        mosaic3.setOnClickListener(this);
+        mosaic4.setOnClickListener(this);
+        mosaic5.setOnClickListener(this);
+    }
+
+    /**
+     *  剪切效果
+     */
+    private void initshear(RelativeLayout layout){
+        TextView shear1=(TextView)layout.findViewById(R.id.shear1);
+        TextView shear2=(TextView)layout.findViewById(R.id.shear2);
+        TextView shear3=(TextView)layout.findViewById(R.id.shear3);
+        TextView shear4=(TextView)layout.findViewById(R.id.shear4);
+        TextView shear5=(TextView)layout.findViewById(R.id.shear5);
+        TextView shear6=(TextView)layout.findViewById(R.id.shear6);
+        TextView shear7=(TextView)layout.findViewById(R.id.shear7);
+        TextView shear8=(TextView)layout.findViewById(R.id.shear8);
+        TextView shear9=(TextView)layout.findViewById(R.id.shear9);
+        shear1.setOnClickListener(this);
+        shear2.setOnClickListener(this);
+        shear3.setOnClickListener(this);
+        shear4.setOnClickListener(this);
+        shear5.setOnClickListener(this);
+        shear6.setOnClickListener(this);
+        shear7.setOnClickListener(this);
+        shear8.setOnClickListener(this);
+        shear9.setOnClickListener(this);
+    }
+
+    /**
+     *  水印效果
+     */
+    private void initaddwatermark(RelativeLayout layout){
+        TextView chunvzuo=(TextView)layout.findViewById(R.id.chunvzuo);
+        TextView shenhuifu=(TextView)layout.findViewById(R.id.shenhuifu);
+        TextView qiugouda=(TextView)layout.findViewById(R.id.qiugouda);
+        TextView guaishushu=(TextView)layout.findViewById(R.id.guaishushu);
+        TextView haoxingzuo=(TextView)layout.findViewById(R.id.haoxingzuo);
+        TextView wanhuaile=(TextView)layout.findViewById(R.id.wanhuaile);
+        TextView xiangsi=(TextView)layout.findViewById(R.id.xiangsi);
+        TextView xingzuokong=(TextView)layout.findViewById(R.id.xingzuokong);
+        TextView xinnian=(TextView)layout.findViewById(R.id.xinnian);
+        TextView zaoan=(TextView)layout.findViewById(R.id.zaoan);
+        TextView zuile=(TextView)layout.findViewById(R.id.zuile);
+        TextView jiuyaozuo=(TextView)layout.findViewById(R.id.jiuyaozuo);
+        TextView zui=(TextView)layout.findViewById(R.id.zui);
+        chunvzuo.setOnClickListener(this);
+        shenhuifu.setOnClickListener(this);
+        qiugouda.setOnClickListener(this);
+        guaishushu.setOnClickListener(this);
+        haoxingzuo.setOnClickListener(this);
+        wanhuaile.setOnClickListener(this);
+        xiangsi.setOnClickListener(this);
+        xingzuokong.setOnClickListener(this);
+        xinnian.setOnClickListener(this);
+        zaoan.setOnClickListener(this);
+        zuile.setOnClickListener(this);
+        jiuyaozuo.setOnClickListener(this);
+        zui.setOnClickListener(this);
+    }
+
+    /**
+     *  旋转效果
+     */
+    private void initrotate(RelativeLayout layout){
+        Button rotate1=(Button)layout.findViewById(R.id.rotate1);
+        Button rotate2=(Button)layout.findViewById(R.id.rotate2);
+        Button rotate3=(Button)layout.findViewById(R.id.rotate3);
+        Button rotate4=(Button)layout.findViewById(R.id.rotate4);
+        rotate1.setOnClickListener(this);
+        rotate2.setOnClickListener(this);
+        rotate3.setOnClickListener(this);
+        rotate4.setOnClickListener(this);
+    }
+
+    /**
+     *  添加文字
+     */
+    private void initwrittenwords(RelativeLayout layout){
+        Button writtenwordslist1=(Button)layout.findViewById(R.id.writtenwordslist1);
+        Button writtenwordslist2=(Button)layout.findViewById(R.id.writtenwordslist2);
+        Button writtenwordslist3=(Button)layout.findViewById(R.id.writtenwordslist3);
+        writtenwordslist1.setOnClickListener(this);
+        writtenwordslist2.setOnClickListener(this);
+        writtenwordslist3.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.filterGray:
+                break;
+            case R.id.filterMosatic:
+                break;
+            case R.id.filterLOMO:
+                break;
+            case R.id.filterNostalgic:
+                break;
+            case R.id.filterComics:
+                break;
+            case R.id.filterBrown:
+                break;
+            case R.id.filterSketchPencil:
+                break;
+            /*滤镜效果结束*/
+
+            case R.id.photoRes_one:
+                break;
+            case R.id.photoRes_two:
+                break;
+            case R.id.photoRes_three:
+                break;
+            /*边框效果结束*/
+
+            case R.id.graffit1:
+                break;
+            case R.id.graffit2:
+                break;
+            case R.id.graffit3:
+                break;
+            case R.id.graffit4:
+                break;
+            case R.id.graffit5:
+                break;
+            case R.id.graffit6:
+                break;
+            /*涂鸦效果结束*/
+
+            case R.id.mosaic1:
+                break;
+            case R.id.mosaic2:
+                break;
+            case R.id.mosaic3:
+                break;
+            case R.id.mosaic4:
+                break;
+            case R.id.mosaic5:
+                break;
+            /*马赛克效果结束*/
+
+            case R.id.shear1:
+                break;
+            case R.id.shear2:
+                break;
+            case R.id.shear3:
+                break;
+            case R.id.shear4:
+                break;
+            case R.id.shear5:
+                break;
+            case R.id.shear6:
+                break;
+            case R.id.shear7:
+                break;
+            case R.id.shear8:
+                break;
+            case R.id.shear9:
+                break;
+            /*剪切效果结束*/
+
+
+            case R.id.chunvzuo:
+                break;
+            case R.id.shenhuifu:
+                break;
+            case R.id.qiugouda:
+                break;
+            case R.id.guaishushu:
+                break;
+            case R.id.haoxingzuo:
+                break;
+            case R.id.wanhuaile:
+                break;
+            case R.id.xiangsi:
+                break;
+            case R.id.xingzuokong:
+                break;
+            case R.id.xinnian:
+                break;
+            case R.id.zaoan:
+                break;
+            case R.id.zuile:
+                break;
+            case R.id.jiuyaozuo:
+                break;
+            case R.id.zui:
+                break;
+            /*水印效果结束*/
+
+            case R.id.rotate1:
+                break;
+            case R.id.rotate2:
+                break;
+            case R.id.rotate3:
+                break;
+            case R.id.rotate4:
+                break;
+            /*旋转效果结束*/
+
+            case R.id.writtenwordslist1:
+                break;
+            case R.id.writtenwordslist2:
+                break;
+            case R.id.writtenwordslist3:
+                break;
+            /*添加文字结束*/
+
+        }
+    }
     private void initEvnt() {
         carme.setOnClickListener(new OnClickListener() {
             @Override
