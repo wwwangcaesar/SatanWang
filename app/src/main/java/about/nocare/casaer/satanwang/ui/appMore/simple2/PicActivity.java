@@ -43,6 +43,7 @@ import about.nocare.casaer.satanwang.utils.appAr.simple2.FileUtils;
 import about.nocare.casaer.satanwang.utils.appAr.simple2.OperateUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jarlen.photoedit.filters.NativeFilter;
 
 /**
  * 图片处理
@@ -122,6 +123,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     /*  测试接口 */
     private static final int PHOTO_TEST_TEXT_DATA = 3034;
 
+    private Bitmap newBitmap,oldBitmap;
+    private int srcWidth, srcHeight;
     /* 照相机拍照得到的图片 */
     private File mCurrentPhotoFile;
     private String photoPath = null, tempPhotoPath, camera_path;
@@ -242,9 +245,11 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
             }
         });
     }
+    Bitmap resultImg = null;
     /**
      *  滤镜效果
      */
+    private NativeFilter nativeFilters = new NativeFilter();
     private void initfilters(RelativeLayout layout){
         TextView filterGray=(TextView)layout.findViewById(R.id.filterGray);
         TextView filterMosatic=(TextView)layout.findViewById(R.id.filterMosatic);
@@ -392,20 +397,61 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        srcWidth = newBitmap.getWidth();
+        srcHeight = newBitmap.getHeight();
+        int[] dataResult = null;
+        int[] pix = new int[srcWidth * srcHeight];
+        newBitmap.getPixels(pix, 0, srcWidth, 0, 0, srcWidth, srcHeight);
         switch (v.getId()){
             case R.id.filterGray:
+                dataResult = nativeFilters.gray(pix, srcWidth, srcHeight,
+                        1);
+                resultImg = Bitmap.createBitmap(dataResult, srcWidth, srcHeight,
+                        Bitmap.Config.ARGB_8888);
+                pictureShow.setImageBitmap(resultImg);
                 break;
             case R.id.filterMosatic:
+                int mosatic = (int) (1 * 30);
+                dataResult = nativeFilters.mosatic(pix, srcWidth, srcHeight,
+                        mosatic);
+                resultImg = Bitmap.createBitmap(dataResult, srcWidth, srcHeight,
+                        Bitmap.Config.ARGB_8888);
+                pictureShow.setImageBitmap(resultImg);
                 break;
             case R.id.filterLOMO:
+                dataResult = nativeFilters.lomo(pix, srcWidth, srcHeight,
+                        1);
+                resultImg = Bitmap.createBitmap(dataResult, srcWidth, srcHeight,
+                        Bitmap.Config.ARGB_8888);
+                pictureShow.setImageBitmap(resultImg);
                 break;
             case R.id.filterNostalgic:
+                dataResult = nativeFilters.nostalgic(pix, srcWidth,
+                        srcHeight, 1);
+                resultImg = Bitmap.createBitmap(dataResult, srcWidth, srcHeight,
+                        Bitmap.Config.ARGB_8888);
+                pictureShow.setImageBitmap(resultImg);
                 break;
             case R.id.filterComics:
+                dataResult = nativeFilters.comics(pix, srcWidth, srcHeight,
+                        1);
+                resultImg = Bitmap.createBitmap(dataResult, srcWidth, srcHeight,
+                        Bitmap.Config.ARGB_8888);
+                pictureShow.setImageBitmap(resultImg);
                 break;
             case R.id.filterBrown:
+                dataResult = nativeFilters.brown(pix, srcWidth, srcHeight,
+                        1);
+                resultImg = Bitmap.createBitmap(dataResult, srcWidth, srcHeight,
+                        Bitmap.Config.ARGB_8888);
+                pictureShow.setImageBitmap(resultImg);
                 break;
             case R.id.filterSketchPencil:
+                dataResult = nativeFilters.sketchPencil(pix, srcWidth,
+                        srcHeight, 1);
+                resultImg = Bitmap.createBitmap(dataResult, srcWidth, srcHeight,
+                        Bitmap.Config.ARGB_8888);
+                pictureShow.setImageBitmap(resultImg);
                 break;
             /*滤镜效果结束*/
 
@@ -532,6 +578,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
                 rlTool.setVisibility(View.GONE);
                 recyBringinto.setVisibility(View.VISIBLE);
                 toneSubMenu.setVisibility(View.GONE);
+                pictureShow.setImageBitmap(oldBitmap);
             }
         });
     }
@@ -636,6 +683,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     private void compressed() {
         Bitmap resizeBmp = operateUtils.compressionFiller(photoPath,
                 mainLayout);
+        newBitmap=resizeBmp;
+        oldBitmap=resizeBmp;
         pictureShow.setImageBitmap(resizeBmp);
         camera_path = SaveBitmap(resizeBmp, "saveTemp");
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) llBottom.getLayoutParams(); //取控件textView当前的布局参数

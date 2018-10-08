@@ -1,0 +1,83 @@
+com.transitionseverywhere
+int attr disappearedScale 0x7f040001
+int attr duration 0x7f040002
+int attr excludeClass 0x7f040003
+int attr excludeId 0x7f040004
+int attr excludeName 0x7f040005
+int attr fadingMode 0x7f040006
+int attr fromScene 0x7f040007
+int attr interpolator 0x7f040008
+int attr matchOrder 0x7f040009
+int attr maximumAngle 0x7f04000a
+int attr minimumHorizontalAngle 0x7f04000b
+int attr minimumVerticalAngle 0x7f04000c
+int attr patternPathData 0x7f04000d
+int attr reparent 0x7f04000e
+int attr reparentWithOverlay 0x7f04000f
+int attr resizeClip 0x7f040010
+int attr slideEdge 0x7f040011
+int attr startDelay 0x7f040012
+int attr targetClass 0x7f040013
+int attr targetId 0x7f040014
+int attr targetName 0x7f040015
+int attr toScene 0x7f040016
+int attr transition 0x7f040017
+int attr transitionOrdering 0x7f040018
+int attr transitionVisibilityMode 0x7f040019
+int id bottom 0x7f0c0001
+int id current_scene 0x7f0c0002
+int id fade_in 0x7f0c0003
+int id fade_in_out 0x7f0c0004
+int id fade_out 0x7f0c0005
+int id group_layouttransition_backup 0x7f0c0006
+int id left 0x7f0c0007
+int id overlay_layout_params_backup 0x7f0c0008
+int id parentMatrix 0x7f0c0009
+int id right 0x7f0c000a
+int id scene_layoutid_cache 0x7f0c000b
+int id sequential 0x7f0c000c
+int id together 0x7f0c000d
+int id top 0x7f0c000e
+int id transitionAlpha 0x7f0c000f
+int id transitionName 0x7f0c0010
+int id transitionPosition 0x7f0c0011
+int id transitionTransform 0x7f0c0012
+int[] styleable ArcMotion { 0x7f04000a, 0x7f04000b, 0x7f04000c }
+int styleable ArcMotion_maximumAngle 0
+int styleable ArcMotion_minimumHorizontalAngle 1
+int styleable ArcMotion_minimumVerticalAngle 2
+int[] styleable ChangeBounds { 0x7f040010 }
+int styleable ChangeBounds_resizeClip 0
+int[] styleable ChangeTransform { 0x7f04000e, 0x7f04000f }
+int styleable ChangeTransform_reparent 0
+int styleable ChangeTransform_reparentWithOverlay 1
+int[] styleable Fade { 0x7f040006 }
+int styleable Fade_fadingMode 0
+int[] styleable PatternPathMotion { 0x7f04000d }
+int styleable PatternPathMotion_patternPathData 0
+int[] styleable Scale { 0x7f040001 }
+int styleable Scale_disappearedScale 0
+int[] styleable Slide { 0x7f040011 }
+int styleable Slide_slideEdge 0
+int[] styleable Transition { 0x01010198, 0x01010141, 0x7f040002, 0x7f040008, 0x7f040009, 0x7f040012 }
+int styleable Transition_android_duration 0
+int styleable Transition_android_interpolator 1
+int styleable Transition_duration 2
+int styleable Transition_interpolator 3
+int styleable Transition_matchOrder 4
+int styleable Transition_startDelay 5
+int[] styleable TransitionManager { 0x7f040007, 0x7f040016, 0x7f040017 }
+int styleable TransitionManager_fromScene 0
+int styleable TransitionManager_toScene 1
+int styleable TransitionManager_transition 2
+int[] styleable TransitionSet { 0x7f040018 }
+int styleable TransitionSet_transitionOrdering 0
+int[] styleable TransitionTarget { 0x7f040003, 0x7f040004, 0x7f040005, 0x7f040013, 0x7f040014, 0x7f040015 }
+int styleable TransitionTarget_excludeClass 0
+int styleable TransitionTarget_excludeId 1
+int styleable TransitionTarget_excludeName 2
+int styleable TransitionTarget_targetClass 3
+int styleable TransitionTarget_targetId 4
+int styleable TransitionTarget_targetName 5
+int[] styleable VisibilityTransition { 0x7f040019 }
+int styleable VisibilityTransition_transitionVisibilityMode 0

@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "F:\\myself\\SatanWang\\animation\\build\\intermediates\\res\\merged\\androidTest\\debug\\values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "F:\\myself\\SatanWang\\animation\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "40,41,42,43,44,45,46,47,48",
+                        "startColumns": "4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "2638,2681,2740,2798,2840,2890,2935,2979,3027",
+                        "endColumns": "42,58,57,41,49,44,43,47,48",
+                        "endOffsets": "2676,2735,2793,2835,2885,2930,2974,3022,3071"
+                    }
+                }
+            ]
+        }
+    ]
+}

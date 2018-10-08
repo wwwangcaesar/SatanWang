@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+	package
+		ADDED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:11-46
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+		ADDED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+		ADDED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:2:1-6:12
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+application
+ADDED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml:4:5-19
+uses-sdk
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+		ADDED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+		ADDED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml
+		INJECTED from F:\myself\SatanWang\animation\src\main\AndroidManifest.xml

@@ -16,6 +16,7 @@
       <module fileurl="file://$PROJECT_DIR$/lib/lib.iml" filepath="$PROJECT_DIR$/lib/lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/map/map.iml" filepath="$PROJECT_DIR$/map/map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/photoedit/photoedit.iml" filepath="$PROJECT_DIR$/photoedit/photoedit.iml" />
       <module fileurl="file://$PROJECT_DIR$/push/push.iml" filepath="$PROJECT_DIR$/push/push.iml" />
       <module fileurl="file://$PROJECT_DIR$/shareutil/shareutil.iml" filepath="$PROJECT_DIR$/shareutil/shareutil.iml" />
       <module fileurl="file://$PROJECT_DIR$/swipemenu/swipemenu.iml" filepath="$PROJECT_DIR$/swipemenu/swipemenu.iml" />

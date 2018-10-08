@@ -14,4 +14,5 @@ include ':app',        //基础
         ':uidialog',    //百度语音识别
         'fabulous',      //点赞表情
         ':shareutil',   //第三方分享，登录（暂未接入 https://github.com/shaohui10086/ShareUtil 使用要看lib中RM）
-        ':animation'     //动画库
+        ':animation',   //动画库
+        ':photoedit'    //美化图片
