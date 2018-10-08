@@ -47,7 +47,7 @@
         android:layout_marginBottom="12dp"
         android:background="@drawable/dottedline"
         android:gravity="center"
-        android:text="请先选择图片，再进行美化"
+        android:text="请先选择图片，再进行美化 \n 美化完成记得点击完成\n取消则回到最初照片样式"
         android:textSize="23sp" />
 
     <LinearLayout

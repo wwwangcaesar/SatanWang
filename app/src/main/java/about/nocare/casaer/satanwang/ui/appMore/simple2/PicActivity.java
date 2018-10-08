@@ -133,6 +133,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
     private int scale = 2;
     int width = 0;
 
+    //是否取消
+    private int canal=1;
     public static final String filePath = Environment.getExternalStorageDirectory() + "/PictureTest/";
 
     OperateUtils operateUtils;
@@ -399,6 +401,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        if (canal==0){
+            newBitmap=oldBitmap;
+        }
         srcWidth = newBitmap.getWidth();
         srcHeight = newBitmap.getHeight();
         int[] dataResult = null;
@@ -617,6 +622,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener{
                 recyBringinto.setVisibility(View.VISIBLE);
                 toneSubMenu.setVisibility(View.GONE);
                 pictureShow.setImageBitmap(oldBitmap);
+                updateImageFrame(oldBitmap);
+                canal=0;
             }
         });
         btnOk.setOnClickListener(new OnClickListener() {
