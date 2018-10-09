@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
@@ -39,9 +40,10 @@ import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.appmore.HorizontalListAdapter;
 import about.nocare.casaer.satanwang.utils.appAr.simple2.FileUtils;
 import about.nocare.casaer.satanwang.utils.appAr.simple2.OperateUtils;
-import about.nocare.casaer.satanwang.widget.appmore.ar.ExpandableTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jarlen.photoedit.crop.CropImageType;
+import cn.jarlen.photoedit.crop.CropImageView;
 import cn.jarlen.photoedit.filters.NativeFilter;
 import cn.jarlen.photoedit.mosaic.DrawMosaicView;
 import cn.jarlen.photoedit.mosaic.MosaicUtil;
@@ -91,6 +93,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     LinearLayout drawLayout;
     @BindView(R.id.mosaic)
     DrawMosaicView mosaic;
+    @BindView(R.id.cropmageView)
+    CropImageView cropmageView;
     private HorizontalListAdapter adapter;
 
     private List<String> listBrings = new ArrayList<>();
@@ -191,6 +195,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                     //人体变形
                     case 1:
@@ -198,6 +203,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                     //边框
                     case 2:
@@ -209,6 +215,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                     //涂鸦
                     case 3:
@@ -220,6 +227,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         initgraffiti(layout3);
                         llAdd.addView(layout3);
                         mosaic.setVisibility(View.GONE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                     //马赛克
                     case 4:
@@ -232,6 +240,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.GONE);
                         mosaic.setVisibility(View.VISIBLE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                     //剪切
                     case 5:
@@ -241,8 +250,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         initshear(layout5);
                         llAdd.addView(layout5);
                         drawLayout.setVisibility(View.GONE);
-                        pictureShow.setVisibility(View.VISIBLE);
+                        pictureShow.setVisibility(View.GONE);
                         mosaic.setVisibility(View.GONE);
+                        cropmageView.setVisibility(View.VISIBLE);
                         break;
                     //添加水印
                     case 6:
@@ -254,6 +264,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                     //图像增强
                     case 7:
@@ -264,6 +275,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                     //旋转
                     case 8:
@@ -276,6 +288,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                     //添加文字
                     case 9:
@@ -288,6 +301,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
+                        cropmageView.setVisibility(View.GONE);
                         break;
                 }
             }
@@ -380,6 +394,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
      * 马赛克效果
      */
     int size = 5;
+
     private void initmosaic(RelativeLayout layout) {
         TextView mosaic1 = (TextView) layout.findViewById(R.id.mosaic1);
         TextView mosaic2 = (TextView) layout.findViewById(R.id.mosaic2);
@@ -646,11 +661,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                 mosaic.setMosaicResource(bit);
                 break;
             case R.id.mosaic4:
-                if (size >= 30)
-                {
+                if (size >= 30) {
                     size = 5;
-                } else
-                {
+                } else {
                     size += 5;
                 }
                 mosaic.setMosaicBrushWidth(size);
@@ -661,22 +674,41 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             /*马赛克效果结束*/
 
             case R.id.shear1:
+                cropmageView.setFixedAspectRatio(false);
                 break;
             case R.id.shear2:
+                cropmageView.setFixedAspectRatio(true);
+                cropmageView.setAspectRatio(10, 10);
                 break;
             case R.id.shear3:
+                cropmageView.setFixedAspectRatio(true);
+                cropmageView.setAspectRatio(30, 20);
                 break;
             case R.id.shear4:
+                cropmageView.setFixedAspectRatio(true);
+                cropmageView.setAspectRatio(40, 30);
                 break;
             case R.id.shear5:
+                cropmageView.setFixedAspectRatio(true);
+                cropmageView.setAspectRatio(160, 90);
                 break;
             case R.id.shear6:
+                cropmageView.rotateImage(90);
                 break;
             case R.id.shear7:
+                cropmageView.reverseImage(CropImageType.REVERSE_TYPE.UP_DOWN);
                 break;
             case R.id.shear8:
+                cropmageView.reverseImage(CropImageType.REVERSE_TYPE.LEFT_RIGHT);
                 break;
             case R.id.shear9:
+                Bitmap cropImageBitmap = cropmageView.getCroppedImage();
+                Toast.makeText(
+                        this,
+                        "已保存到相册；剪切大小为 " + cropImageBitmap.getWidth() + " x "
+                                + cropImageBitmap.getHeight(),
+                        Toast.LENGTH_SHORT).show();
+                cn.jarlen.photoedit.utils.FileUtils.saveBitmapToCamera(this, cropImageBitmap, "crop.jpg");
                 break;
             /*剪切效果结束*/
 
@@ -752,9 +784,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                 toneSubMenu.setVisibility(View.GONE);
                 pictureShow.setImageBitmap(oldBitmap);
                 updateImageFrame(oldBitmap);
-                drawLayout.setVisibility(View.GONE);
                 pictureShow.setVisibility(View.VISIBLE);
+
+                drawLayout.setVisibility(View.GONE);
                 mosaic.setVisibility(View.GONE);
+                cropmageView.setVisibility(View.GONE);
+
                 canal = 0;
             }
         });
@@ -763,16 +798,24 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             public void onNoDoubleClick(View v) {
                 Bitmap bit = casualWaterUtil.getBitmap();
                 Bitmap bit1 = mosaic.getMosaicBitmap();
-                if (drawLayout.getVisibility()==View.VISIBLE){
+                Bitmap bit2 = cropmageView.getCroppedImage();
+                if (drawLayout.getVisibility() == View.VISIBLE) {
                     newBitmap = bit;
-                }else if (mosaic.getVisibility()==View.VISIBLE){
-                    newBitmap=bit1;
-                }else{
+                } else if (mosaic.getVisibility() == View.VISIBLE) {
+                    newBitmap = bit1;
+                }else if (cropmageView.getVisibility()==View.VISIBLE){
+                    newBitmap =bit2;
+                }
+                else {
                     newBitmap = resultImg;
                 }
                 updateImageFrame(newBitmap);
                 toneSubMenu.setVisibility(View.GONE);
                 llAdd.setVisibility(View.GONE);
+                mosaic.setVisibility(View.GONE);
+                drawLayout.setVisibility(View.GONE);
+                cropmageView.setVisibility(View.GONE);
+                pictureShow.setVisibility(View.VISIBLE);
                 pictureShow.setImageBitmap(newBitmap);//设置图片最终效果反馈
 
             }
@@ -890,6 +933,16 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         mosaic.setMosaicBackgroundResource(camera_path);
         mosaic.setMosaicResource(bit);
         mosaic.setMosaicBrushWidth(10);
+
+        Bitmap hh = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.crop_button);
+
+        cropmageView.setCropOverlayCornerBitmap(hh);
+        cropmageView.setImageBitmap(resizeBmp);
+        cropmageView.setGuidelines(CropImageType.CROPIMAGE_GRID_ON_TOUCH);// 触摸时显示网格
+
+        cropmageView.setFixedAspectRatio(false);// 自由剪切
+
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) llBottom.getLayoutParams(); //取控件textView当前的布局参数
         linearParams.height = 0;// 控件的高强制设成0
         llBottom.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
