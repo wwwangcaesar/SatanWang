@@ -39,9 +39,12 @@ import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.appmore.HorizontalListAdapter;
 import about.nocare.casaer.satanwang.utils.appAr.simple2.FileUtils;
 import about.nocare.casaer.satanwang.utils.appAr.simple2.OperateUtils;
+import about.nocare.casaer.satanwang.widget.appmore.ar.ExpandableTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jarlen.photoedit.filters.NativeFilter;
+import cn.jarlen.photoedit.mosaic.DrawMosaicView;
+import cn.jarlen.photoedit.mosaic.MosaicUtil;
 import cn.jarlen.photoedit.photoframe.PhotoFrame;
 import cn.jarlen.photoedit.scrawl.DrawAttribute;
 import cn.jarlen.photoedit.scrawl.DrawingBoardView;
@@ -86,6 +89,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     DrawingBoardView drawView;
     @BindView(R.id.drawLayout)
     LinearLayout drawLayout;
+    @BindView(R.id.mosaic)
+    DrawMosaicView mosaic;
     private HorizontalListAdapter adapter;
 
     private List<String> listBrings = new ArrayList<>();
@@ -183,16 +188,16 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         initfilters(layout);
                         llAdd.addView(layout);
 
+                        mosaic.setVisibility(View.GONE);
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
                         break;
                     //人体变形
                     case 1:
                         llAdd.removeAllViews();
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
+                        mosaic.setVisibility(View.GONE);
                         break;
                     //边框
                     case 2:
@@ -203,7 +208,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout2);
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
+                        mosaic.setVisibility(View.GONE);
                         break;
                     //涂鸦
                     case 3:
@@ -214,7 +219,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initgraffiti(layout3);
                         llAdd.addView(layout3);
-                        isGraffiti=false;
+                        mosaic.setVisibility(View.GONE);
                         break;
                     //马赛克
                     case 4:
@@ -225,8 +230,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout4);
 
                         drawLayout.setVisibility(View.GONE);
-                        pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
+                        pictureShow.setVisibility(View.GONE);
+                        mosaic.setVisibility(View.VISIBLE);
                         break;
                     //剪切
                     case 5:
@@ -237,7 +242,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout5);
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
+                        mosaic.setVisibility(View.GONE);
                         break;
                     //添加水印
                     case 6:
@@ -248,7 +253,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout6);
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
+                        mosaic.setVisibility(View.GONE);
                         break;
                     //图像增强
                     case 7:
@@ -258,7 +263,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
+                        mosaic.setVisibility(View.GONE);
                         break;
                     //旋转
                     case 8:
@@ -270,7 +275,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
+                        mosaic.setVisibility(View.GONE);
                         break;
                     //添加文字
                     case 9:
@@ -282,7 +287,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
-                        isGraffiti=true;
+                        mosaic.setVisibility(View.GONE);
                         break;
                 }
             }
@@ -330,7 +335,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
      * 涂鸦效果
      */
     ScrawlTools casualWaterUtil = null;
-    private boolean isGraffiti=true;
+
     private void initgraffiti(RelativeLayout layout) {
         TextView graffit1 = (TextView) layout.findViewById(R.id.graffit1);
         TextView graffit2 = (TextView) layout.findViewById(R.id.graffit2);
@@ -374,6 +379,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 马赛克效果
      */
+    int size = 5;
     private void initmosaic(RelativeLayout layout) {
         TextView mosaic1 = (TextView) layout.findViewById(R.id.mosaic1);
         TextView mosaic2 = (TextView) layout.findViewById(R.id.mosaic2);
@@ -626,14 +632,31 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             /*涂鸦效果结束*/
 
             case R.id.mosaic1:
+                Bitmap bitmapMosaic = MosaicUtil.getMosaic(newBitmap);
+                mosaic.setMosaicResource(bitmapMosaic);
                 break;
             case R.id.mosaic2:
+                Bitmap bitmapBlur = MosaicUtil.getBlur(newBitmap);
+                mosaic.setMosaicResource(bitmapBlur);
                 break;
             case R.id.mosaic3:
+                Bitmap bit = BitmapFactory.decodeResource(this.getResources(),
+                        R.drawable.hi4);
+                bit = cn.jarlen.photoedit.utils.FileUtils.ResizeBitmap(bit, srcWidth, srcHeight);
+                mosaic.setMosaicResource(bit);
                 break;
             case R.id.mosaic4:
+                if (size >= 30)
+                {
+                    size = 5;
+                } else
+                {
+                    size += 5;
+                }
+                mosaic.setMosaicBrushWidth(size);
                 break;
             case R.id.mosaic5:
+                mosaic.setMosaicType(MosaicUtil.MosaicType.ERASER);
                 break;
             /*马赛克效果结束*/
 
@@ -731,6 +754,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                 updateImageFrame(oldBitmap);
                 drawLayout.setVisibility(View.GONE);
                 pictureShow.setVisibility(View.VISIBLE);
+                mosaic.setVisibility(View.GONE);
                 canal = 0;
             }
         });
@@ -738,9 +762,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onNoDoubleClick(View v) {
                 Bitmap bit = casualWaterUtil.getBitmap();
-                if (!isGraffiti){
-                    newBitmap=bit;
-                }else {
+                Bitmap bit1 = mosaic.getMosaicBitmap();
+                if (drawLayout.getVisibility()==View.VISIBLE){
+                    newBitmap = bit;
+                }else if (mosaic.getVisibility()==View.VISIBLE){
+                    newBitmap=bit1;
+                }else{
                     newBitmap = resultImg;
                 }
                 updateImageFrame(newBitmap);
@@ -857,6 +884,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         updateImageFrame(resizeBmp);
         pictureShow.setImageBitmap(resizeBmp);
         camera_path = SaveBitmap(resizeBmp, "saveTemp");
+
+        Bitmap bit = MosaicUtil.getMosaic(resizeBmp);
+
+        mosaic.setMosaicBackgroundResource(camera_path);
+        mosaic.setMosaicResource(bit);
+        mosaic.setMosaicBrushWidth(10);
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) llBottom.getLayoutParams(); //取控件textView当前的布局参数
         linearParams.height = 0;// 控件的高强制设成0
         llBottom.setLayoutParams(linearParams); //使设置好的布局参数应用到控件

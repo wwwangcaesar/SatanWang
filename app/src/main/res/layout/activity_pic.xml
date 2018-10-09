@@ -53,6 +53,15 @@
             android:layout_height="wrap_content"
             />
     </LinearLayout>
+    <!--马赛克画板-->
+    <cn.jarlen.photoedit.mosaic.DrawMosaicView
+        android:id="@+id/mosaic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_tool"
+        android:layout_above="@+id/horizontalListView"
+        android:contentDescription="@string/app_name"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/tllet"
         android:layout_width="match_parent"
