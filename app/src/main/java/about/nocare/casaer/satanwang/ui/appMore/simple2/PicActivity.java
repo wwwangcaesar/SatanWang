@@ -182,10 +182,15 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         //美化效果
                         initfilters(layout);
                         llAdd.addView(layout);
+
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                     //人体变形
                     case 1:
                         llAdd.removeAllViews();
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                     //边框
                     case 2:
@@ -194,6 +199,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initframe(layout2);
                         llAdd.addView(layout2);
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                     //涂鸦
                     case 3:
@@ -212,6 +219,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initmosaic(layout4);
                         llAdd.addView(layout4);
+
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                     //剪切
                     case 5:
@@ -220,6 +230,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initshear(layout5);
                         llAdd.addView(layout5);
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                     //添加水印
                     case 6:
@@ -228,12 +240,17 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initaddwatermark(layout6);
                         llAdd.addView(layout6);
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                     //图像增强
                     case 7:
                         llAdd.setVisibility(View.GONE);
                         recyBringinto.setVisibility(View.GONE);
                         toneSubMenu.setVisibility(View.VISIBLE);
+
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                     //旋转
                     case 8:
@@ -242,6 +259,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中 
                         initrotate(layout8);
                         llAdd.addView(layout8);
+
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                     //添加文字
                     case 9:
@@ -250,6 +270,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initwrittenwords(layout9);
                         llAdd.addView(layout9);
+
+                        drawLayout.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.VISIBLE);
                         break;
                 }
             }
