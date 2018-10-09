@@ -185,12 +185,14 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                     //人体变形
                     case 1:
                         llAdd.removeAllViews();
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                     //边框
                     case 2:
@@ -201,6 +203,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout2);
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                     //涂鸦
                     case 3:
@@ -211,6 +214,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initgraffiti(layout3);
                         llAdd.addView(layout3);
+                        isGraffiti=false;
                         break;
                     //马赛克
                     case 4:
@@ -222,6 +226,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                     //剪切
                     case 5:
@@ -232,6 +237,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout5);
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                     //添加水印
                     case 6:
@@ -242,6 +248,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout6);
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                     //图像增强
                     case 7:
@@ -251,6 +258,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                     //旋转
                     case 8:
@@ -262,6 +270,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                     //添加文字
                     case 9:
@@ -273,6 +282,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
                         drawLayout.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
+                        isGraffiti=true;
                         break;
                 }
             }
@@ -320,7 +330,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
      * 涂鸦效果
      */
     ScrawlTools casualWaterUtil = null;
-
+    private boolean isGraffiti=true;
     private void initgraffiti(RelativeLayout layout) {
         TextView graffit1 = (TextView) layout.findViewById(R.id.graffit1);
         TextView graffit2 = (TextView) layout.findViewById(R.id.graffit2);
@@ -727,10 +737,16 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         btnOk.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                newBitmap = resultImg;
+                Bitmap bit = casualWaterUtil.getBitmap();
+                if (!isGraffiti){
+                    newBitmap=bit;
+                }else {
+                    newBitmap = resultImg;
+                }
                 updateImageFrame(newBitmap);
                 toneSubMenu.setVisibility(View.GONE);
                 llAdd.setVisibility(View.GONE);
+                pictureShow.setImageBitmap(newBitmap);//设置图片最终效果反馈
 
             }
         });
