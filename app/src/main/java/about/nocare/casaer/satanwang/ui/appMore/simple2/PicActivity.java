@@ -784,17 +784,21 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             case R.id.rotate1:
                 newBitmap = PhotoUtils.rotateImage(newBitmap, 90);
                 pictureShow.setImageBitmap(newBitmap);
+                OriginalBitmap=newBitmap;
                 break;
             case R.id.rotate2:
-                pictureShow.setImageBitmap(OriginalBitmap);
+                Bitmap bitt=newBitmap;
+                pictureShow.setImageBitmap(bitt);
                 break;
             case R.id.rotate3:
                 newBitmap = PhotoUtils.reverseImage(newBitmap, 1, -1);
                 pictureShow.setImageBitmap(newBitmap);
+                OriginalBitmap=newBitmap;
                 break;
             case R.id.rotate4:
                 newBitmap = PhotoUtils.reverseImage(newBitmap, -1, 1);
                 pictureShow.setImageBitmap(newBitmap);
+                OriginalBitmap=newBitmap;
                 break;
             /*旋转效果结束*/
 
@@ -843,7 +847,6 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         btnOk.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-
                 if (drawView.getVisibility() == View.VISIBLE) {
                     Bitmap bit = casualWaterUtil.getBitmap();
                     newBitmap = bit;
@@ -858,8 +861,11 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                     Bitmap bmp = getBitmapByView(operateView);
                     newBitmap = bmp;
                 } else {
-                    newBitmap = resultImg;
-                    OriginalBitmap=resultImg;
+                    if(resultImg==null){
+                        newBitmap=OriginalBitmap;
+                    }else {
+                        newBitmap = resultImg;
+                    }
                 }
                 updateImageFrame(newBitmap);
                 toneSubMenu.setVisibility(View.GONE);
@@ -977,7 +983,6 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                 mainLayout);
         newBitmap = resizeBmp;
         oldBitmap = resizeBmp;
-        OriginalBitmap=resizeBmp;
         mImageFrame = new PhotoFrame(this, resizeBmp);
         pictureShow.setImageBitmap(resizeBmp);
         camera_path = SaveBitmap(resizeBmp, "saveTemp");
