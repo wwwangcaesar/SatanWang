@@ -1,12 +1,14 @@
 package about.nocare.casaer.satanwang.ui.appMore.simple2;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,6 +21,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +49,9 @@ import java.util.TimerTask;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.appmore.HorizontalListAdapter;
+import about.nocare.casaer.satanwang.ui.appMore.simple4.MyAR.ImageTargets.ImageTargets;
+import about.nocare.casaer.satanwang.ui.appMore.simple4.VRGyroscopeActivity;
+import about.nocare.casaer.satanwang.widget.appmore.ar.ExpandableTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jarlen.photoedit.crop.CropImageType;
@@ -53,6 +60,7 @@ import cn.jarlen.photoedit.filters.NativeFilter;
 import cn.jarlen.photoedit.mosaic.DrawMosaicView;
 import cn.jarlen.photoedit.mosaic.MosaicUtil;
 import cn.jarlen.photoedit.operate.ImageObject;
+import cn.jarlen.photoedit.operate.OperateConstants;
 import cn.jarlen.photoedit.operate.OperateUtils;
 import cn.jarlen.photoedit.operate.OperateView;
 import cn.jarlen.photoedit.operate.TextObject;
@@ -544,7 +552,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
      * 添加文字
      */
     private SelectColorPopup menuWindow;
-
+    private String typeface;
     private void initwrittenwords(RelativeLayout layout) {
         Button writtenwordslist1 = (Button) layout.findViewById(R.id.writtenwordslist1);
         Button writtenwordslist2 = (Button) layout.findViewById(R.id.writtenwordslist2);
@@ -849,6 +857,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.writtenwordslist2:
+                foutDialog();
                 break;
             case R.id.writtenwordslist3:
                 addfont();
@@ -1222,12 +1231,22 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         return bitmap;
     }
 
+    /**
+     *  添加文字
+     */
     private void addfont() {
         final EditText editText = new EditText(PicActivity.this);
         new AlertDialog.Builder(PicActivity.this).setView(editText)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @SuppressLint("NewApi")
                     public void onClick(DialogInterface dialog, int which) {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        boolean isOpen=imm.isActive();//isOpen若返回true，则表示输入法打开
+                        if (isOpen){
+                            InputMethodManager imm1 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            // 隐藏软键盘
+                            imm1.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+                        }
                         String string = editText.getText().toString();
                         // TextObject textObj =
                         // operateUtils.getTextObject(string);
@@ -1242,7 +1261,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                             if (menuWindow != null) {
                                 textObj.setColor(menuWindow.getColor());
                             }
-//                            textObj.setTypeface(typeface);
+                            textObj.setTypeface(typeface);
                             textObj.commit();
                             operateView1.addItem(textObj);
                             operateView1.setOnListener(new OperateView.MyListener() {
@@ -1267,5 +1286,53 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         tObject.commit();
                     }
                 }).show();
+    }
+
+    /**
+     *  字体类型选择弹框
+     */
+    private void foutDialog(){
+        View view = LayoutInflater.from(mContext).inflate(R.layout.fout_type, null);
+        android.app.AlertDialog.Builder mDialogBuilder = new android.app.AlertDialog.Builder(PicActivity.this, com.lovcreate.core.R.style.dialog);
+        mDialogBuilder.setView(view);
+        mDialogBuilder.setCancelable(true);
+        android.app.AlertDialog alert = mDialogBuilder.create();
+        Window dialogWindow = alert.getWindow();
+        dialogWindow.setGravity(Gravity.CENTER);
+        alert.setCanceledOnTouchOutside(true);
+        alert.setCancelable(true);
+
+        Button moren=(Button)view.findViewById(R.id.moren);
+        Button faceby=(Button)view.findViewById(R.id.faceby);
+        Button facebygf=(Button)view.findViewById(R.id.facebygf);
+
+        moren.setTypeface(Typeface.DEFAULT);
+        faceby.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/"
+                + OperateConstants.FACE_BY + ".ttf"));
+        facebygf.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/"
+                + OperateConstants.FACE_BYGF + ".ttf"));
+
+        moren.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                typeface = null;
+                alert.dismiss();
+            }
+        });
+        faceby.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                typeface = OperateConstants.FACE_BY;
+                alert.dismiss();
+            }
+        });
+        facebygf.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onNoDoubleClick(View v) {
+                typeface = OperateConstants.FACE_BYGF;
+                alert.dismiss();
+            }
+        });
+        alert.show();
     }
 }

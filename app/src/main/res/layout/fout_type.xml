@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/moren"
+        android:layout_width="160dp"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        android:text="字体"
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/faceby"
+        android:layout_width="160dp"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+
+        android:text="字体"
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/facebygf"
+        android:layout_width="160dp"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        android:text="字体"
+        android:textSize="18dp" />
+
+</LinearLayout>
