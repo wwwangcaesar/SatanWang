@@ -104,6 +104,17 @@
         android:visibility="gone">
 
     </RelativeLayout>
+    <!--图像变形-->
+    <cn.jarlen.photoedit.warp.WarpView
+        android:id="@+id/warp_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llAdd"
+        android:layout_below="@+id/rl_tool"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tllet"
