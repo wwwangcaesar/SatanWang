@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,8 +39,6 @@ import java.util.TimerTask;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.appmore.HorizontalListAdapter;
-import about.nocare.casaer.satanwang.utils.appAr.simple2.FileUtils;
-import about.nocare.casaer.satanwang.utils.appAr.simple2.OperateUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jarlen.photoedit.crop.CropImageType;
@@ -47,10 +46,14 @@ import cn.jarlen.photoedit.crop.CropImageView;
 import cn.jarlen.photoedit.filters.NativeFilter;
 import cn.jarlen.photoedit.mosaic.DrawMosaicView;
 import cn.jarlen.photoedit.mosaic.MosaicUtil;
+import cn.jarlen.photoedit.operate.ImageObject;
+import cn.jarlen.photoedit.operate.OperateUtils;
+import cn.jarlen.photoedit.operate.OperateView;
 import cn.jarlen.photoedit.photoframe.PhotoFrame;
 import cn.jarlen.photoedit.scrawl.DrawAttribute;
 import cn.jarlen.photoedit.scrawl.DrawingBoardView;
 import cn.jarlen.photoedit.scrawl.ScrawlTools;
+import cn.jarlen.photoedit.utils.FileUtils;
 
 /**
  * 图片处理
@@ -89,12 +92,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     TableLayout toneSubMenu;
     @BindView(R.id.drawView)
     DrawingBoardView drawView;
-    @BindView(R.id.drawLayout)
-    LinearLayout drawLayout;
     @BindView(R.id.mosaic)
     DrawMosaicView mosaic;
     @BindView(R.id.cropmageView)
     CropImageView cropmageView;
+    @BindView(R.id.waterlinear)
+    LinearLayout waterlinear;
     private HorizontalListAdapter adapter;
 
     private List<String> listBrings = new ArrayList<>();
@@ -193,17 +196,21 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout);
 
                         mosaic.setVisibility(View.GONE);
-                        drawLayout.setVisibility(View.GONE);
+                        drawView.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                     //人体变形
                     case 1:
                         llAdd.removeAllViews();
-                        drawLayout.setVisibility(View.GONE);
+                        drawView.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                     //边框
                     case 2:
@@ -212,15 +219,17 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initframe(layout2);
                         llAdd.addView(layout2);
-                        drawLayout.setVisibility(View.GONE);
+                        drawView.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                     //涂鸦
                     case 3:
                         llAdd.removeAllViews();
-                        drawLayout.setVisibility(View.VISIBLE);
+                        drawView.setVisibility(View.VISIBLE);
                         pictureShow.setVisibility(View.GONE);
                         RelativeLayout layout3 = (RelativeLayout) inflater.inflate(R.layout.graffitilist, null).findViewById(R.id.filtersList);
                         // 将布局加入到当前布局中  
@@ -228,6 +237,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout3);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                     //马赛克
                     case 4:
@@ -237,10 +248,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         initmosaic(layout4);
                         llAdd.addView(layout4);
 
-                        drawLayout.setVisibility(View.GONE);
+                        drawView.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.GONE);
                         mosaic.setVisibility(View.VISIBLE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                     //剪切
                     case 5:
@@ -249,10 +262,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initshear(layout5);
                         llAdd.addView(layout5);
-                        drawLayout.setVisibility(View.GONE);
+                        drawView.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.GONE);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.VISIBLE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                     //添加水印
                     case 6:
@@ -261,10 +276,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         // 将布局加入到当前布局中  
                         initaddwatermark(layout6);
                         llAdd.addView(layout6);
-                        drawLayout.setVisibility(View.GONE);
-                        pictureShow.setVisibility(View.VISIBLE);
+                        drawView.setVisibility(View.GONE);
+                        pictureShow.setVisibility(View.GONE);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.VISIBLE);
+                        isWater=false;
                         break;
                     //图像增强
                     case 7:
@@ -272,10 +289,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         recyBringinto.setVisibility(View.GONE);
                         toneSubMenu.setVisibility(View.VISIBLE);
 
-                        drawLayout.setVisibility(View.GONE);
+                        drawView.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                     //旋转
                     case 8:
@@ -285,10 +304,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         initrotate(layout8);
                         llAdd.addView(layout8);
 
-                        drawLayout.setVisibility(View.GONE);
+                        drawView.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                     //添加文字
                     case 9:
@@ -298,10 +319,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         initwrittenwords(layout9);
                         llAdd.addView(layout9);
 
-                        drawLayout.setVisibility(View.GONE);
+                        drawView.setVisibility(View.GONE);
                         pictureShow.setVisibility(View.VISIBLE);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
+                        waterlinear.setVisibility(View.GONE);
+                        isWater=true;
                         break;
                 }
             }
@@ -367,12 +390,12 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
     private void initdraw() {
 
-        Bitmap resizeBmp = operateUtils.compressionFiller(newBitmap, drawLayout);
+        Bitmap resizeBmp = operateUtils.compressionFiller(newBitmap, drawView);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                resizeBmp.getWidth(), resizeBmp.getHeight());
-
-        drawView.setLayoutParams(layoutParams);
+//        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                resizeBmp.getWidth(), resizeBmp.getHeight());
+//
+//        drawView.setLayoutParams(layoutParams);
 
         casualWaterUtil = new ScrawlTools(this, drawView, resizeBmp);
 
@@ -435,6 +458,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 水印效果
      */
+    private OperateView operateView;
+    private boolean isWater=true;
     private void initaddwatermark(RelativeLayout layout) {
         TextView chunvzuo = (TextView) layout.findViewById(R.id.chunvzuo);
         TextView shenhuifu = (TextView) layout.findViewById(R.id.shenhuifu);
@@ -657,7 +682,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             case R.id.mosaic3:
                 Bitmap bit = BitmapFactory.decodeResource(this.getResources(),
                         R.drawable.hi4);
-                bit = cn.jarlen.photoedit.utils.FileUtils.ResizeBitmap(bit, srcWidth, srcHeight);
+                bit = FileUtils.ResizeBitmap(bit, srcWidth, srcHeight);
                 mosaic.setMosaicResource(bit);
                 break;
             case R.id.mosaic4:
@@ -708,36 +733,49 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         "已保存到相册；剪切大小为 " + cropImageBitmap.getWidth() + " x "
                                 + cropImageBitmap.getHeight(),
                         Toast.LENGTH_SHORT).show();
-                cn.jarlen.photoedit.utils.FileUtils.saveBitmapToCamera(this, cropImageBitmap, "crop.jpg");
+                FileUtils.saveBitmapToCamera(this, cropImageBitmap, "crop.jpg");
                 break;
             /*剪切效果结束*/
 
 
             case R.id.chunvzuo:
+                addpic(watermark[0]);
                 break;
             case R.id.shenhuifu:
+                addpic(watermark[1]);
                 break;
             case R.id.qiugouda:
+                addpic(watermark[2]);
                 break;
             case R.id.guaishushu:
+                addpic(watermark[3]);
                 break;
             case R.id.haoxingzuo:
+                addpic(watermark[4]);
                 break;
             case R.id.wanhuaile:
+                addpic(watermark[5]);
                 break;
             case R.id.xiangsi:
+                addpic(watermark[6]);
                 break;
             case R.id.xingzuokong:
+                addpic(watermark[7]);
                 break;
             case R.id.xinnian:
+                addpic(watermark[8]);
                 break;
             case R.id.zaoan:
+                addpic(watermark[9]);
                 break;
             case R.id.zuile:
+                addpic(watermark[10]);
                 break;
             case R.id.jiuyaozuo:
+                addpic(watermark[11]);
                 break;
             case R.id.zui:
+                addpic(watermark[12]);
                 break;
             /*水印效果结束*/
 
@@ -783,38 +821,43 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                 recyBringinto.setVisibility(View.VISIBLE);
                 toneSubMenu.setVisibility(View.GONE);
                 pictureShow.setImageBitmap(oldBitmap);
-                updateImageFrame(oldBitmap);
+//                updateImageFrame(oldBitmap);
                 pictureShow.setVisibility(View.VISIBLE);
 
-                drawLayout.setVisibility(View.GONE);
+                drawView.setVisibility(View.GONE);
                 mosaic.setVisibility(View.GONE);
                 cropmageView.setVisibility(View.GONE);
-
+                waterlinear.setVisibility(View.GONE);
                 canal = 0;
             }
         });
         btnOk.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                Bitmap bit = casualWaterUtil.getBitmap();
-                Bitmap bit1 = mosaic.getMosaicBitmap();
-                Bitmap bit2 = cropmageView.getCroppedImage();
-                if (drawLayout.getVisibility() == View.VISIBLE) {
+
+                if (drawView.getVisibility() == View.VISIBLE) {
+                    Bitmap bit = casualWaterUtil.getBitmap();
                     newBitmap = bit;
                 } else if (mosaic.getVisibility() == View.VISIBLE) {
+                    Bitmap bit1 = mosaic.getMosaicBitmap();
                     newBitmap = bit1;
-                }else if (cropmageView.getVisibility()==View.VISIBLE){
-                    newBitmap =bit2;
-                }
-                else {
+                } else if (cropmageView.getVisibility() == View.VISIBLE) {
+                    Bitmap bit2 = cropmageView.getCroppedImage();
+                    newBitmap = bit2;
+                } else if (!isWater) {
+                    operateView.save();
+                    Bitmap bmp = getBitmapByView(operateView);
+                    newBitmap = bmp;
+                } else {
                     newBitmap = resultImg;
                 }
                 updateImageFrame(newBitmap);
                 toneSubMenu.setVisibility(View.GONE);
                 llAdd.setVisibility(View.GONE);
                 mosaic.setVisibility(View.GONE);
-                drawLayout.setVisibility(View.GONE);
+                drawView.setVisibility(View.GONE);
                 cropmageView.setVisibility(View.GONE);
+                waterlinear.setVisibility(View.GONE);
                 pictureShow.setVisibility(View.VISIBLE);
                 pictureShow.setImageBitmap(newBitmap);//设置图片最终效果反馈
 
@@ -924,7 +967,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                 mainLayout);
         newBitmap = resizeBmp;
         oldBitmap = resizeBmp;
-        updateImageFrame(resizeBmp);
+        mImageFrame = new PhotoFrame(this, resizeBmp);
         pictureShow.setImageBitmap(resizeBmp);
         camera_path = SaveBitmap(resizeBmp, "saveTemp");
 
@@ -943,6 +986,14 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
         cropmageView.setFixedAspectRatio(false);// 自由剪切
 
+
+        operateView = new OperateView(PicActivity.this, resizeBmp);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                resizeBmp.getWidth(), resizeBmp.getHeight());
+        operateView.setLayoutParams(layoutParams);
+        waterlinear.addView(operateView);
+        operateView.setMultiAdd(true); // 设置此参数，可以添加多个图片
+
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) llBottom.getLayoutParams(); //取控件textView当前的布局参数
         linearParams.height = 0;// 控件的高强制设成0
         llBottom.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
@@ -952,7 +1003,32 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
      * 更新ImageFrame
      */
     private void updateImageFrame(Bitmap resizeBmp) {
+        casualWaterUtil = new ScrawlTools(this, drawView, resizeBmp);
         mImageFrame = new PhotoFrame(this, resizeBmp);
+        camera_path = SaveBitmap(resizeBmp, "saveTemp");
+
+        Bitmap bit = MosaicUtil.getMosaic(resizeBmp);
+
+        mosaic.setMosaicBackgroundResource(camera_path);
+        mosaic.setMosaicResource(bit);
+        mosaic.setMosaicBrushWidth(10);
+
+        Bitmap hh = BitmapFactory.decodeResource(this.getResources(),
+                R.drawable.crop_button);
+
+        cropmageView.setCropOverlayCornerBitmap(hh);
+        cropmageView.setImageBitmap(resizeBmp);
+        cropmageView.setGuidelines(CropImageType.CROPIMAGE_GRID_ON_TOUCH);// 触摸时显示网格
+
+        cropmageView.setFixedAspectRatio(false);// 自由剪切
+
+        waterlinear.removeAllViews();
+        operateView = new OperateView(PicActivity.this, newBitmap);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                newBitmap.getWidth(), newBitmap.getHeight());
+        operateView.setLayoutParams(layoutParams);
+        waterlinear.addView(operateView);
+        operateView.setMultiAdd(true); // 设置此参数，可以添加多个图片
     }
 
     final Handler myHandler = new Handler() {
@@ -1020,5 +1096,36 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         listBrings.add("旋转");
         listBrings.add("添加文字");
         return listBrings;
+    }
+
+    /**
+     * 水印图片资源
+     */
+    int watermark[] = {R.drawable.watermark_chunvzuo, R.drawable.comment,
+            R.drawable.gouda, R.drawable.guaishushu, R.drawable.haoxingzuop,
+            R.drawable.wanhuaile, R.drawable.xiangsi, R.drawable.xingzuokong,
+            R.drawable.xinnian, R.drawable.zaoan, R.drawable.zuile,
+            R.drawable.zuo, R.drawable.zui};
+
+    /**
+     * 水印添加图片
+     *
+     * @param position
+     */
+    private void addpic(int position) {
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), position);
+        // ImageObject imgObject = operateUtils.getImageObject(bmp);
+        ImageObject imgObject = operateUtils.getImageObject(bmp, operateView,
+                5, 150, 100);
+        operateView.addItem(imgObject);
+    }
+
+    // 将模板View的图片转化为Bitmap
+    public Bitmap getBitmapByView(View v) {
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        v.draw(canvas);
+        return bitmap;
     }
 }

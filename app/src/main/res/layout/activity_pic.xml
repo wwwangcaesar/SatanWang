@@ -23,8 +23,8 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10.0dip"
-            android:textColor="@color/white"
-            android:text="取消"/>
+            android:text="取消"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/btn_ok"
@@ -33,46 +33,64 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10.0dip"
-            android:textColor="@color/white"
-            android:text="完成"/>
+            android:text="完成"
+            android:textColor="@color/white" />
 
     </RelativeLayout>
     <!-- 相当于画板-->
-    <LinearLayout
-        android:id="@+id/drawLayout"
+
+    <cn.jarlen.photoedit.scrawl.DrawingBoardView
+        android:id="@+id/drawView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rl_tool"
         android:layout_above="@+id/horizontalListView"
+        android:layout_below="@+id/rl_tool"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
-        <cn.jarlen.photoedit.scrawl.DrawingBoardView
-            android:id="@+id/drawView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-    </LinearLayout>
+        android:visibility="gone" />
     <!--马赛克画板-->
     <cn.jarlen.photoedit.mosaic.DrawMosaicView
         android:id="@+id/mosaic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llAdd"
         android:layout_below="@+id/rl_tool"
-        android:layout_above="@+id/horizontalListView"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/app_name"
-        android:visibility="gone"/>
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" />
     <!--剪切画板-->
-    <cn.jarlen.photoedit.crop.CropImageView
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
+    <cn.jarlen.photoedit.crop.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cropmageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llAdd"
         android:layout_below="@+id/rl_tool"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        custom:imageResource="@null" />
+    <!--水印画板-->
+    <LinearLayout
+        android:id="@+id/waterlinear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_above="@+id/horizontalListView"
-        custom:imageResource="@null"
-        android:visibility="gone"/>
+        android:layout_below="@+id/rl_tool"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tllet"
         android:layout_width="match_parent"
@@ -89,12 +107,12 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
         android:layout_above="@+id/llAdd"
         android:layout_below="@+id/rl_tool"
-        android:layout_marginBottom="18dp"
-        android:orientation="vertical"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
+        android:orientation="vertical"
         android:visibility="gone">
 
         <ImageView
@@ -103,22 +121,23 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/llAdd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/horizontalListView"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 
     <com.lovcreate.core.widget.HorizontalListView
         android:id="@+id/horizontalListView"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginTop="4dp"
         android:layout_above="@+id/ll_bottom"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
         android:divider="@null"
         android:visibility="gone" />
 
