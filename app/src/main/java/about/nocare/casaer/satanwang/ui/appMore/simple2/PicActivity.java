@@ -56,6 +56,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.jarlen.photoedit.crop.CropImageType;
 import cn.jarlen.photoedit.crop.CropImageView;
+import cn.jarlen.photoedit.enhance.PhotoEnhance;
 import cn.jarlen.photoedit.filters.NativeFilter;
 import cn.jarlen.photoedit.mosaic.DrawMosaicView;
 import cn.jarlen.photoedit.mosaic.MosaicUtil;
@@ -75,7 +76,7 @@ import cn.jarlen.photoedit.utils.SelectColorPopup;
 /**
  * 图片处理
  */
-public class PicActivity extends BaseActivity implements View.OnClickListener {
+public class PicActivity extends BaseActivity implements View.OnClickListener , SeekBar.OnSeekBarChangeListener {
 
     @BindView(R.id.horizontalListView)
     HorizontalListView recyBringinto;
@@ -176,6 +177,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     public static final String filePath = Environment.getExternalStorageDirectory() + "/PictureTest/";
 
     OperateUtils operateUtils;
+    //图像增强
+    private PhotoEnhance pe;
+    private int pregress = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +202,17 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         width = metric.widthPixels; // 屏幕宽度（像素）
         operateUtils = new OperateUtils(this);
+        //图像增强
+        saturation.setMax(255);
+        saturation.setProgress(128);
+        saturation.setOnSeekBarChangeListener(this);
+        brightness.setMax(255);
+        brightness.setProgress(128);
+        brightness.setOnSeekBarChangeListener(this);
+        contrast.setMax(255);
+        contrast.setProgress(128);
+        contrast.setOnSeekBarChangeListener(this);
+
         recyBringinto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -906,7 +921,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onNoDoubleClick(View v) {
 
-                if (resultImg == null && OriginalBitmap == null && waterlinear.getVisibility() == View.GONE && wordlinear.getVisibility()== View.GONE) {
+                if (resultImg == null && OriginalBitmap == null && waterlinear.getVisibility() == View.GONE && wordlinear.getVisibility()== View.GONE && pregress==0) {
                     ToastUtil.showToastBottomShort("请选择美化效果，再保存");
                 } else {
                     if (drawView.getVisibility() == View.VISIBLE) {
@@ -928,7 +943,11 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         newBitmap = bmp;
                     } else {
                         if (OriginalBitmap == null) {
-                            newBitmap = resultImg;
+                            if (resultImg == null) {
+                                newBitmap = newBitmap;
+                            }else {
+                                newBitmap = resultImg;
+                            }
                         } else {
                             if (resultImg == null) {
                                 newBitmap = OriginalBitmap;
@@ -946,6 +965,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                     waterlinear.setVisibility(View.GONE);
                     wordlinear.setVisibility(View.GONE);
                     pictureShow.setVisibility(View.VISIBLE);
+                    recyBringinto.setVisibility(View.VISIBLE);
                     pictureShow.setImageBitmap(newBitmap);//设置图片最终效果反馈
                 }
 
@@ -1088,6 +1108,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         wordlinear.addView(operateView1);
         operateView1.setMultiAdd(true); // 设置此参数，可以添加多个图片
 
+        pe = new PhotoEnhance(resizeBmp);
+
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) llBottom.getLayoutParams(); //取控件textView当前的布局参数
         linearParams.height = 0;// 控件的高强制设成0
         llBottom.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
@@ -1130,6 +1152,10 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         operateView1.setLayoutParams(layoutParams1);
         wordlinear.addView(operateView1);
         operateView1.setMultiAdd(true); // 设置此参数，可以添加多个图片
+
+
+        pe = new PhotoEnhance(resizeBmp);
+
     }
 
     final Handler myHandler = new Handler() {
@@ -1334,5 +1360,53 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             }
         });
         alert.show();
+    }
+
+
+    /**
+     *  , SeekBar.OnSeekBarChangeListener  接口回调
+     * @param seekBar
+     * @param progress
+     * @param fromUser
+     */
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+        pregress = progress;
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        int type = 0;
+
+        switch (seekBar.getId())
+        {
+            case R.id.saturation :
+                pe.setSaturation(pregress);
+                type = pe.Enhance_Saturation;
+
+                break;
+            case R.id.brightness :
+                pe.setBrightness(pregress);
+                type = pe.Enhance_Brightness;
+                break;
+
+            case R.id.contrast :
+                pe.setContrast(pregress);
+                type = pe.Enhance_Contrast;
+
+                break;
+
+            default :
+                break;
+        }
+
+        newBitmap = pe.handleImage(type);
+        pictureShow.setImageBitmap(newBitmap);
     }
 }
