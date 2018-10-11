@@ -54,6 +54,7 @@ import cn.jarlen.photoedit.scrawl.DrawAttribute;
 import cn.jarlen.photoedit.scrawl.DrawingBoardView;
 import cn.jarlen.photoedit.scrawl.ScrawlTools;
 import cn.jarlen.photoedit.utils.FileUtils;
+import cn.jarlen.photoedit.utils.PhotoUtils;
 
 /**
  * 图片处理
@@ -492,6 +493,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 旋转效果
      */
+    Bitmap OriginalBitmap=null;
     private void initrotate(RelativeLayout layout) {
         Button rotate1 = (Button) layout.findViewById(R.id.rotate1);
         Button rotate2 = (Button) layout.findViewById(R.id.rotate2);
@@ -780,12 +782,19 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             /*水印效果结束*/
 
             case R.id.rotate1:
+                newBitmap = PhotoUtils.rotateImage(newBitmap, 90);
+                pictureShow.setImageBitmap(newBitmap);
                 break;
             case R.id.rotate2:
+                pictureShow.setImageBitmap(OriginalBitmap);
                 break;
             case R.id.rotate3:
+                newBitmap = PhotoUtils.reverseImage(newBitmap, 1, -1);
+                pictureShow.setImageBitmap(newBitmap);
                 break;
             case R.id.rotate4:
+                newBitmap = PhotoUtils.reverseImage(newBitmap, -1, 1);
+                pictureShow.setImageBitmap(newBitmap);
                 break;
             /*旋转效果结束*/
 
@@ -850,6 +859,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                     newBitmap = bmp;
                 } else {
                     newBitmap = resultImg;
+                    OriginalBitmap=resultImg;
                 }
                 updateImageFrame(newBitmap);
                 toneSubMenu.setVisibility(View.GONE);
@@ -967,6 +977,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                 mainLayout);
         newBitmap = resizeBmp;
         oldBitmap = resizeBmp;
+        OriginalBitmap=resizeBmp;
         mImageFrame = new PhotoFrame(this, resizeBmp);
         pictureShow.setImageBitmap(resizeBmp);
         camera_path = SaveBitmap(resizeBmp, "saveTemp");
