@@ -1,5 +1,7 @@
 package about.nocare.casaer.satanwang.ui.appMore.simple2;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,12 +13,15 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,12 +55,14 @@ import cn.jarlen.photoedit.mosaic.MosaicUtil;
 import cn.jarlen.photoedit.operate.ImageObject;
 import cn.jarlen.photoedit.operate.OperateUtils;
 import cn.jarlen.photoedit.operate.OperateView;
+import cn.jarlen.photoedit.operate.TextObject;
 import cn.jarlen.photoedit.photoframe.PhotoFrame;
 import cn.jarlen.photoedit.scrawl.DrawAttribute;
 import cn.jarlen.photoedit.scrawl.DrawingBoardView;
 import cn.jarlen.photoedit.scrawl.ScrawlTools;
 import cn.jarlen.photoedit.utils.FileUtils;
 import cn.jarlen.photoedit.utils.PhotoUtils;
+import cn.jarlen.photoedit.utils.SelectColorPopup;
 
 /**
  * 图片处理
@@ -100,6 +107,10 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     CropImageView cropmageView;
     @BindView(R.id.waterlinear)
     LinearLayout waterlinear;
+    @BindView(R.id.main)
+    RelativeLayout main;
+    @BindView(R.id.wordlinear)
+    RelativeLayout wordlinear;
     private HorizontalListAdapter adapter;
 
     private List<String> listBrings = new ArrayList<>();
@@ -202,7 +213,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         pictureShow.setVisibility(View.VISIBLE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = true;
+                        isWords = true;
                         break;
                     //人体变形
                     case 1:
@@ -212,7 +225,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = true;
+                        isWords = true;
                         break;
                     //边框
                     case 2:
@@ -226,7 +241,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = true;
+                        isWords = true;
                         break;
                     //涂鸦
                     case 3:
@@ -240,7 +257,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = true;
+                        isWords = true;
                         break;
                     //马赛克
                     case 4:
@@ -255,7 +274,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.VISIBLE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = true;
+                        isWords = true;
                         break;
                     //剪切
                     case 5:
@@ -269,7 +290,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.VISIBLE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = true;
+                        isWords = true;
                         break;
                     //添加水印
                     case 6:
@@ -283,7 +306,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.VISIBLE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = false;
+                        isWords = true;
                         break;
                     //图像增强
                     case 7:
@@ -296,7 +321,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = true;
+                        isWords = true;
                         break;
                     //旋转
                     case 8:
@@ -311,7 +338,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.GONE);
                         isWater = true;
+                        isWords = true;
                         break;
                     //添加文字
                     case 9:
@@ -322,11 +351,13 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         llAdd.addView(layout9);
 
                         drawView.setVisibility(View.GONE);
-                        pictureShow.setVisibility(View.VISIBLE);
+                        pictureShow.setVisibility(View.GONE);
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
+                        wordlinear.setVisibility(View.VISIBLE);
                         isWater = true;
+                        isWords = false;
                         break;
                 }
             }
@@ -460,8 +491,9 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 水印效果
      */
-    private OperateView operateView;
+    private OperateView operateView, operateView1;
     private boolean isWater = true;
+    private boolean isWords = true;
 
     private void initaddwatermark(RelativeLayout layout) {
         TextView chunvzuo = (TextView) layout.findViewById(R.id.chunvzuo);
@@ -511,6 +543,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 添加文字
      */
+    private SelectColorPopup menuWindow;
+
     private void initwrittenwords(RelativeLayout layout) {
         Button writtenwordslist1 = (Button) layout.findViewById(R.id.writtenwordslist1);
         Button writtenwordslist2 = (Button) layout.findViewById(R.id.writtenwordslist2);
@@ -518,6 +552,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         writtenwordslist1.setOnClickListener(this);
         writtenwordslist2.setOnClickListener(this);
         writtenwordslist3.setOnClickListener(this);
+
     }
 
     @Override
@@ -806,10 +841,20 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             /*旋转效果结束*/
 
             case R.id.writtenwordslist1:
+                menuWindow = new SelectColorPopup(PicActivity.this,
+                        PicActivity.this);
+                // 显示窗口
+                menuWindow.showAtLocation(
+                        PicActivity.this.findViewById(R.id.main),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
             case R.id.writtenwordslist2:
                 break;
             case R.id.writtenwordslist3:
+                addfont();
+                break;
+            case R.id.submit:
+                menuWindow.dismiss();
                 break;
             /*添加文字结束*/
 
@@ -844,6 +889,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                 mosaic.setVisibility(View.GONE);
                 cropmageView.setVisibility(View.GONE);
                 waterlinear.setVisibility(View.GONE);
+                wordlinear.setVisibility(View.GONE);
                 canal = 0;
             }
         });
@@ -851,7 +897,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onNoDoubleClick(View v) {
 
-                if (resultImg == null && OriginalBitmap == null) {
+                if (resultImg == null && OriginalBitmap == null && waterlinear.getVisibility() == View.GONE && wordlinear.getVisibility()== View.GONE) {
                     ToastUtil.showToastBottomShort("请选择美化效果，再保存");
                 } else {
                     if (drawView.getVisibility() == View.VISIBLE) {
@@ -867,13 +913,17 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         operateView.save();
                         Bitmap bmp = getBitmapByView(operateView);
                         newBitmap = bmp;
+                    } else if (!isWords) {
+                        operateView1.save();
+                        Bitmap bmp = getBitmapByView(operateView1);
+                        newBitmap = bmp;
                     } else {
                         if (OriginalBitmap == null) {
                             newBitmap = resultImg;
                         } else {
                             if (resultImg == null) {
                                 newBitmap = OriginalBitmap;
-                            }else {
+                            } else {
                                 newBitmap = newBitmap;
                             }
                         }
@@ -885,6 +935,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                     drawView.setVisibility(View.GONE);
                     cropmageView.setVisibility(View.GONE);
                     waterlinear.setVisibility(View.GONE);
+                    wordlinear.setVisibility(View.GONE);
                     pictureShow.setVisibility(View.VISIBLE);
                     pictureShow.setImageBitmap(newBitmap);//设置图片最终效果反馈
                 }
@@ -1014,13 +1065,19 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
 
         cropmageView.setFixedAspectRatio(false);// 自由剪切
 
-
         operateView = new OperateView(PicActivity.this, resizeBmp);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 resizeBmp.getWidth(), resizeBmp.getHeight());
         operateView.setLayoutParams(layoutParams);
         waterlinear.addView(operateView);
         operateView.setMultiAdd(true); // 设置此参数，可以添加多个图片
+
+        operateView1 = new OperateView(PicActivity.this, resizeBmp);
+        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(
+                resizeBmp.getWidth(), resizeBmp.getHeight());
+        operateView1.setLayoutParams(layoutParams1);
+        wordlinear.addView(operateView1);
+        operateView1.setMultiAdd(true); // 设置此参数，可以添加多个图片
 
         RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) llBottom.getLayoutParams(); //取控件textView当前的布局参数
         linearParams.height = 0;// 控件的高强制设成0
@@ -1057,6 +1114,13 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         operateView.setLayoutParams(layoutParams);
         waterlinear.addView(operateView);
         operateView.setMultiAdd(true); // 设置此参数，可以添加多个图片
+
+        operateView1 = new OperateView(PicActivity.this, resizeBmp);
+        RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(
+                newBitmap.getWidth(), newBitmap.getHeight());
+        operateView1.setLayoutParams(layoutParams1);
+        wordlinear.addView(operateView1);
+        operateView1.setMultiAdd(true); // 设置此参数，可以添加多个图片
     }
 
     final Handler myHandler = new Handler() {
@@ -1070,6 +1134,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                     timer.cancel();
                     compressed();
                     initdraw();
+//                    fillContent();
                 }
             }
         }
@@ -1155,5 +1220,52 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         Canvas canvas = new Canvas(bitmap);
         v.draw(canvas);
         return bitmap;
+    }
+
+    private void addfont() {
+        final EditText editText = new EditText(PicActivity.this);
+        new AlertDialog.Builder(PicActivity.this).setView(editText)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @SuppressLint("NewApi")
+                    public void onClick(DialogInterface dialog, int which) {
+                        String string = editText.getText().toString();
+                        // TextObject textObj =
+                        // operateUtils.getTextObject(string);
+                        // if (textObj != null) {
+                        // textObj.setTypeface(OperateConstants.FACE_BY);
+                        // textObj.commit();
+                        // }
+
+                        TextObject textObj = operateUtils.getTextObject(string,
+                                operateView1, 5, 150, 100);
+                        if (textObj != null) {
+                            if (menuWindow != null) {
+                                textObj.setColor(menuWindow.getColor());
+                            }
+//                            textObj.setTypeface(typeface);
+                            textObj.commit();
+                            operateView1.addItem(textObj);
+                            operateView1.setOnListener(new OperateView.MyListener() {
+                                public void onClick(TextObject tObject) {
+                                    alert(tObject);
+                                }
+                            });
+                        }
+                    }
+                }).show();
+    }
+
+    private void alert(final TextObject tObject) {
+
+        final EditText editText = new EditText(PicActivity.this);
+        new AlertDialog.Builder(PicActivity.this).setView(editText)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @SuppressLint("NewApi")
+                    public void onClick(DialogInterface dialog, int which) {
+                        String string = editText.getText().toString();
+                        tObject.setText(string);
+                        tObject.commit();
+                    }
+                }).show();
     }
 }

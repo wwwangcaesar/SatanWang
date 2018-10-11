@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="true"
@@ -90,6 +91,19 @@
         android:visibility="gone">
 
     </LinearLayout>
+    <!--字体画板-->
+    <RelativeLayout
+        android:id="@+id/wordlinear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/horizontalListView"
+        android:layout_below="@+id/rl_tool"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:visibility="gone">
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tllet"
