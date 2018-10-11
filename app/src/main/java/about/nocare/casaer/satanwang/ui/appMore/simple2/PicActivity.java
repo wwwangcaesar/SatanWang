@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.lovcreate.core.base.BaseActivity;
 import com.lovcreate.core.base.OnClickListener;
+import com.lovcreate.core.util.ToastUtil;
 import com.lovcreate.core.widget.HorizontalListView;
 
 import java.io.File;
@@ -201,7 +202,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         pictureShow.setVisibility(View.VISIBLE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                     //人体变形
                     case 1:
@@ -211,7 +212,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                     //边框
                     case 2:
@@ -225,7 +226,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                     //涂鸦
                     case 3:
@@ -239,7 +240,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                     //马赛克
                     case 4:
@@ -254,7 +255,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.VISIBLE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                     //剪切
                     case 5:
@@ -268,7 +269,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.VISIBLE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                     //添加水印
                     case 6:
@@ -282,7 +283,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.VISIBLE);
-                        isWater=false;
+                        isWater = false;
                         break;
                     //图像增强
                     case 7:
@@ -295,7 +296,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                     //旋转
                     case 8:
@@ -310,7 +311,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                     //添加文字
                     case 9:
@@ -325,7 +326,7 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
                         mosaic.setVisibility(View.GONE);
                         cropmageView.setVisibility(View.GONE);
                         waterlinear.setVisibility(View.GONE);
-                        isWater=true;
+                        isWater = true;
                         break;
                 }
             }
@@ -460,7 +461,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
      * 水印效果
      */
     private OperateView operateView;
-    private boolean isWater=true;
+    private boolean isWater = true;
+
     private void initaddwatermark(RelativeLayout layout) {
         TextView chunvzuo = (TextView) layout.findViewById(R.id.chunvzuo);
         TextView shenhuifu = (TextView) layout.findViewById(R.id.shenhuifu);
@@ -493,7 +495,8 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 旋转效果
      */
-    Bitmap OriginalBitmap=null;
+    Bitmap OriginalBitmap = null;
+
     private void initrotate(RelativeLayout layout) {
         Button rotate1 = (Button) layout.findViewById(R.id.rotate1);
         Button rotate2 = (Button) layout.findViewById(R.id.rotate2);
@@ -784,21 +787,21 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
             case R.id.rotate1:
                 newBitmap = PhotoUtils.rotateImage(newBitmap, 90);
                 pictureShow.setImageBitmap(newBitmap);
-                OriginalBitmap=newBitmap;
+                OriginalBitmap = newBitmap;
                 break;
             case R.id.rotate2:
-                Bitmap bitt=newBitmap;
+                Bitmap bitt = newBitmap;
                 pictureShow.setImageBitmap(bitt);
                 break;
             case R.id.rotate3:
                 newBitmap = PhotoUtils.reverseImage(newBitmap, 1, -1);
                 pictureShow.setImageBitmap(newBitmap);
-                OriginalBitmap=newBitmap;
+                OriginalBitmap = newBitmap;
                 break;
             case R.id.rotate4:
                 newBitmap = PhotoUtils.reverseImage(newBitmap, -1, 1);
                 pictureShow.setImageBitmap(newBitmap);
-                OriginalBitmap=newBitmap;
+                OriginalBitmap = newBitmap;
                 break;
             /*旋转效果结束*/
 
@@ -847,35 +850,44 @@ public class PicActivity extends BaseActivity implements View.OnClickListener {
         btnOk.setOnClickListener(new OnClickListener() {
             @Override
             public void onNoDoubleClick(View v) {
-                if (drawView.getVisibility() == View.VISIBLE) {
-                    Bitmap bit = casualWaterUtil.getBitmap();
-                    newBitmap = bit;
-                } else if (mosaic.getVisibility() == View.VISIBLE) {
-                    Bitmap bit1 = mosaic.getMosaicBitmap();
-                    newBitmap = bit1;
-                } else if (cropmageView.getVisibility() == View.VISIBLE) {
-                    Bitmap bit2 = cropmageView.getCroppedImage();
-                    newBitmap = bit2;
-                } else if (!isWater) {
-                    operateView.save();
-                    Bitmap bmp = getBitmapByView(operateView);
-                    newBitmap = bmp;
+
+                if (resultImg == null && OriginalBitmap == null) {
+                    ToastUtil.showToastBottomShort("请选择美化效果，再保存");
                 } else {
-                    if(resultImg==null){
-                        newBitmap=OriginalBitmap;
-                    }else {
-                        newBitmap = resultImg;
+                    if (drawView.getVisibility() == View.VISIBLE) {
+                        Bitmap bit = casualWaterUtil.getBitmap();
+                        newBitmap = bit;
+                    } else if (mosaic.getVisibility() == View.VISIBLE) {
+                        Bitmap bit1 = mosaic.getMosaicBitmap();
+                        newBitmap = bit1;
+                    } else if (cropmageView.getVisibility() == View.VISIBLE) {
+                        Bitmap bit2 = cropmageView.getCroppedImage();
+                        newBitmap = bit2;
+                    } else if (!isWater) {
+                        operateView.save();
+                        Bitmap bmp = getBitmapByView(operateView);
+                        newBitmap = bmp;
+                    } else {
+                        if (OriginalBitmap == null) {
+                            newBitmap = resultImg;
+                        } else {
+                            if (resultImg == null) {
+                                newBitmap = OriginalBitmap;
+                            }else {
+                                newBitmap = newBitmap;
+                            }
+                        }
                     }
+                    updateImageFrame(newBitmap);
+                    toneSubMenu.setVisibility(View.GONE);
+                    llAdd.setVisibility(View.GONE);
+                    mosaic.setVisibility(View.GONE);
+                    drawView.setVisibility(View.GONE);
+                    cropmageView.setVisibility(View.GONE);
+                    waterlinear.setVisibility(View.GONE);
+                    pictureShow.setVisibility(View.VISIBLE);
+                    pictureShow.setImageBitmap(newBitmap);//设置图片最终效果反馈
                 }
-                updateImageFrame(newBitmap);
-                toneSubMenu.setVisibility(View.GONE);
-                llAdd.setVisibility(View.GONE);
-                mosaic.setVisibility(View.GONE);
-                drawView.setVisibility(View.GONE);
-                cropmageView.setVisibility(View.GONE);
-                waterlinear.setVisibility(View.GONE);
-                pictureShow.setVisibility(View.VISIBLE);
-                pictureShow.setImageBitmap(newBitmap);//设置图片最终效果反馈
 
             }
         });
