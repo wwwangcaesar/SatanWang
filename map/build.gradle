@@ -13,13 +13,18 @@ android {
 
         release {
             minifyEnabled false
+            // 之前的key  61ac2773eb275cd9d56f0da630d008e7
+            // Satan打包    d83ea3cd853e03ef62fe7233c7ee253f
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [amap_key: "61ac2773eb275cd9d56f0da630d008e7"]
+            manifestPlaceholders = [amap_key: "d83ea3cd853e03ef62fe7233c7ee253f"]
         }
         debug {
 //            // Bright本机测试：bbdc8f007b6ba0a2c181bcdec024bb43
 //            // Satan本机测试：932ca57f23a35f9704ca5a61f9bd863b
-            manifestPlaceholders = [amap_key: "932ca57f23a35f9704ca5a61f9bd863b"]
+//              Satan打包    d83ea3cd853e03ef62fe7233c7ee253f
+
+            manifestPlaceholders = [amap_key: "d83ea3cd853e03ef62fe7233c7ee253f"]
         }
     }
     sourceSets {

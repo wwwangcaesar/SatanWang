@@ -22,8 +22,9 @@
 
         <!-- 高德地图appkey -->
         <!-- Bright本机测试：bbdc8f007b6ba0a2c181bcdec024bb43 -->
-        <!-- Satan本机测试：932ca57f23a35f9704ca5a61f9bd863b -->
+        <!-- Satan本机运行时候用的：932ca57f23a35f9704ca5a61f9bd863b -->
         <!-- 发版环境：61ac2773eb275cd9d56f0da630d008e7 -->
+        <!--SatanWang打包时候用的 d83ea3cd853e03ef62fe7233c7ee253f-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="932ca57f23a35f9704ca5a61f9bd863b" />
