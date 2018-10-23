@@ -44,7 +44,7 @@
         android:id="@+id/drawView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/horizontalListView"
+        android:layout_above="@+id/llAdd"
         android:layout_below="@+id/rl_tool"
         android:layout_marginBottom="12dp"
         android:layout_marginTop="8dp"
