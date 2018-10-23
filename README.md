@@ -50,6 +50,16 @@
   
   * 自定义textview扩展，支持textview中添加链接特殊显示，并支持点击跳转
   
+  * 实现抖音视频播放效果（利用RecyclerView，通过ViewPagerLayoutManager判断RecyclerView的状态位置，更改视频播放）
+  
+  * 图片美化处理等特殊效果（内容很多，放到一个ac中，没有做成跳转回显）
+  
+  * 自定义Gridview，拖动更换item位置，固定item点击事件，即使更换位置，也保证点击
+  
+  * 轮播文字，图片消息。滚动文字显示，图片banner显示，并添加标题，指示针，效果等
+  
+  * 有关渐变drawable颜色设置背景
+  
   
   
   
