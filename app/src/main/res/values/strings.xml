@@ -55,4 +55,22 @@
     <string name="menu_button_blue">Blue</string>
     <string name="menu_button_yellow">Yellow</string>
     <string name="menu_button_green">Green</string>
+
+    <!--视频录制-->
+    <string name="ar_record">开始录制</string>
+    <string name="ar_stop">停止录制</string>
+    <string name="speed_super_slow">极慢"</string>
+    <string name="speed_slow">慢"</string>
+    <string name="speed_normal">正常"</string>
+    <string name="speed_fast">快"</string>
+    <string name="speed_super_fast">极快"</string>
+    <string name="toast_draft_recover_fail">草稿恢复失败</string>
+    <string name="toast_draft_recover_success">草稿恢复成功</string>
+    <string name="dlg_save_draft_title">输入草稿标题</string>
+    <string name="dlg_save_draft_yes">保存</string>
+    <string name="toast_draft_save_success">草稿保存成功</string>
+    <string name="toast_draft_save_fail">草稿保存失败</string>
+    <string name="if_edit_video">是否编辑视频</string>
+    <string name="dlg_yes">是</string>
+    <string name="dlg_no">否</string>
 </resources>

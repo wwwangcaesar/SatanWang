@@ -25,6 +25,7 @@ import java.util.List;
 
 import about.nocare.casaer.satanwang.R;
 import about.nocare.casaer.satanwang.adapter.appmore.MyAdapter;
+import about.nocare.casaer.satanwang.ui.appMore.simple3.VideoRecordActivity;
 import about.nocare.casaer.satanwang.ui.appMore.simple3.ViewPagerLayoutManagerActivity;
 import about.nocare.casaer.satanwang.ui.home.SearchActivity;
 import about.nocare.casaer.satanwang.widget.appmore.video.DragableGridView;
@@ -78,7 +79,9 @@ public class SimpleFragment3 extends Fragment {
                 }else if (parent.getAdapter().getItem(position).toString().equals("不同模式\n播放视频")){
                     ToastUtil.showToastBottomShort("不同模式");
                 }else if (parent.getAdapter().getItem(position).toString().equals("拍摄小视\n频")){
-                        ToastUtil.showToastBottomShort("拍摄小视");
+                        Intent intent=new Intent(getActivity(), VideoRecordActivity.class);
+                        startActivity(intent);
+//                        ToastUtil.showToastBottomShort("拍摄小视");
                 }
 
             }

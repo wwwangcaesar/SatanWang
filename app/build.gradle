@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "28.0.1"
     sourceSets {
-        main { jniLibs.srcDirs = ['libs'] }
+        main { jniLibs.srcDirs = ['libs'] }// 这个是告诉去libs文件夹下面找.so文件，相当于指引
     }
     defaultConfig {
         applicationId "about.nocare.casaer.satanwang"
@@ -34,11 +34,11 @@ android {
             minifyEnabled false
             debuggable true
             ndk {
-                abiFilters "armeabi-v7a"
+                abiFilters "armeabi-v7a"// 引入ndk，支持.so文件  (自动将so和应用一起打包成 APK)
             }
         }
     }
-    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }// 一样的道理
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -88,6 +88,7 @@ dependencies {
     implementation project(':animation')
     //美化图片
     implementation project(':photoedit')
+    implementation files('libs/pldroid-shortvideo-1.14.0.jar')
 }
 //都是因为如果程序内出现不同的，support或者其他外部引用库的多个版本，Gradle在进行合并的时候会使用本地持有的，最高版本的来进行编译，
 // 所以25的support就有可能引用26的东西，就会出现 属性 merge 错误 ，或者Class丢失，解决方法就是强制使用相同版本的库：
