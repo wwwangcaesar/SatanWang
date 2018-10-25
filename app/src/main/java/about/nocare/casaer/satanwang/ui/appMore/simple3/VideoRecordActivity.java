@@ -423,19 +423,19 @@ public class VideoRecordActivity extends BaseActivity implements PLRecordStateLi
 
         switch (view.getId()) {
             case R.id.super_slow_speed_text:
-                mRecordSpeed = RECORD_SPEED_ARRAY[4];
+                mRecordSpeed = RECORD_SPEED_ARRAY[0];
                 break;
             case R.id.slow_speed_text:
-                mRecordSpeed = RECORD_SPEED_ARRAY[3];
+                mRecordSpeed = RECORD_SPEED_ARRAY[1];
                 break;
             case R.id.normal_speed_text:
                 mRecordSpeed = RECORD_SPEED_ARRAY[2];
                 break;
             case R.id.fast_speed_text:
-                mRecordSpeed = RECORD_SPEED_ARRAY[1];
+                mRecordSpeed = RECORD_SPEED_ARRAY[3];
                 break;
             case R.id.super_fast_speed_text:
-                mRecordSpeed = RECORD_SPEED_ARRAY[0];
+                mRecordSpeed = RECORD_SPEED_ARRAY[4];
                 break;
         }
 
@@ -799,7 +799,7 @@ public class VideoRecordActivity extends BaseActivity implements PLRecordStateLi
                     //编辑页面
 //                    VideoEditActivity.start(VideoRecordActivity.this, s);
                 } else {
-                    //
+                    //上传视频页面
 //                    PlaybackActivity.start(VideoRecordActivity.this, s);
                 }
             }
